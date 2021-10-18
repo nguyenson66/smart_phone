@@ -1,0 +1,51 @@
+<div class="login-background">
+    <div class="container-login">
+        <h5>Wellcome to Shop</h5>
+        <p id="error"></p>
+        <form method="POST" action="/register">
+            <div class="form-control-login">
+                <input type="text" name="email">
+                <label>Email</label>
+            </div>
+
+            <div class="form-control-login">
+                <input type="text" name="phone">
+                <label>Phone number</label>
+            </div>
+            <div class="form-control-login">
+                <input type="password" name="password">
+                <label>Password</label>
+            </div>
+
+            <div class="form-control-login">
+                <input type="text" name="name">
+                <label>Your Name</label>
+            </div>
+
+            <div class="form-control-login">
+                <input type="text" name="address">
+                <label>Address</label>
+            </div>
+
+
+            <button class="btn-login">Register</button>
+
+            <p class="text">you already have an account? <a href="/login">Login</a> </p>
+        </form>
+    </div>
+</div>
+
+<script>
+    const labels = document.querySelectorAll('.form-control-login label')
+
+    labels.forEach(label => {
+        label.innerHTML = label.innerText
+            .split('')
+            .map((letter, idx) => `<span style="transition-delay:${idx * 50}ms">${letter}</span>`)
+            .join('')
+    })
+
+
+        ////// set error ////////
+
+</script>

@@ -1,0 +1,28 @@
+@media screen and (max-width: 992px) {
+    .box-filter {
+        top: 150px;
+    }
+    .close-box-filter {
+        top: 360px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .product-item {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main-body {
+        max-width: 768px;
+    }
+    .row {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+}

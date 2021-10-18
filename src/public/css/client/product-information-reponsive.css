@@ -1,0 +1,13 @@
+@media screen and (max-width: 992px) {}
+
+@media screen and (max-width: 768px) {
+    #product-infor {
+        max-width: 768px;
+    }
+    .row {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+@media screen and (max-width: 576px) {}

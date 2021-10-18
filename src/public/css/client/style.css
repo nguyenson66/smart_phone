@@ -1,0 +1,102 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.clear-float {
+    clear: both;
+}
+
+.btn:focus {
+    box-shadow: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.product-compartment {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.product-compartment span {
+    display: block;
+    margin-right: 20px;
+    color: #c69a39;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.product-compartment hr {
+    display: block;
+    background-color: #c69a39;
+}
+
+.btn-filter {
+    margin-left: 10px;
+    background-color: #000066;
+    color: white;
+}
+
+
+/* filter */
+
+.box-filter {
+    background-color: white;
+    display: block;
+    height: 200px;
+    width: 300px;
+    position: fixed;
+    top: 100px;
+    z-index: 50;
+    padding: 10px 20px;
+    border: 2px solid #000066;
+    border-top: 30px solid #000066;
+    box-shadow: 3px 3px 15px rgb(75, 75, 75);
+    border-radius: 5px;
+}
+
+.price-range-filter .form-control {
+    width: 100px;
+    display: inline-block;
+    border: 1px solid rgb(156, 156, 156);
+    margin: 5px;
+}
+
+.price-range-filter .form-group {
+    margin-top: 10px;
+}
+
+.price-range-filter .form-group hr {
+    display: inline-block;
+    background-color: rgb(156, 156, 156);
+    width: 10px;
+    vertical-align: middle;
+}
+
+.price-range-filter .btn {
+    background-color: #c69a39;
+    color: white;
+}
+
+
+/* close-box-filter */
+
+.close-box-filter {
+    background-color: #000066;
+    display: block;
+    height: 40px;
+    width: 40px;
+    position: fixed;
+    top: 320px;
+    z-index: 50;
+    border-radius: 50%;
+    color: white;
+    font-size: 26px;
+    text-align: center;
+    line-height: 40px;
+    padding: 0px;
+    box-shadow: 3px 3px 15px rgb(75, 75, 75);
+}

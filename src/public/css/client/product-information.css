@@ -1,0 +1,164 @@
+#product-infor {
+    display: block;
+    /* background-color: aqua; */
+    margin-top: 20px;
+}
+
+#product-infor .name-product {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#product-infor .img-product {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+/* .list-img-product>div {
+    display: block;
+    float: left;
+    height: 50px;
+    width: 50px;
+    background-color: aqua;
+}
+
+.list-img-product>div img {
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+} */
+
+
+/*  */
+
+#product-infor table {
+    width: 100%;
+    border-collapse: inherit;
+}
+
+#product-infor table td {
+    border: 1px solid rgb(110, 110, 110);
+    padding-left: 15px;
+}
+
+#product-infor table tr td:nth-child(1) {
+    width: 100px;
+}
+
+.assess-product td:nth-child(2) {
+    font-size: 12px;
+    color: yellow;
+}
+
+#product-infor .product-price {
+    margin-bottom: 20px;
+}
+
+#product-infor .product-price-sub {
+    display: block;
+    font-size: 28px;
+    color: red;
+    font-weight: 600;
+    margin-top: 20px;
+    background-color: rgb(231, 231, 231);
+    padding: 10px 5px;
+    border-radius: 2px;
+    padding-left: 15px;
+}
+
+.promotion-product {
+    margin-top: 20px;
+    height: 200px;
+    width: 100%;
+    border: 1px solid rgb(110, 110, 110);
+    padding: 15px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.promotion-product::before {
+    content: "Khuyến mãi";
+    display: block;
+    height: 30px;
+    top: -15px;
+    left: 30px;
+    background-color: white;
+    position: absolute;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-radius: 7px;
+    line-height: 30px;
+    border: 1px solid rgb(110, 110, 110);
+    font-weight: 600;
+}
+
+.buy-product {
+    margin: 10px 0px;
+}
+
+.buy-product .col-6 {
+    padding: 0px;
+}
+
+.buy-product .col-6:nth-child(1) {
+    padding-right: 5px;
+}
+
+.buy-product .col-6:nth-child(2) {
+    padding-left: 5px;
+}
+
+.buy-product .col-6 .btn {
+    font-size: 14px;
+    color: white;
+    font-weight: 500;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.buy-product .col-6:nth-child(1) .btn {
+    background-color: blue;
+}
+
+.buy-product .col-6:nth-child(1) .btn i {
+    margin-right: 2px;
+}
+
+.buy-product .col-6:nth-child(2) .btn {
+    background-color: orange;
+}
+
+
+/* related-products */
+
+.related-products>div:nth-child(1) {
+    background-color: #000066;
+    color: white;
+}
+
+.related-products>div:nth-child(2) {
+    background-color: rgb(216, 216, 216);
+    padding: 5px 10px;
+}
+
+.related-products>div:nth-child(2) img {
+    width: 60px;
+}
+
+.product-price-infor {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 10px;
+}
+
+.product-price-infor a img {
+    width: 100%;
+    height: 80px;
+}
+
+.product-price-infor .col span {
+    color: red;
+}

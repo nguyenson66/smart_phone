@@ -1,0 +1,78 @@
+.main-body {
+    padding-top: 15px;
+}
+
+#main-image {
+    padding: 0px;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+}
+
+#product-category .product-item {
+    padding: 1.25rem;
+    text-align: inherit;
+    white-space: normal;
+    border: 5px solid rgb(216, 216, 216);
+}
+
+#product-category .product-item .btn {
+    background-color: orange;
+    color: white;
+    height: 30px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 30px;
+}
+
+#product-category .product-item span {
+    color: red;
+}
+
+#product-category .card-body {
+    padding: 0px;
+}
+
+.some-utilities {
+    padding-top: 10px;
+    padding-right: 0px;
+}
+
+/* .some-utilities .col-lg-12 {
+    padding-right: 0px;
+} */
+
+.utilities-item {
+    display: block;
+    background-color: #c69a39;
+    padding: 2px;
+    border-radius: 30px 0px 0px 30px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.utilities-item i {
+    display: table-cell;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid white;
+    background-color: white;
+    color: #c69a39;
+}
+
+.utilities-item span {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;
+    color: white;
+}
+
+.pagination {
+    margin: 0.5rem;
+    justify-content: center;
+}

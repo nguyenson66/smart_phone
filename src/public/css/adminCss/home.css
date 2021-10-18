@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+.header_bg {
+    background-color: #ffffff;
+    height: 50px;
+}
+
+body {
+    background-color: #eeeeee;
+}
+
+.dropbtn {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 10px;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+} */
+
+.header_bg h5 {
+    text-align: right;
+}
+
+.admin_body {
+    margin-top: 10px;
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+.testimonial-container {
+    color: #000;
+    border-radius: 15px;
+    margin: 20px auto;
+    padding: 50px 80px;
+    max-width: 768px;
+    position: relative;
+}
+
+.fa-quote {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 28px;
+    position: absolute;
+    top: 70px;
+}
+
+.fa-quote-right {
+    left: 40px;
+}
+
+.fa-quote-left {
+    right: 40px;
+}
+
+.testimonial {
+    line-height: 28px;
+    text-align: center;
+}
+
+.progress-bar {
+    background-color: chartreuse;
+    height: 4px;
+    width: 100%;
+    animation: grow 10s linear infinite;
+    transform-origin: left;
+}
+
+@keyframes grow {
+    0% {
+        transform: scaleX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonial-container {
+        padding: 20px 30px;
+    }
+
+    .fa-quote {
+        display: none;
+    }
+}

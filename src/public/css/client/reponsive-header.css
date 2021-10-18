@@ -1,0 +1,61 @@
+@media screen and (max-width: 992px) {
+    .heading-menu {
+        position: fixed;
+        top: 0px;
+        z-index: 10;
+        height: 100%;
+        max-width: 400px;
+        padding: 0px;
+        background-color: white;
+    }
+    #nav-menu .nav-link {
+        color: black;
+    }
+    #nav-menu .nav-item {
+        border-right: none;
+    }
+    #nav-menu .nav-item:hover {
+        background-color: white;
+    }
+    .heading-menu .category-menu {
+        display: block;
+    }
+    .heading-menu .navbar {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    /* .logo-web img {
+        height: 90%;
+        width: 90%;
+    } */
+    .btn-menu {
+        display: block;
+    }
+    .user-infor {
+        display: none;
+    }
+    .car-web {
+        display: block;
+        padding-left: 0px;
+    }
+    .car-web .btn-car {
+        border: none;
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header .heading-sub {
+        max-width: 768px;
+    }
+    .logo-web {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .row {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+@media screen and (max-width: 576px) {}
