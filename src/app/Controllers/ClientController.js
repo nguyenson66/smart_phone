@@ -85,7 +85,19 @@ class ClientController{
 
     //[POST] /register
     async registerPOST(req,res){
-        ////// updating /////
+        const email = req.body.email
+        const phone = req.body.phone
+        const password = req.body.password
+        const name = req.body.name
+        const address = req.body.address
+        const role = 'client'
+
+        const data = await QueryDatabase.getAll(`select count(*) as countuser from users where phone = '${phone}' or email = '${email}'`)
+        
+        if(data[0].countuser == 0){
+            QueryDatabase.register(name,email,phone,password,address,role)
+        }
+        res.redirect('/login')
     }
 
 

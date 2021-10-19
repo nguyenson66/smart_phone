@@ -162,6 +162,21 @@ class QueryDatabase{
             console.dir(err.message)
         }
     }
+
+    async register(name,email,phone,password,address,role){
+        try {
+            await new Promise((resolve,reject) => {
+                const query = `insert into users (name,email, password,phone, address,role) values ('${name}', '${email}','${password}', '${phone}','${address}','${role}')`
+                console.log(query)
+                con.query(query, (err,result) => {
+                    if(err)
+                        console.log(err.message)
+                })
+            })
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 }
 
 module.exports = new QueryDatabase
