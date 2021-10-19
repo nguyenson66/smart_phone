@@ -15,6 +15,10 @@
     margin-bottom: 20px;
 }
 
+.img-product img {
+    width: 100%;
+}
+
 /* .list-img-product>div {
     display: block;
     float: left;
