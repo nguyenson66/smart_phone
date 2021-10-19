@@ -11,9 +11,19 @@ class ClientController{
         
         const data = await QueryDatabase.getItem(page)
 
-        res.render('clientLayouts/home',{
-            items: data
-        })
+        const username = req.cookies.username
+        if(username == undefined){
+            res.render('clientLayouts/home',{
+                items: data
+            })
+        }
+        else{
+            res.render('clientLayouts/home',{
+                items: data,
+                user : username
+            })
+        }
+
     }
 
     //[GET] /login
@@ -24,6 +34,29 @@ class ClientController{
     //[GET] /register
     register(req,res){
         res.render('clientLayouts/register')
+    }
+
+
+    //[GET] /item/:id
+    async showItem(req,res){
+        const id = req.params.id
+        const data = await QueryDatabase.getAll('select name,description,price,quantity,manufacturer from items where id = ' + id)
+        const image_item = await QueryDatabase.getAll('select image from images where item_id = ' + id)
+
+        const username = req.cookies.username
+        if(username == undefined){
+            res.render('clientLayouts/showItem',{
+                item : data[0],
+                image : image_item[0]
+            })
+        }
+        else{
+            res.render('clientLayouts/showItem',{
+                item : data[0],
+                image : image_item,
+                user : username
+            })
+        }
     }
 
     
@@ -52,8 +85,18 @@ class ClientController{
 
     //[POST] /register
     async registerPOST(req,res){
-        res.send('Dang cap nhat')
+        ////// updating /////
     }
+
+
+    //[POST] /logout
+    logouPOST(req,res){
+        res.cookie('user_token','', {maxAge : 0})
+        res.cookie('username','', {maxAge : 0})
+        res.redirect('/home')
+    }
+
+
 }
 
 module.exports = new ClientController

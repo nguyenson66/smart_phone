@@ -18,26 +18,33 @@
             </div>
             <div class="user-infor col-lg-4 row">
                 <div class="col-3">
-                    <a href="#">Thông báo</a>
+                    <a href="#" style="font-size: 15px; color: aqua;">Lịch sử mua hàng</a>
                 </div>
-                <div class="col-3">
-                    <a href="#">Lịch sử mua hàng</a>
+                <div class="col-8" id="form-login-user">
+                    {{#if user}}
+                    <div class="form-inline">
+                        <small style="font-size: 15px; color: aqua;">Hi, {{user}}</small>
+                        <form method="POST" action="/logout">
+                            <button type="submit" class="btn btn-link">
+                                <small style="font-size: 15px; color: aqua;">Thoát</small>
+                            </button>
+                        </form>
+                    </div>
+                    {{else}}
+                    <div class="form inline">
+                        <a href="/login" style="font-size: 15px; color: aqua;">Đăng nhập /</a>
+                        <a href="/register" style="font-size: 15px; color: aqua;"> Đăng ký</a>
+                    </div>
+                    {{/if}}
                 </div>
-                <div class="col-3">
-                    <a href="#">Hỗ trợ</a>
+                <div class="btn-menu col-2">
+                    <button class="btn">
+                        <i class="fas fa-bars"></i>
+                        <span>Menu</span>
+                    </button>
                 </div>
-                <div class="col-3">
-                    <a href="#">Member</a>
-                </div>
-            </div>
-            <div class="btn-menu col-2">
-                <button class="btn">
-                    <i class="fas fa-bars"></i>
-                    <span>Menu</span>
-                </button>
             </div>
         </div>
-    </div>
 </header>
 <div class="container-fluid heading-menu">
     <div class="category-menu">
@@ -152,14 +159,15 @@
     </div>
     <div id="product-category" class="row">
         {{#each items}}
-        <a href="/home">
+        <a href="/item/{{this.id}}">
             <div class="product-item card col-md-3 col-sm-4 col-6 btn ">
                 <img class="card-img-top " src="/images/{{this.image}}" alt="Card image " style="width:100% ">
                 <div class="card-body ">
-                    <h5 class="card-title ">{{this.name}}</h5>
+                    <h5 class="card-title" style="color: black;">{{this.name}}</h5>
                     <span class="product-price">{{this.price}}</span><span> đ</span> <br>
-                    <a href="# " class="btn btn-block stretched-link ">Số Lượng : {{this.quantity}}</a>
-                    <h6 class="card-text ">{{this.description}}</h6>
+                    <a href="#" id="statusItem" class="btn btn-block stretched-link ">Số lượng còn lại :
+                        {{this.quantity}}</a>
+                    <h6 class="card-text" style="text-align: center;">{{this.description}}</h6>
                 </div>
             </div>
         </a>
@@ -205,3 +213,7 @@
 </div>
 <button class="btn close-box-filter"><i class="fas fa-times"></i></button>
 <script src="/js/custom.js "></script>
+
+<script>
+
+</script>

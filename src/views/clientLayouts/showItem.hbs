@@ -1,0 +1,123 @@
+<header class="container-fluid">
+    <div class="heading-sub container">
+        <div class="row">
+            <div class="logo-web col-lg-1 col-3">
+                <a href="/home">
+                    <img src="/image_home/logo_shop.png" alt="">
+                </a>
+            </div>
+            <div class="input-group search-web col-lg-5 col-6">
+                <input type="search" id="form-search" class="form-control" placeholder="Search" />
+                <button type="button" class="btn btn-search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="car-web col-lg-2 col-1">
+                <button class="btn btn-car">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Giỏ hàng</span>
+                </button>
+            </div>
+            <div class="user-infor col-lg-4 row">
+                <div class="col-3">
+                    <a href="#" style="font-size: 15px; color: aqua;">Lịch sử mua hàng</a>
+                </div>
+                <div class="col-8" id="form-login-user">
+                    {{#if user}}
+                    <div class="form-inline">
+                        <small style="font-size: 15px; color: aqua;">Hi, {{user}}</small>
+                        <form method="POST" action="/logout">
+                            <button type="submit" class="btn btn-link">
+                                <small style="font-size: 15px; color: aqua;">Thoát</small>
+                            </button>
+                        </form>
+                    </div>
+                    {{else}}
+                    <div class="form inline">
+                        <a href="/login" style="font-size: 15px; color: aqua;">Đăng nhập /</a>
+                        <a href="/register" style="font-size: 15px; color: aqua;"> Đăng ký</a>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="btn-menu col-2">
+                    <button class="btn">
+                        <i class="fas fa-bars"></i>
+                        <span>Menu</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+</header>
+
+<div class="close-heading-menu"></div>
+<!-- product-information -->
+
+<div id="product-infor" class="container">
+    <div class="name-product">
+        <span>{{item.name}}</span>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col">
+            <img src="/images/{{image.image}}" alt="">
+        </div>
+        <div class="product-price col-lg-5 col-md col-12">
+            <table>
+                <tr class="sold-product">
+                    <td>Đã bán</td>
+                    <td>Ghi số sản phẩm đã bán được</td>
+                </tr>
+                <tr class="assess-product">
+                    <td>
+                        <a href="#">Đánh giá</a>
+                    </td>
+                    <td>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </td>
+                </tr>
+                <tr class="status-product">
+                    <td>Số lượng</td>
+                    <td>{{item.quantity}} chiếc</td>
+                </tr>
+            </table>
+            <div class="product-price-sub">
+                <span>{{item.price}} </span>đ
+            </div>
+
+            <div class="promotion-product">
+                <span>{{item.description}}</span>
+            </div>
+            <button class="btn btn-block" style="background-color: red; margin-top:10px; color: white;">Mua sản
+                phẩm</button>
+        </div>
+        {{!-- <div class="related-products col-lg-3 d-lg-block d-none">
+            <div>Sản phẩm thương tự</div>
+            <div>
+                <div class="product-price-infor row">
+                    <a href="#"><img src="./images/sp1.PNG" alt=""></a>
+                    <div class="col">
+                        <h5>Tên sản phẩm</h5>
+                        <span>100.000</span><span>đ</span> <br>
+                        <a href="#">Xem chi tiết</a>
+                    </div>
+                </div>
+                <div class="product-price-infor row">
+                    <a href="#"><img src="./images/sp1.PNG" alt=""></a>
+                    <div class="col">
+                        <h5>Tên sản phẩm</h5>
+                        <span>100.000</span><span>đ</span> <br>
+                        <a href="#">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
+    </div>
+
+</div>
+
+<!-- footer -->
+<footer class="container-fluid "></footer>
+<script src="/js/custom.js "></script>
