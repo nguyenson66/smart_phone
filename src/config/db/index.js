@@ -187,6 +187,56 @@ class QueryDatabase{
                 console.log(err)
         })
     }
+
+    addHistoryOrderItem(user_id, item_id, quantity, timeOrder){
+        const query = `insert into history_orders (user_id, item_id,quantity, created_at) values (${user_id},${item_id},${quantity},'${timeOrder}')`
+        // console.log(query)
+
+        con.query(query, (err,result) => {
+            if(err)
+                console.log(err)
+        })
+    }
+
+    async getAllOrder(){
+        const query = `select orders.id as id, user_id, item_id, items.name, orders.quantity, date_format(created_at,"%M %d %Y") as created_at
+        from orders, items
+        group by orders.id`
+
+        try {
+            const res = await new Promise((resolve, reject) => {
+
+                con.query(query, (err, result) => {
+                    if(err) console.log(err.message)
+                    else{
+                        resolve(result)
+                    }
+                })
+            })
+            return res
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    deleteOrder(order_id){
+        const query = `delete from orders where id = ${order_id}`
+        con.query(query, (err,result) => {
+            if(err) console.log(err.message)
+        })
+    }
+
+    deleteItem(item_id){
+        let query = `delete from items where id = ${item_id}`
+        con.query(query, (err,result) => {
+            if(err) console.log(err.message)
+        })
+
+        query = `delete from images where item_id = ${item_id}`
+        con.query(query, (err,result) => {
+            if(err) console.log(err.message)
+        })
+    }
 }
 
 module.exports = new QueryDatabase

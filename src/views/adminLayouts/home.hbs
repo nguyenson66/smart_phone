@@ -9,19 +9,142 @@
     </div>
 </header>
 
-<div class="admin_body container">
-    <div class="testimonial-container">
-        <div class="progress-bar"></div>
-        <div class="fas fa-quote-right fa-quote"></div>
-        <div class="fas fa-quote-left fa-quote"></div>
-        <p class="testimonial">
-            Nếu bạn cứ tiếp tục ca thán về cùng một nỗi buồn, cùng một việc nhỏ nhặt, bạn sẽ mãi mãi chìm đắm trong
-            thất
-            bại và sống một cuộc đời nhỏ bé. Hãy luôn nhớ rằng, ngay cả một ngày tồi tệ nhất cũng chỉ có 24 tiếng
-            đồng
-            hồ.
-        </p>
+<div class="admin_body container" style="padding: 30px;">
+    <div class="row">
+        <div class="testimonial-container col-8" style="border: 2px solid red; padding: 20px;">
+            <div class="progress-bar"></div>
+            <div class="fas fa-quote-right fa-quote"></div>
+            <div class="fas fa-quote-left fa-quote"></div>
+            <p class="testimonial">
+                Nếu bạn cứ tiếp tục ca thán về cùng một nỗi buồn, cùng một việc nhỏ nhặt, bạn sẽ mãi mãi chìm đắm trong
+                thất
+                bại và sống một cuộc đời nhỏ bé. Hãy luôn nhớ rằng, ngay cả một ngày tồi tệ nhất cũng chỉ có 24 tiếng
+                đồng
+                hồ.
+            </p>
+        </div>
+
+        <div class="col-4">
+            <h5 style="text-align: left; margin-left: 30px; margin-top: 20px">Xin chào, {{username}}</h5>
+            <h5 style="text-align: left; margin-left: 30px;">Chức vụ : {{role}}</h5>
+            <h6 style="text-align: left; margin-left: 30px;">Số lượng đơn hàng : {{countOrder}}</h6>
+            <h6 style="text-align: left; margin-left: 30px;">Số sản phẩm gần hết hàng : {{sp}}</h6>
+        </div>
+    </div>
+
+    <div class="product-compartment row">
+        <span>Quản lí các đơn hàng</span>
+        <hr class="col ">
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">ID Khách hàng</th>
+                <th scope="col">ID sản phẩm - tên sản phẩm</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thời gian đặt</th>
+                <th scope="col">Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each data_order}}
+            <tr>
+                <th scope="row">1</th>
+                <td>{{this.user_id}}</td>
+                <td>{{this.item_id}} - {{this.name}}</td>
+                <td>{{this.quantity}}</td>
+                <td>{{this.created_at}}</td>
+                <td>
+                    <button type="button" class="btn btn-success" data-whatever="{{this.id}}" data-toggle="modal"
+                        data-target="#delivered">
+                        Đã giao
+                    </button>
+                    <button type="button" class="btn btn-danger" data-whatever="{{this.id}}" data-toggle="modal"
+                        data-target="#cancelOrder">
+                        Huỷ đơn
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal Delivered -->
+<div class="modal fade" id="delivered" tabindex="-1" aria-labelledby="deliveredLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveredLabel">Chú ý</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Sản phẩm đã được giao tới khách hàng ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSubmitOrder" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Modal cancel order -->
+<div class="modal fade" id="cancelOrder" tabindex="-1" aria-labelledby="cancelOrderLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelOrderLabel">Chú ý</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn huỷ đơn hàng này ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="btnCancelOrder">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="POST" name="form-cancel-order"></form>
+
+<script>
+    var order_id
+    var btnCancelOrder = document.getElementById('btnCancelOrder')
+    var btnSubmitOrder = document.getElementById('btnSubmitOrder')
+    var form = document.forms['form-cancel-order']
+
+
+    $('#cancelOrder').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget)
+        order_id = button.data('whatever')
+    })
+
+    $('#delivered').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget)
+        order_id = button.data('whatever')
+    })
+
+    btnSubmitOrder.onclick = () => {
+        form.action = '/admin/delivered/' + order_id
+        form.submit()
+    }
+
+    btnCancelOrder.onclick = () => {
+        form.action = '/admin/deleteOrder/' + order_id
+        form.submit()
+    }
+
+</script>
+
 
 <script src="/js/home_admin.js"></script>

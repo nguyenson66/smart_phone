@@ -13,6 +13,8 @@ router.get('',AdminController.home)
 
 
 router.post('/create', upload.array('images',8), AdminController.addItem_Post)
-
+router.post('/deleteOrder/:id',AdminController.deleteOrder)
+router.post('/delivered/:id', AdminController.delivered)
+router.post('/deleteItem/:id', AdminController.deleteItem)
 
 module.exports = router

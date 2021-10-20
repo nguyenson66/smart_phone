@@ -1,0 +1,113 @@
+<header class="header_bg">
+    <div class="dropdown">
+        <button class="dropbtn">Chức năng</button>
+        <div class="dropdown-content">
+            <a href="/admin">Trang chủ</a>
+            <a href="/admin/items">Quản lí tất cả các sản phẩm</a>
+            <a href="/admin/create">Thêm sản phẩm vào kho</a>
+        </div>
+    </div>
+</header>
+
+<div class="admin_body container" style="padding: 30px;">
+    <div class="row">
+        <div class="testimonial-container col-8" style="border: 2px solid red; padding: 20px;">
+            <div class="progress-bar"></div>
+            <div class="fas fa-quote-right fa-quote"></div>
+            <div class="fas fa-quote-left fa-quote"></div>
+            <p class="testimonial">
+                Nếu bạn cứ tiếp tục ca thán về cùng một nỗi buồn, cùng một việc nhỏ nhặt, bạn sẽ mãi mãi chìm đắm trong
+                thất
+                bại và sống một cuộc đời nhỏ bé. Hãy luôn nhớ rằng, ngay cả một ngày tồi tệ nhất cũng chỉ có 24 tiếng
+                đồng
+                hồ.
+            </p>
+        </div>
+
+        <div class="col-4">
+            <h5 style="text-align: left; margin-left: 30px; margin-top: 20px">Xin chào, {{username}}</h5>
+            <h5 style="text-align: left; margin-left: 30px;">Chức vụ : {{role}}</h5>
+            <h6 style="text-align: left; margin-left: 30px;">Số lượng sản phẩm : {{countItem}}</h6>
+            <h6 style="text-align: left; margin-left: 30px;">Số sản phẩm gần hết hàng : {{sp}}</h6>
+        </div>
+    </div>
+
+    <div class="product-compartment row">
+        <span>Quản lí các đơn hàng</span>
+        <hr class="col ">
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">ID sản phẩm</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Hãng sản phẩm</th>
+                <th scope="col">Mô tả sản phẩm</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Số lượng</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each dataItem}}
+            <tr>
+                <th scope="row">1</th>
+                <td>{{this.id}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.manufacturer}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.quantity}}</td>
+                <td>
+                    <button type="button" class="btn btn-success">Chỉnh sửa</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-whatever="{{this.id}}"
+                        data-target="#deleteItem">Xoá</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteItem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chú ý</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc xoá sản phẩm này đi không ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="btnDeleteItem" class="btn btn-danger">Xoá</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="POST" name="form-delete-item"></form>
+
+<script>
+    var item_id
+    var btnDeleteItem = document.getElementById('btnDeleteItem')
+    var form = document.forms['form-delete-item']
+
+    $('#deleteItem').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        item_id = button.data('whatever')
+    })
+
+    btnDeleteItem.onclick = () => {
+        form.action = '/admin/deleteItem/' + item_id
+        form.submit()
+    }
+</script>
+
+<script src="/js/home_admin.js"></script>

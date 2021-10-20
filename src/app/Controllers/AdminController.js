@@ -50,13 +50,24 @@ class AdminController{
     async home(req,res){
 
         //check if user is client => redirect :/
-        const role = await checkAdmin(req.cookies.user_token)
+        let role = await checkAdmin(req.cookies.user_token)
         if(role == 0)
-            res.redirect('/')
+            res.redirect('/home')
         ////////////////////////////////////////
+        const data_order = await QueryDatabase.getAllOrder()
+        const sp = await QueryDatabase.getAll(`select count(id) as count from items where quantity between 0 and 10`)
+        if(role == 1)
+            role = 'Nhân viên'
+        else
+            role = 'Admin shop'
 
-
-        res.render('adminLayouts/home')
+        res.render('adminLayouts/home',{
+            username : req.cookies.username,
+            data_order : data_order,
+            countOrder : data_order.length,
+            role : role,
+            sp : sp[0].count
+        })
     }
 
     //[GET] /admin/create
@@ -85,14 +96,24 @@ class AdminController{
     //[GET] /admin/items
     async showItem(req,res){
         //check if user is client => redirect :/
-        const role = await checkAdmin(req.cookies.user_token)
+        let role = await checkAdmin(req.cookies.user_token)
         if(role == 0)
             res.redirect('/')
         ////////////////////////////////////////
-
-
+        if(role == 1)
+            role = 'Nhân viên'
+        else
+            role = 'Admin shop'
         const data = await QueryDatabase.getAll('select * from items')
-        res.json(data)
+        const sp = await QueryDatabase.getAll(`select count(id) as count from items where quantity between 0 and 10`)
+
+        res.render('adminLayouts/itemManager',{
+            username : req.cookies.username,
+            role : role,
+            countItem : data.length,
+            dataItem : data,
+            sp : sp[0].count
+        })
     }
 
     //[GET] /admin/users
@@ -149,9 +170,12 @@ class AdminController{
 
     /////////// POST /////////////
     
-    //[POST] /admin/delete/:id
+    //[POST] /admin/deleteItem/:id
     deleteItem(req,res){
-        /// loading... ///
+        const item_id = req.params.id
+
+        QueryDatabase.deleteItem(item_id)
+        res.redirect('/admin/items')
     }
 
 
@@ -175,6 +199,25 @@ class AdminController{
         QueryDatabase.history(idAdmin.id, idItem[0].id, moment().format("YYYY/MM/DD"))
 
         res.redirect('/admin/create')
+    }
+
+    //[POST] /admin/deleteOrder/:id
+    deleteOrder(req,res){
+        const order_id = req.params.id
+        QueryDatabase.deleteOrder(order_id)
+
+        res.redirect('/admin')
+    }
+
+    //[POST] /admin/delivered/:id
+    async delivered(req,res) {
+        const order_id = req.params.id
+        let data = await QueryDatabase.getAll(`select user_id, item_id, quantity from orders where id = ${order_id}`)
+        QueryDatabase.deleteOrder(order_id)
+
+        data = data[0]
+        QueryDatabase.addHistoryOrderItem(data.user_id,data.item_id,data.quantity, moment().format("YYYY/MM/DD"))
+        res.redirect('/admin')
     }
 }
 
