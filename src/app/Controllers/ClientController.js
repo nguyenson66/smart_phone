@@ -1,5 +1,6 @@
 const QueryDatabase = require('../../config/db')
 const jwt = require('jsonwebtoken')
+const moment = require('moment')
 
 class ClientController{
 
@@ -7,7 +8,7 @@ class ClientController{
     async home(req,res){
         let page = 0
         if(req.query.page != undefined)
-            page = req.query.page
+            page = req.query.page-1
         
         const data = await QueryDatabase.getItem(page)
 
@@ -40,7 +41,7 @@ class ClientController{
     //[GET] /item/:id
     async showItem(req,res){
         const id = req.params.id
-        const data = await QueryDatabase.getAll('select name,description,price,quantity,manufacturer from items where id = ' + id)
+        const data = await QueryDatabase.getAll('select id,name,description,price,quantity,manufacturer from items where id = ' + id)
         const image_item = await QueryDatabase.getAll('select image from images where item_id = ' + id)
 
         const username = req.cookies.username
@@ -53,11 +54,35 @@ class ClientController{
         else{
             res.render('clientLayouts/showItem',{
                 item : data[0],
-                image : image_item,
+                image : image_item[0],
                 user : username
             })
         }
     }
+
+    //[GET] /order
+    async order(req,res){
+        const user_token = req.cookies.user_token
+        if(user_token == undefined)
+            res.redirect('/login')
+        else{
+            const data_user = jwt.verify(user_token,'sositech')
+            const user_id = data_user.id
+
+            const data_order = await QueryDatabase.getAll(`select items.id as item_id, items.name as item_name, image, orders.quantity as quantity from orders,items,images 
+            where orders.user_id = ${user_id} and images.item_id = orders.item_id and items.id = orders.item_id
+            group by items.name`)
+
+            res.render('clientLayouts/order',{
+                user : data_user.name,
+                order : data_order
+            })
+        }
+        
+    }
+
+
+
 
     
     ////////// POST ///////////////
@@ -74,9 +99,9 @@ class ClientController{
                 id : result[0].id,
                 name : result[0].name
             }, 'sositech', { expiresIn: '2h' })
-
-            res.cookie('user_token', token, { expiresIn: '2h' })
-            res.cookie('username',result[0].name, { expiresIn: '2h' })
+            
+            res.cookie('user_token', token, { expires: new Date(Date.now() + 7200000) })
+            res.cookie('username',result[0].name, { expires: new Date(Date.now() + 7200000) })
 
             res.redirect('/home')
         }
@@ -108,7 +133,28 @@ class ClientController{
         res.redirect('/home')
     }
 
+    //[POST] /order/:id
+    orderItemPOST(req,res){
+        const user_token = req.cookies.user_token
+        if(user_token == undefined)
+            res.redirect('/login')
+        else{
+            const data_user = jwt.verify(user_token,'sositech')
+            const user_id = data_user.id
+            const item_id = req.params.id
 
+
+            req.body.quantity = 1
+            //////
+            const quantity = req.body.quantity
+
+            QueryDatabase.orderItem(user_id,item_id,quantity,moment().format("YYYY/MM/DD"))
+
+            res.redirect('/order')
+        }
+    }
+
+    
 }
 
 module.exports = new ClientController

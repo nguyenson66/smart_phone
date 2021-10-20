@@ -1,0 +1,76 @@
+<header class="container-fluid">
+    <div class="heading-sub container">
+        <div class="row">
+            <div class="logo-web col-lg-1 col-3">
+                <a href="/home">
+                    <img src="/image_home/logo_shop.png" alt="">
+                </a>
+            </div>
+            <div class="input-group search-web col-lg-5 col-6">
+                <input type="search" id="form-search" class="form-control" placeholder="Search" />
+                <button type="button" class="btn btn-search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="car-web col-lg-2 col-1">
+                <a href="/order">
+                    <button class="btn btn-car">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Giỏ hàng</span>
+                    </button>
+                </a>
+            </div>
+            <div class="user-infor col-lg-4 row">
+                <div class="col-3">
+                    <a href="#" style="font-size: 15px; color: aqua;">Lịch sử mua hàng</a>
+                </div>
+                <div class="col-8" id="form-login-user">
+                    {{#if user}}
+                    <div class="form-inline">
+                        <small style="font-size: 15px; color: aqua;">Hi, {{user}}</small>
+                        <form method="POST" action="/logout">
+                            <button type="submit" class="btn btn-link">
+                                <small style="font-size: 15px; color: aqua;">Thoát</small>
+                            </button>
+                        </form>
+                    </div>
+                    {{else}}
+                    <div class="form inline">
+                        <a href="/login" style="font-size: 15px; color: aqua;">Đăng nhập /</a>
+                        <a href="/register" style="font-size: 15px; color: aqua;"> Đăng ký</a>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="btn-menu col-2">
+                    <button class="btn">
+                        <i class="fas fa-bars"></i>
+                        <span>Menu</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+</header>
+
+<body>
+    <div class="container">
+        <div class="product-compartment row">
+            <span>Sản phẩm bạn đặt mua</span>
+            <hr class="col ">
+        </div>
+
+        <div style="background-color: white;">
+            {{#each order}}
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <img src="/images/{{this.image}}">
+                </div>
+                <div class="col-lg-4">
+
+                </div>
+            </div>
+
+            {{/each}}
+        </div>
+    </div>
+</body>

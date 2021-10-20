@@ -5,16 +5,20 @@
                 <img src="/image_home/logo_shop.png" alt="">
             </div>
             <div class="input-group search-web col-lg-5 col-6">
-                <input type="search" id="form-search" class="form-control" placeholder="Search" />
-                <button type="button" class="btn btn-search">
-                    <i class="fas fa-search"></i>
-                </button>
+                <input type="search" id="form-search" class="form-control" name="q" placeholder="Search" />
+                <a href="/search">
+                    <button type="submit" class="btn btn-search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </a>
             </div>
             <div class="car-web col-lg-2 col-1">
-                <button class="btn btn-car">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Giỏ hàng</span>
-                </button>
+                <a href="/order">
+                    <button class="btn btn-car">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Giỏ hàng</span>
+                    </button>
+                </a>
             </div>
             <div class="user-infor col-lg-4 row">
                 <div class="col-3">
@@ -53,31 +57,25 @@
     <nav class="container navbar navbar-expand-lg">
         <ul class="navbar-nav" id="nav-menu">
             <li class="nav-item">
-                <a class="nav-link" href="#">SAM SUNG</a>
+                <a class="nav-link" href="//search?manufacturer=iphone">IPHONE</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">NOKIA</a>
+                <a class="nav-link" href="/search?manufacturer=samsung">SAM SUNG</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">XAOMI</a>
+                <a class="nav-link" href="/search?manufacturer=nokia">NOKIA</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">OPPO</a>
+                <a class="nav-link" href="/search?manufacturer=xiaomi">XAOMI</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">VIVO</a>
+                <a class="nav-link" href="/search?manufacturer=oppo">OPPO</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">APPLE</a>
+                <a class="nav-link" href="/search?manufacturer=realme">REALME</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">VSMART</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">ONEPLUS</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">REALME</a>
+                <a class="nav-link" href="/search?manufacturer=sony">SONY</a>
             </li>
         </ul>
     </nav>
@@ -165,7 +163,7 @@
                 <div class="card-body ">
                     <h5 class="card-title" style="color: black;">{{this.name}}</h5>
                     <span class="product-price">{{this.price}}</span><span> đ</span> <br>
-                    <a href="#" id="statusItem" class="btn btn-block stretched-link ">Số lượng còn lại :
+                    <a href="/item/{{this.id}}" id="statusItem" class="btn btn-block stretched-link ">Số lượng còn lại :
                         {{this.quantity}}</a>
                     <h6 class="card-text" style="text-align: center;">{{this.description}}</h6>
                 </div>
@@ -177,10 +175,10 @@
 
 <nav aria-label="...">
     <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="/home?page=0">1</a></li>
-        <li class="page-item"><a class="page-link" href="/home?page=1">2</a></li>
-        <li class="page-item"><a class="page-link" href="/home?page=2">3</a></li>
-        <li class="page-item"><a class="page-link" href="/home?page=3">4</a></li>
+        <li class="page-item"><a class="page-link" href="/home?page=1">1</a></li>
+        <li class="page-item"><a class="page-link" href="/home?page=2">2</a></li>
+        <li class="page-item"><a class="page-link" href="/home?page=3">3</a></li>
+        <li class="page-item"><a class="page-link" href="/home?page=4">4</a></li>
     </ul>
 </nav>
 

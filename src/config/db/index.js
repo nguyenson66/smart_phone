@@ -177,6 +177,16 @@ class QueryDatabase{
             console.log(error.message)
         }
     }
+
+    orderItem(user_id, item_id, quantity, timeOrder){
+        const query = `insert into orders (user_id, item_id,quantity, created_at) values (${user_id},${item_id},${quantity},'${timeOrder}')`
+        // console.log(query)
+
+        con.query(query, (err,result) => {
+            if(err)
+                console.log(err)
+        })
+    }
 }
 
 module.exports = new QueryDatabase
