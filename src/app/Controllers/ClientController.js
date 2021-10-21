@@ -69,9 +69,11 @@ class ClientController{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
 
-            const data_order = await QueryDatabase.getAll(`select items.id as item_id, items.name as item_name, image, orders.quantity as quantity from orders,items,images 
+            const data_order = await QueryDatabase.getAll(`select orders.id ,items.id as item_id, items.name as item_name,items.price ,image, orders.quantity as quantity from orders,items,images 
             where orders.user_id = ${user_id} and images.item_id = orders.item_id and items.id = orders.item_id
             group by items.name`)
+
+            // console.log(data_order)
 
             res.render('clientLayouts/order',{
                 user : data_user.name,
@@ -82,6 +84,26 @@ class ClientController{
     }
 
 
+    async historyOrder(req,res){
+        const user_token = req.cookies.user_token
+        if(user_token == undefined)
+            res.redirect('/login')
+        else{
+            const data_user = jwt.verify(user_token,'sositech')
+            const user_id = data_user.id
+
+            const data_order = await QueryDatabase.getAll(`select items.id as item_id, items.name as item_name,items.price ,image, history_orders.quantity as quantity from history_orders,items,images 
+            where history_orders.user_id = ${user_id} and images.item_id = history_orders.item_id and items.id = history_orders.item_id
+            group by items.name`)
+
+            // console.log(data_order)
+
+            res.render('clientLayouts/historyOrder',{
+                user : data_user.name,
+                order : data_order
+            })
+        }      
+    }
 
 
     

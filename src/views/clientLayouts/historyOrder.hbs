@@ -54,7 +54,7 @@
 <body>
     <div class="container">
         <div class="product-compartment row">
-            <span>Sản phẩm bạn đặt mua</span>
+            <span>Sản phẩm bạn đã mua</span>
             <hr class="col ">
         </div>
 
@@ -77,13 +77,7 @@
                         <div class="col">
                             <h6 style="color: black;">Tổng tiền :</h6>
                             <span>{{this.price}}</span><span>đ</span> <br>
-                            <h6 style="color: black;">Tình trạng : Đang giao hàng</h6>
-                        </div>
-                        <div class="col" style="text-align: right;">
-                            <button type="button" class="btn btn-danger" data-whatever="{{this.id}}" data-toggle="modal"
-                                data-target="#cancelOrder">
-                                Huỷ đơn
-                            </button>
+                            <h6 style="color: black;">Tình trạng : Đã giao hàng</h6>
                         </div>
                     </div>
                     <hr>
@@ -94,48 +88,4 @@
         </div>
     </div>
 
-    <!-- Modal cancel order -->
-    <div class="modal fade" id="cancelOrder" tabindex="-1" aria-labelledby="cancelOrderLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cancelOrderLabel">Chú ý</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc muốn huỷ đơn hàng này ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" id="btnCancelOrder">Yes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </body>
-
-
-
-
-<form method="POST" name="form-cancel-order"></form>
-
-<script>
-    var order_id
-    var btnCancelOrder = document.getElementById('btnCancelOrder')
-    var form = document.forms['form-cancel-order']
-
-
-    $('#cancelOrder').on('show.bs.modal', function (event) {
-        const button = $(event.relatedTarget)
-        order_id = button.data('whatever')
-    })
-
-    btnCancelOrder.onclick = () => {
-        form.action = '/admin/deleteOrder/' + order_id
-        form.submit()
-    }
-
-</script>

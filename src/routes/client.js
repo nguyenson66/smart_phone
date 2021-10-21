@@ -8,6 +8,7 @@ router.get('/home',ClientController.home)
 router.get('/item/:id',ClientController.showItem)
 router.get('/order',ClientController.order)
 router.get('',ClientController.home)
+router.get('/historyOrder', ClientController.historyOrder)
 
 
 router.post('/register', ClientController.registerPOST)

@@ -206,7 +206,7 @@ class AdminController{
         const order_id = req.params.id
         QueryDatabase.deleteOrder(order_id)
 
-        res.redirect('/admin')
+        res.redirect('back')
     }
 
     //[POST] /admin/delivered/:id

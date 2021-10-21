@@ -199,8 +199,9 @@ class QueryDatabase{
     }
 
     async getAllOrder(){
-        const query = `select orders.id as id, user_id, item_id, items.name, orders.quantity, date_format(created_at,"%M %d %Y") as created_at
-        from orders, items
+        const query = `select orders.id as id, user_id, item_id, 
+        ( select name from items where items.id = item_id) as name , orders.quantity, date_format(created_at,"%M %d %Y") as created_at
+        from orders
         group by orders.id`
 
         try {
