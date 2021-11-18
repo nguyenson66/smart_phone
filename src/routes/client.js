@@ -9,6 +9,7 @@ router.get('/item/:id',ClientController.showItem)
 router.get('/order',ClientController.order)
 router.get('',ClientController.home)
 router.get('/historyOrder', ClientController.historyOrder)
+router.get('/search', ClientController.searchItem)
 
 
 router.post('/register', ClientController.registerPOST)

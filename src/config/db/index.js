@@ -238,6 +238,27 @@ class QueryDatabase{
             if(err) console.log(err.message)
         })
     }
+
+    async searchItem(text){
+        const query = `
+            alter table items add fulltext(name);
+            select * from items where match(name) against('${text}')
+        `
+
+        try{
+            const res = new Promise((resolve, reject) => {
+                con.query(query, (err, result) =>{
+                    if(err) console.dir(err.message)
+                    else{
+                        resolve(result)
+                    }
+                })
+            })
+            return res
+        }catch(error){
+            console.dir(error.message)
+        }
+    }
 }
 
 module.exports = new QueryDatabase

@@ -183,7 +183,7 @@ class AdminController{
     async addItem_Post(req,res){
 
         const idItem = await QueryDatabase.addItem(req.body)
-        const idAdmin = getIDAdmin(req.cookies.user_token)
+        // const idAdmin = getIDAdmin(req.cookies.user_token)
 
         /// add images
         for(let i=0;i<req.files.length;i++){
@@ -196,7 +196,7 @@ class AdminController{
             const kq = await QueryDatabase.addImage(idItem[0].id,filename)
         }
 
-        QueryDatabase.history(idAdmin.id, idItem[0].id, moment().format("YYYY/MM/DD"))
+        // QueryDatabase.history(idAdmin.id, idItem[0].id, moment().format("YYYY/MM/DD"))
 
         res.redirect('/admin/create')
     }

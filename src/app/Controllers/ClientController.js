@@ -83,7 +83,7 @@ class ClientController{
         
     }
 
-
+    //[GET] /historyOrder
     async historyOrder(req,res){
         const user_token = req.cookies.user_token
         if(user_token == undefined)
@@ -103,6 +103,12 @@ class ClientController{
                 order : data_order
             })
         }      
+    }
+
+    //[GET] /search
+    async searchItem(req,res){
+        console.log(req.query)
+        res.redirect('back')
     }
 
 
@@ -176,7 +182,6 @@ class ClientController{
         }
     }
 
-    
 }
 
 module.exports = new ClientController

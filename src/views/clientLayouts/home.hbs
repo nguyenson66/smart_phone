@@ -2,15 +2,19 @@
     <div class="heading-sub container">
         <div class="row">
             <div class="logo-web col-lg-1 col-3">
-                <img src="/image_home/logo_shop.png" alt="">
-            </div>
-            <div class="input-group search-web col-lg-5 col-6">
-                <input type="search" id="form-search" class="form-control" name="q" placeholder="Search" />
-                <a href="/search">
-                    <button type="submit" class="btn btn-search">
-                        <i class="fas fa-search"></i>
-                    </button>
+                <a href="/home">
+                    <img src="/image_home/logo_shop.png" alt="logo">
                 </a>
+            </div>
+            <div class="col-lg-5 col-6">
+                <form class="input-group search-web" action="/search">
+                    <div class="input-group search-web">
+                        <input type="search" id="form-search" class="form-control" name="q" placeholder="Search" />
+                        <button type="submit" class="btn btn-search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
             <div class="car-web col-lg-2 col-1">
                 <a href="/order">
@@ -163,7 +167,8 @@
                 <div class="card-body ">
                     <h5 class="card-title" style="color: black;">{{this.name}}</h5>
                     <span class="product-price">{{this.price}}</span><span> đ</span> <br>
-                    <a href="/item/{{this.id}}" id="statusItem" class="btn btn-block stretched-link ">Số lượng còn lại :
+                    <a href="/item/{{this.id}}" id="statusItem" class="btn btn-block stretched-link ">Số lượng
+                        còn lại :
                         {{this.quantity}}</a>
                     <h6 class="card-text" style="text-align: center;">{{this.description}}</h6>
                 </div>
