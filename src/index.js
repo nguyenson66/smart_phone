@@ -16,6 +16,10 @@ app.engine('hbs',exphb({extname : '.hbs'}))
 app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname + '/views'))
 
+// set view engine Pug
+// app.set('view engine', 'pug')
+// app.set('views',path.join(__dirname+'/views'))
+
 
 ////// All routes web ////////
 routes(app)

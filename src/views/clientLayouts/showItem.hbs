@@ -61,15 +61,31 @@
     </div>
     <div class="row">
         <div class="img-product col-md-4 col">
-            <img src="/images/{{image.image}}" alt="">
-            <div class="list-img-product">
-                <!-- <div><img src="./images/sp1.1.PNG" alt=""></div>
-                    <div><img src="./images/sp1.PNG" alt=""></div>
-                    <div><img src="./images/sp1.PNG" alt=""></div>
-                    <div><img src="./images/sp1.PNG" alt=""></div> -->
+            <div class="main">
+                <span class="control prev">
+                    <i class="bx bx-chevron-left"></i>
+                </span>
+                <span class="control next">
+                    <i class="bx bx-chevron-right"></i>
+                </span>
+                <div class="img-wrap">
+                    <img src="/images" alt="" />
+                </div>
+            </div>
+            <div class="list-img">
+                {{#each image}}
+                <div>
+                    <img src="/images/{{this.image}}" alt="" />
+                </div>
+                {{/each}}
+                {{#each image}}
+                <div>
+                    <img src="/images/{{this.image}}" alt="" />
+                </div>
+                {{/each}}
             </div>
         </div>
-        <div class="product-price col-lg-5 col-md col-12">
+        <div class="product-price col-lg-7 col-md col-12">
             <table>
                 <tr class="sold-product">
                     <td>Đã bán</td>
@@ -105,7 +121,8 @@
                 </span>
             </div>
             <form action="/order/{{item.id}}" method="POST">
-                <button class="btn btn-block" style="background-color: #ff3333; margin-top: 20px">
+                <button class="btn btn-block"
+                    style="background-color: #ff3333; margin-top: 20px; width: 300px; margin:50px 0px 0px 150px;">
                     <i class="fas fa-shopping-cart"></i>
                     Mua hàng
                 </button>
@@ -209,6 +226,52 @@
 
 </div>
 
+<script>
+    let listDivImg = document.querySelectorAll('.list-img div')
+    let next = document.querySelector('.next')
+    let prev = document.querySelector('.prev')
+    let imgWrap = document.querySelector('.img-wrap img')
+
+    let currentIndex = 0
+
+    setCurrent(currentIndex)
+
+    function setCurrent(index) {
+        currentIndex = index
+        imgWrap.src = listDivImg[currentIndex].querySelector('img').src
+
+        // remove all active img
+        listDivImg.forEach((item) => {
+            item.classList.remove('active')
+        })
+
+        // set active
+        listDivImg[currentIndex].classList.add('active')
+    }
+
+    listDivImg.forEach((img, index) => {
+        img.addEventListener('click', (e) => {
+            setCurrent(index)
+        })
+    })
+
+    next.addEventListener('click', () => {
+        if (currentIndex == listDivImg.length - 1) {
+            currentIndex = 0
+        } else currentIndex++
+
+        setCurrent(currentIndex)
+    })
+
+    prev.addEventListener('click', () => {
+        if (currentIndex == 0) currentIndex = listDivImg.length - 1
+        else currentIndex--
+
+        setCurrent(currentIndex)
+    })
+
+</script>
+
 <!-- footer -->
-<footer class="container-fluid "></footer>
+<footer style="margin-top: 100px;" class="container-fluid "></footer>
 <script src="/js/custom.js "></script>

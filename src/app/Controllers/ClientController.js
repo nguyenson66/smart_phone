@@ -41,20 +41,22 @@ class ClientController{
     //[GET] /item/:id
     async showItem(req,res){
         const id = req.params.id
-        const data = await QueryDatabase.getAll('select id,name,description,price,quantity,manufacturer from items where id = ' + id)
-        const image_item = await QueryDatabase.getAll('select image from images where item_id = ' + id)
+        const data = await QueryDatabase.getAll('select id,name,description,price,quantity,manufacturer from products where id = ' + id)
+        const image_item = await QueryDatabase.getAll('select image from images where product_id = ' + id)
+
+        // console.log(image_item[0].image)
 
         const username = req.cookies.username
         if(username == undefined){
             res.render('clientLayouts/showItem',{
                 item : data[0],
-                image : image_item[0]
+                image : image_item
             })
         }
         else{
             res.render('clientLayouts/showItem',{
                 item : data[0],
-                image : image_item[0],
+                image : image_item,
                 user : username
             })
         }
@@ -69,9 +71,9 @@ class ClientController{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
 
-            const data_order = await QueryDatabase.getAll(`select orders.id ,items.id as item_id, items.name as item_name,items.price ,image, orders.quantity as quantity from orders,items,images 
-            where orders.user_id = ${user_id} and images.item_id = orders.item_id and items.id = orders.item_id
-            group by items.name`)
+            const data_order = await QueryDatabase.getAll(`select orders.id ,products.id as product_id, products.name as product_name,products.price ,image, orders.quantity as quantity from orders,products,images 
+            where orders.user_id = ${user_id} and images.product_id = orders.product_id and products.id = orders.product_id and status = 0
+            group by products.name`)
 
             // console.log(data_order)
 
@@ -92,9 +94,9 @@ class ClientController{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
 
-            const data_order = await QueryDatabase.getAll(`select items.id as item_id, items.name as item_name,items.price ,image, history_orders.quantity as quantity from history_orders,items,images 
-            where history_orders.user_id = ${user_id} and images.item_id = history_orders.item_id and items.id = history_orders.item_id
-            group by items.name`)
+            const data_order = await QueryDatabase.getAll(`select orders.id ,products.id as product_id, products.name as product_name,products.price ,image, orders.quantity as quantity from orders,products,images 
+            where orders.user_id = ${user_id} and images.product_id = orders.product_id and products.id = orders.product_id and status = 1
+            group by products.name`)
 
             // console.log(data_order)
 
@@ -107,8 +109,25 @@ class ClientController{
 
     //[GET] /search
     async searchItem(req,res){
-        console.log(req.query)
-        res.redirect('back')
+        let key_search = req.query.q
+        if(key_search === undefined)
+            key_search = req.query.manufacturer
+
+        const data = await QueryDatabase.searchItem(key_search)
+        const username = req.cookies.username
+        if(username == undefined){
+            res.render('clientLayouts/search',{
+                key_search : key_search,
+                items: data
+            })
+        }
+        else{
+            res.render('clientLayouts/search',{
+                key_search : key_search,
+                items: data,
+                user : username
+            })
+        }
     }
 
 
@@ -128,7 +147,7 @@ class ClientController{
                 name : result[0].name
             }, 'sositech', { expiresIn: '2h' })
             
-            res.cookie('user_token', token, { expires: new Date(Date.now() + 7200000) })
+            res.cookie('user_token', token, { expires: new Date(Date.now() + 7200000)})
             res.cookie('username',result[0].name, { expires: new Date(Date.now() + 7200000) })
 
             res.redirect('/home')
@@ -176,8 +195,8 @@ class ClientController{
             //////
             const quantity = req.body.quantity
 
-            QueryDatabase.orderItem(user_id,item_id,quantity,moment().format("YYYY/MM/DD"))
-
+            QueryDatabase.orderItem(user_id,item_id,quantity,moment().format("LLL"))
+        
             res.redirect('/order')
         }
     }

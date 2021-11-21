@@ -55,7 +55,7 @@ class AdminController{
             res.redirect('/home')
         ////////////////////////////////////////
         const data_order = await QueryDatabase.getAllOrder()
-        const sp = await QueryDatabase.getAll(`select count(id) as count from items where quantity between 0 and 10`)
+        const sp = await QueryDatabase.getAll(`select count(id) as count from products where quantity between 0 and 10`)
         if(role == 1)
             role = 'Nhân viên'
         else
@@ -104,8 +104,8 @@ class AdminController{
             role = 'Nhân viên'
         else
             role = 'Admin shop'
-        const data = await QueryDatabase.getAll('select * from items')
-        const sp = await QueryDatabase.getAll(`select count(id) as count from items where quantity between 0 and 10`)
+        const data = await QueryDatabase.getAll('select * from products')
+        const sp = await QueryDatabase.getAll(`select count(id) as count from products where quantity between 0 and 10`)
 
         res.render('adminLayouts/itemManager',{
             username : req.cookies.username,
@@ -137,7 +137,7 @@ class AdminController{
             res.redirect('/')
         ////////////////////////////////////////
 
-        const data = await QueryDatabase.getAll('select user_id, item_id, quantity from orders')
+        const data = await QueryDatabase.getAll('select user_id, product_id, quantity from orders')
         res.json(data)
     }
 
@@ -185,6 +185,8 @@ class AdminController{
         const idItem = await QueryDatabase.addItem(req.body)
         // const idAdmin = getIDAdmin(req.cookies.user_token)
 
+        // console.log(idItem[0].id)
+
         /// add images
         for(let i=0;i<req.files.length;i++){
             const tempPath = req.files[i].path
@@ -195,8 +197,6 @@ class AdminController{
             })
             const kq = await QueryDatabase.addImage(idItem[0].id,filename)
         }
-
-        // QueryDatabase.history(idAdmin.id, idItem[0].id, moment().format("YYYY/MM/DD"))
 
         res.redirect('/admin/create')
     }
@@ -212,11 +212,7 @@ class AdminController{
     //[POST] /admin/delivered/:id
     async delivered(req,res) {
         const order_id = req.params.id
-        let data = await QueryDatabase.getAll(`select user_id, item_id, quantity from orders where id = ${order_id}`)
-        QueryDatabase.deleteOrder(order_id)
-
-        data = data[0]
-        QueryDatabase.addHistoryOrderItem(data.user_id,data.item_id,data.quantity, moment().format("YYYY/MM/DD"))
+        QueryDatabase.addHistoryOrderItem(order_id, moment().format("LLL"))
         res.redirect('/admin')
     }
 }

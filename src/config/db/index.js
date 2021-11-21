@@ -16,7 +16,7 @@ class QueryDatabase{
 
     /// get item by page
     async getItem(page){
-        const query = 'select id, name ,price,quantity,manufacturer,description,image from items,images where images.item_id = items.id group by id limit 20 offset ' + page*20
+        const query = 'select id, name ,price,quantity,manufacturer,description,image from products,images where images.product_id = products.id group by id limit 20 offset ' + page*20
         try {
             const res = await new Promise((resolve, reject) => {
                 con.query(query, function(err,result) {
@@ -91,12 +91,13 @@ class QueryDatabase{
 
         try {
             const res = await new Promise((resolve, reject) => {
-                const query = `insert into items (name, description, price, quantity, manufacturer) values( '${name}', '${description}', '${price}', '${quantity}', '${manufacturer}')`
+                const query = `insert into products (name, description, price, quantity, manufacturer) values( '${name}', '${description}', '${price}', '${quantity}', '${manufacturer}')`
                 // console.log(query)
                 con.query(query, (err,result) => {
                     if(err) console.dir(err.message)
                     else{
                         con.query("SELECT LAST_INSERT_ID() as id;", (err,result) => {
+                            // console.log("last id : " + result)
                             if(err) console.dir(err.message)
                             else{
                                 resolve(result)
@@ -115,8 +116,8 @@ class QueryDatabase{
     async addImage(id, filename){
         try {
             const res = await new Promise((resolve, reject) => {
-                const query = `insert into images (item_id, image) values (${id}, '${filename}')`
-                // console.log(query)
+                const query = `insert into images values (${id}, '${filename}')`
+                console.log(query)
                 con.query(query, (err, result) => {
                     if(err){ 
                         console.dir(err.message)
@@ -149,20 +150,6 @@ class QueryDatabase{
     }
 
 
-    async history(adminId, itemId, time){
-        try {
-            await new Promise((resolve,reject) => {
-                const query = `insert into import_management (admin_id, item_id, created_at) values (${adminId}, ${itemId}, '${time}')`
-                // console.log(query)
-                con.query(query, (err,result) => {
-                    if(err) console.dir(err.message)
-                })
-            })
-        } catch (error) {
-            console.dir(err.message)
-        }
-    }
-
     async register(name,email,phone,password,address,role){
         try {
             await new Promise((resolve,reject) => {
@@ -178,8 +165,8 @@ class QueryDatabase{
         }
     }
 
-    orderItem(user_id, item_id, quantity, timeOrder){
-        const query = `insert into orders (user_id, item_id,quantity, created_at) values (${user_id},${item_id},${quantity},'${timeOrder}')`
+    orderItem(user_id, product_id, quantity, timeOrder){
+        const query = `insert into orders (user_id, product_id,quantity, status, created_at) values (${user_id},${product_id},${quantity},0,'${timeOrder}')`
         // console.log(query)
 
         con.query(query, (err,result) => {
@@ -188,20 +175,28 @@ class QueryDatabase{
         })
     }
 
-    addHistoryOrderItem(user_id, item_id, quantity, timeOrder){
-        const query = `insert into history_orders (user_id, item_id,quantity, created_at) values (${user_id},${item_id},${quantity},'${timeOrder}')`
-        // console.log(query)
+    addHistoryOrderItem(order_id, timeOrder){
+        const query = `update orders set status = 1, created_at = "${timeOrder}" where id = ${order_id}`
+        console.log(query)
 
         con.query(query, (err,result) => {
             if(err)
                 console.log(err)
+        })
+    }
+
+    deleteOrder(id){
+        const query = `delete from orders where id = ${id}`
+        con.query(query, (err, result) => {
+            if(err) console.log(err.message)
         })
     }
 
     async getAllOrder(){
-        const query = `select orders.id as id, user_id, item_id, 
-        ( select name from items where items.id = item_id) as name , orders.quantity, date_format(created_at,"%M %d %Y") as created_at
+        const query = `select orders.id as id, user_id, product_id, 
+        ( select name from products where products.id = product_id) as name , orders.quantity, created_at
         from orders
+        where status = 0
         group by orders.id`
 
         try {
@@ -220,30 +215,23 @@ class QueryDatabase{
         }
     }
 
-    deleteOrder(order_id){
-        const query = `delete from orders where id = ${order_id}`
-        con.query(query, (err,result) => {
-            if(err) console.log(err.message)
-        })
-    }
-
-    deleteItem(item_id){
-        let query = `delete from items where id = ${item_id}`
+    deleteItem(product_id){
+        let query = `delete from images where product_id = ${product_id}`
+        // console.log(query)
         con.query(query, (err,result) => {
             if(err) console.log(err.message)
         })
 
-        query = `delete from images where item_id = ${item_id}`
+        query = `delete from products where id = ${product_id}`
+        // console.log(query)
         con.query(query, (err,result) => {
             if(err) console.log(err.message)
         })
     }
 
     async searchItem(text){
-        const query = `
-            alter table items add fulltext(name);
-            select * from items where match(name) against('${text}')
-        `
+        const query = `select id, name ,price,quantity,manufacturer,description,image from products,images 
+        where match(name) against('${text}') and images.product_id = products.id group by id`
 
         try{
             const res = new Promise((resolve, reject) => {
