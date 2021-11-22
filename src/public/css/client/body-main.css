@@ -31,8 +31,16 @@
     color: red;
 }
 
+#product-category .item-img {
+    height: 200px;
+}
+
 #product-category .card-body {
     padding: 0px;
+}
+
+#product-category .card-title {
+    height: 40px;
 }
 
 .some-utilities {

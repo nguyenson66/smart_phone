@@ -163,7 +163,9 @@
         {{#each items}}
         <a href="/item/{{this.id}}">
             <div class="product-item card col-md-3 col-sm-4 col-6 btn ">
-                <img class="card-img-top " src="/images/{{this.image}}" alt="Card image " style="width:100% ">
+                <div class="item-img">
+                    <img class="card-img-top " src="/images/{{this.image}}" alt="Card image " style="width:100% ">
+                </div>
                 <div class="card-body ">
                     <h5 class="card-title" style="color: black;">{{this.name}}</h5>
                     <span class="product-price">{{vnd this.price}}</span><span> đ</span> <br>
