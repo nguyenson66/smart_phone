@@ -65,18 +65,18 @@
                     {{#each order}}
                     <div class="product-price-infor row"
                         style="background-color: white; margin-left: 15px; margin-top: 10px;">
-                        <a href="/item/{{this.item_id}}"><img style="width: 80px;" src="/images/{{this.image}}"
+                        <a href="/item/{{this.product_id}}"><img style="width: 80px;" src="/images/{{this.image}}"
                                 alt=""></a>
                         <div class="col">
-                            <a href="/item/{{this.item_id}}">
-                                <h5 style="color: black;">{{this.item_name}}</h5>
+                            <a href="/item/{{this.product_id}}">
+                                <h5 style="color: black;">{{this.product_name}}</h5>
                             </a>
-                            <span>Giá : {{this.price}}</span><span>đ</span> <br>
+                            <h6 style="color: black;">Giá : <span>{{vnd this.price}}</span><span>đ</span></h6>
                             <p style="color: black; text-align: left;">Số lượng : {{this.quantity}} chiếc </p>
                         </div>
                         <div class="col">
-                            <h6 style="color: black;">Tổng tiền :</h6>
-                            <span>{{this.price}}</span><span>đ</span> <br>
+                            <h6 style="color: black;">Tổng tiền : <span>{{mul this.quantity
+                                    this.price}}</span><span>đ</span></h6>
                             <h6 style="color: black;">Tình trạng : Đang giao hàng</h6>
                         </div>
                         <div class="col" style="text-align: right;">

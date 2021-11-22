@@ -166,7 +166,7 @@
                 <img class="card-img-top " src="/images/{{this.image}}" alt="Card image " style="width:100% ">
                 <div class="card-body ">
                     <h5 class="card-title" style="color: black;">{{this.name}}</h5>
-                    <span class="product-price">{{this.price}}</span><span> đ</span> <br>
+                    <span class="product-price">{{vnd this.price}}</span><span> đ</span> <br>
                     <a href="/item/{{this.id}}" id="statusItem" class="btn btn-block stretched-link ">Số lượng
                         còn lại :
                         {{this.quantity}}</a>
@@ -205,5 +205,8 @@
 <script src="/js/custom.js "></script>
 
 <script>
+
+    const username = `{{ user }}`
+    console.log(username)
 
 </script>

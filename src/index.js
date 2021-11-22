@@ -12,7 +12,37 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(cookieParser())
 
 // set express-handlebars
-app.engine('hbs',exphb({extname : '.hbs'}))
+app.engine('hbs',exphb({
+    extname : '.hbs',
+    helpers : {
+        mul : (a,b) => {
+            a *= b
+            a  += ''
+            let mn = a.split('').reverse(), count = 0
+            res = ''
+            for (let i = 0;i<mn.length;i++){
+                count++
+                res += mn[i]
+                if(count%3==0 && i != mn.length-1)
+                    res += '.'
+            }
+            return res.split('').reverse().join('')
+        },
+        sum : (a,b) => a+b,
+        vnd : (a) => {
+            a += ''
+            let mn = a.split('').reverse(), count = 0
+            res = ''
+            for (let i = 0;i<mn.length;i++){
+                count++
+                res += mn[i]
+                if(count%3==0 && i != mn.length-1)
+                    res += '.'
+            }
+            return res.split('').reverse().join('')
+        }
+    }
+}))
 app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname + '/views'))
 

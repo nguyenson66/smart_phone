@@ -58,7 +58,7 @@
         <tbody>
             {{#each data_order}}
             <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{sum @index 1}}</th>
                 <td>{{this.user_id}}</td>
                 <td>{{this.product_id}} - {{this.name}}</td>
                 <td>{{this.quantity}}</td>

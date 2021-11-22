@@ -194,16 +194,13 @@ class ClientController{
     //[POST] /order/:id
     orderItemPOST(req,res){
         const user_token = req.cookies.user_token
+        // console.log(req.body)
         if(user_token == undefined)
             res.redirect('/login')
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
             const item_id = req.params.id
-
-
-            req.body.quantity = 1
-            //////
             const quantity = req.body.quantity
 
             QueryDatabase.orderItem(user_id,item_id,quantity,moment().format("LLL"))

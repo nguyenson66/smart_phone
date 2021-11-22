@@ -166,7 +166,23 @@ class QueryDatabase{
     }
 
     orderItem(user_id, product_id, quantity, timeOrder){
-        const query = `insert into orders (user_id, product_id,quantity, status, created_at) values (${user_id},${product_id},${quantity},0,'${timeOrder}')`
+        let query = `insert into orders (user_id, product_id,quantity, status, created_at) values (${user_id},${product_id},${quantity},0,'${timeOrder}')`
+        // console.log(query)
+
+        con.query(query, (err,result) => {
+            if(err)
+                console.log(err.message)
+        })
+
+        query = `update products set quantity = quantity - ${quantity} where id = ${product_id}`
+        con.query(query,(err,result) => {
+            if(err)
+                console.log(err.message)
+        })
+    }
+
+    addHistoryOrderItem(order_id, timeOrder){
+        const query = `update orders set status = 1, created_at = "${timeOrder}" where id = ${order_id}`
         // console.log(query)
 
         con.query(query, (err,result) => {
@@ -175,21 +191,35 @@ class QueryDatabase{
         })
     }
 
-    addHistoryOrderItem(order_id, timeOrder){
-        const query = `update orders set status = 1, created_at = "${timeOrder}" where id = ${order_id}`
-        console.log(query)
+    async deleteOrder(id){
 
-        con.query(query, (err,result) => {
-            if(err)
-                console.log(err)
-        })
-    }
+        try {
+            let query = `select product_id,quantity from orders where id = ${id}`
+            const res = await new Promise((resolve, reject) => {
+                con.query(query, (err,result) => {
+                    if(err) console.log(err.message)
+                    else{
+                        resolve(result)
+                    }
+                })
+            })
 
-    deleteOrder(id){
-        const query = `delete from orders where id = ${id}`
-        con.query(query, (err, result) => {
-            if(err) console.log(err.message)
-        })
+            const quantity = res[0].quantity
+            const product_id = res[0].product_id
+
+            query = `update products set quantity = quantity + ${quantity} where id = ${product_id}`
+            con.query(query, (err, result) => {
+                if(err) console.log(err.message)
+            })
+
+            query = `delete from orders where id = ${id}`
+            con.query(query, (err, result) => {
+                if(err) console.log(err.message)
+            })
+
+        } catch (error) {
+            console.dir(error.message)   
+        }
     }
 
     async getAllOrder(){

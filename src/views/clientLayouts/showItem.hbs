@@ -109,7 +109,7 @@
                 </tr>
             </table>
             <div class="product-price-sub">
-                <span>{{item.price}} </span>đ
+                <span>{{vnd item.price}} </span>đ
             </div>
             <div class="promotion-product">
                 <span style="white-space: pre-line">{{item.description}}</span>
@@ -120,7 +120,18 @@
                     - Bảo hành 6 tháng lỗi đổi 30 ngày đầu.
                 </span>
             </div>
-            <form action="/order/{{item.id}}" method="POST">
+
+            <form action=" /order/{{item.id}}" method="POST">
+
+                <div class="quantity buttons_added" style="margin: 10px 0px 0px 2%;">
+                    <h5>Số lượng</h5>
+                    <input type="button" value="-" class="minus" style="width: 50px;"><input type="number" step="1"
+                        min="0" max="{{item.quantity}}" name="quantity" value="0" title="Qty"
+                        class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+"
+                        class="plus" style="width: 50px;">
+                </div>
+
+
                 <button class="btn btn-block"
                     style="background-color: #ff3333; margin-top: 20px; width: 300px; margin:50px 0px 0px 150px;">
                     <i class="fas fa-shopping-cart"></i>
