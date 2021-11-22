@@ -58,8 +58,13 @@ class AdminController{
         const sp = await QueryDatabase.getAll(`select count(id) as count from products where quantity between 0 and 10`)
         if(role == 1)
             role = 'Nhân viên'
-        else
+        else{
             role = 'Admin shop'
+            data_order.admin = 'yes'
+        }
+
+        for(let i=0;i<data_order.length;i++)
+            data_order[i].created_at = moment(data_order[i].created_at,"LLL").fromNow()
 
         res.render('adminLayouts/home',{
             username : req.cookies.username,
@@ -79,7 +84,9 @@ class AdminController{
         ////////////////////////////////////////
 
 
-        res.render('adminLayouts/createItem')
+        res.render('adminLayouts/createItem', {
+            admin : 'yes'
+        })
     }
 
     //[GET] /admin/update/:id
@@ -100,12 +107,15 @@ class AdminController{
         if(role == 0)
             res.redirect('/')
         ////////////////////////////////////////
-        if(role == 1)
-            role = 'Nhân viên'
-        else
-            role = 'Admin shop'
         const data = await QueryDatabase.getAll('select * from products')
         const sp = await QueryDatabase.getAll(`select count(id) as count from products where quantity between 0 and 10`)
+        
+        if(role == 1)
+            role = 'Nhân viên'
+        else{
+            role = 'Admin shop'
+            data.admin = 'yes'
+        }
 
         res.render('adminLayouts/itemManager',{
             username : req.cookies.username,
@@ -142,17 +152,6 @@ class AdminController{
     }
 
     ///// JUST ADMIN /////
-
-    //[GET] /admin/history-update-item
-    async historyUpdateItem(req,res){
-        //check if user is client or staff => redirect :/
-        const role = await checkAdmin(req.cookies.user_token)
-        if(role < 2)
-            res.redirect('/')
-        ////////////////////////////////////////
-
-        /// loading... ///
-    }
 
     //[GET] /admin/revenue
     async revenue(req,res){

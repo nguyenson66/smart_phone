@@ -43,6 +43,8 @@ class ClientController{
         const id = req.params.id
         const data = await QueryDatabase.getAll('select id,name,description,price,quantity,manufacturer from products where id = ' + id)
         const image_item = await QueryDatabase.getAll('select image from images where product_id = ' + id)
+        const comment = await QueryDatabase.getComment(id)
+        // console.log(comment.length)
 
         // console.log(image_item[0].image)
 
@@ -50,14 +52,18 @@ class ClientController{
         if(username == undefined){
             res.render('clientLayouts/showItem',{
                 item : data[0],
-                image : image_item
+                image : image_item,
+                comment : comment,
+                countComment : comment.length
             })
         }
         else{
             res.render('clientLayouts/showItem',{
                 item : data[0],
                 image : image_item,
-                user : username
+                user : username,
+                comment : comment,
+                countComment : comment.length
             })
         }
     }
@@ -139,6 +145,7 @@ class ClientController{
         const result = await QueryDatabase.login(req.body.phone,req.body.password)
         // console.log(result[0])
         if(result[0] == undefined){
+            res.cookie('error','1',{ expires: new Date(Date.now() + 7200000)})
             res.redirect('/login')
         }
         else{
@@ -168,8 +175,12 @@ class ClientController{
         
         if(data[0].countuser == 0){
             QueryDatabase.register(name,email,phone,password,address,role)
+            res.redirect('/login')
         }
-        res.redirect('/login')
+        else{
+            res.cookie("error",'Tài khoản đã tồn tại', { expires: new Date(Date.now() + 7200000)})
+            res.redirect('back')
+        }
     }
 
 
@@ -199,6 +210,22 @@ class ClientController{
         
             res.redirect('/order')
         }
+    }
+
+    //[POST] /comment/:id
+    comment(req,res){
+        const user_token = req.cookies.user_token
+        const product_id = req.params.id
+        const data_user = jwt.verify(user_token,'sositech')
+        const user_id = data_user.id
+        const content = req.body.content
+        const time  = moment().format("LLL")
+        // console.log(product_id + " " + user_id + " " + content)
+        // console.log(time)
+
+        QueryDatabase.pushComment(user_id,product_id,content,time)
+
+        res.redirect('back')
     }
 
 }

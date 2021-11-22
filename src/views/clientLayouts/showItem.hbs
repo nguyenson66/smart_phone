@@ -128,100 +128,39 @@
                 </button>
             </form>
         </div>
-        {{!-- <div class="related-products col-lg-3 d-lg-block d-none">
-            <div>Sản phẩm thương tự</div>
-            <div>
-                <div class="product-price-infor row">
-                    <a href="#"><img src="./images/sp1.PNG" alt=""></a>
-                    <div class="col">
-                        <h5>Tên sản phẩm</h5>
-                        <span>100.000</span><span>đ</span> <br>
-                        <a href="#">Xem chi tiết</a>
-                    </div>
-                </div>
-                <div class="product-price-infor row">
-                    <a href="#"><img src="./images/sp1.PNG" alt=""></a>
-                    <div class="col">
-                        <h5>Tên sản phẩm</h5>
-                        <span>100.000</span><span>đ</span> <br>
-                        <a href="#">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
     </div>
 
 </div>
 
-
-{{!-- <div class="close-heading-menu"></div>
-<!-- product-information -->
-
-<div id="product-infor" class="container">
-    <div class="name-product">
-        <span>{{item.name}}</span>
+<div class="main-body container">
+    <div class="product-compartment row ">
+        <hr class="col ">
+        <span style="text-shadow: 2px 2px 5px orchid; ">Nhận xét</span>
+        <hr class="col ">
     </div>
-    <div class="row">
-        <div class="col-md-4 col">
-            <img src="/images/{{image.image}}" alt="">
-        </div>
-        <div class="product-price col-lg-5 col-md col-12">
-            <table>
-                <tr class="sold-product">
-                    <td>Đã bán</td>
-                    <td>Ghi số sản phẩm đã bán được</td>
-                </tr>
-                <tr class="assess-product">
-                    <td>
-                        <a href="#">Đánh giá</a>
-                    </td>
-                    <td>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </td>
-                </tr>
-                <tr class="status-product">
-                    <td>Số lượng</td>
-                    <td>{{item.quantity}} chiếc</td>
-                </tr>
-            </table>
-            <div class="product-price-sub">
-                <span>{{item.price}} </span>đ
-            </div>
 
-            <div class="promotion-product">
-                <span>{{item.description}}</span>
-            </div>
-            <form action="/">
-                <button class="btn btn-block" style="background-color: red; margin-top:10px; color: white;">
-                    Mua sản phẩm
-                </button>
-            </form>
-        </div> --}}
-        {{!-- <div class="related-products col-lg-3 d-lg-block d-none">
-            <div>Sản phẩm thương tự</div>
-            <div>
-                <div class="product-price-infor row">
-                    <a href="#"><img src="./images/sp1.PNG" alt=""></a>
-                    <div class="col">
-                        <h5>Tên sản phẩm</h5>
-                        <span>100.000</span><span>đ</span> <br>
-                        <a href="#">Xem chi tiết</a>
-                    </div>
-                </div>
-                <div class="product-price-infor row">
-                    <a href="#"><img src="./images/sp1.PNG" alt=""></a>
-                    <div class="col">
-                        <h5>Tên sản phẩm</h5>
-                        <span>100.000</span><span>đ</span> <br>
-                        <a href="#">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
+    {{#if user}}
+    <form action="/comment/{{item.id}}" method="post" class="form-floating">
+        <textarea class="form-control" placeholder="Nhận xét ...." id="comment_content" name="content"
+            style="height: 100px"></textarea>
+        <button type="submit"
+            style="background: #80bfff; right: 0; padding: 5px 20px 5px 20px; margin-top: 10px; margin-left: 45%;">Đăng</button>
+    </form>
+    {{/if}}
+
+    <h6>{{countComment}} Bình luận</h6>
+
+    <div class="comment" style="background-color: white; padding: 5px;">
+
+        {{#each comment}}
+        <div class="user_comment" style="background-color: #ffffb3; padding: 5px; margin-bottom: 2px;">
+            <h6 style="text-shadow: 2px 2px 5px #99ccff; margin-left:10px">{{this.name}} -
+                <small>{{this.created_at}}</small>
+            </h6>
+            <p class="content_comment" style="text-align: left; margin-left: 10px;">{{this.content}}</p>
+        </div>
+        {{/each}}
+
     </div>
 
 </div>

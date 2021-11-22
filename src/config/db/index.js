@@ -247,6 +247,31 @@ class QueryDatabase{
             console.dir(error.message)
         }
     }
+
+    pushComment(user_id,product_id, content, time){
+        const query = `insert into comments(user_id,product_id, content, created_at) value(${user_id},${product_id},"${content}","${time}")`
+        // console.log(query)
+        con.query(query, (err,result) => {
+            if(err) console.log(err.message)
+        })
+    }
+
+    getComment(product_id){
+        const query = `select name,content,created_at from users,comments where product_id = ${product_id} and user_id = users.id`
+        try{
+            const res = new Promise((resolve, reject) => {
+                con.query(query, (err, result) => {
+                    if(err) console.dir(err.message)
+                    else{
+                        resolve(result)
+                    }
+                })
+            })
+            return res
+        }catch(err){
+            console.dir(err.message)
+        }
+    }
 }
 
 module.exports = new QueryDatabase

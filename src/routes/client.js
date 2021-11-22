@@ -16,5 +16,6 @@ router.post('/register', ClientController.registerPOST)
 router.post('/login',ClientController.loginPOST)
 router.post('/logout',ClientController.logouPOST)
 router.post('/order/:id',ClientController.orderItemPOST)
+router.post('/comment/:id',ClientController.comment)
 
 module.exports = router
