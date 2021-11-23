@@ -1,16 +1,20 @@
 <header class="container-fluid">
     <div class="heading-sub container">
         <div class="row">
-            <div class="logo-web col-lg-1 col-3">
+            <div class="logo-web col-lg-1 col-2">
                 <a href="/home">
-                    <img src="/image_home/logo_shop.png" alt="">
+                    <img src="/image_home/logo_shop-1.png" alt="logo">
                 </a>
             </div>
-            <div class="input-group search-web col-lg-5 col-6">
-                <input type="search" id="form-search" class="form-control" placeholder="Search" />
-                <button type="button" class="btn btn-search">
-                    <i class="fas fa-search"></i>
-                </button>
+            <div class="search-web col-lg-5 col-6">
+                <form class="input-group" action="/search">
+                    <div class="input-group search-web">
+                        <input type="search" id="form-search" class="form-control" name="q" placeholder="Search" />
+                        <button type="submit" class="btn btn-search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
             <div class="car-web col-lg-2 col-1">
                 <a href="/order">
@@ -21,10 +25,10 @@
                 </a>
             </div>
             <div class="user-infor col-lg-4 row">
-                <div class="col-3">
+                <div class="col-6">
                     <a href="/historyOrder" style="font-size: 15px; color: aqua;">Lịch sử mua hàng</a>
                 </div>
-                <div class="col-8" id="form-login-user">
+                <div class="col-6" id="form-login-user">
                     {{#if user}}
                     <div class="form-inline">
                         <small style="font-size: 15px; color: aqua;">Hi, {{user}}</small>
@@ -48,8 +52,56 @@
                     </button>
                 </div>
             </div>
+            <div class="open-user-infor col-1">
+                <div class="user-infor-sub">
+                    <img src="/img-user/img-user.png" alt="">
+                </div>
+                <ul class="user-sub-list">
+                    <li><a href="#">Lịch sử mua hàng</a></li>
+                    <li><a href="#">Đăng ký</a>/<a href="#">Đăng nhập</a></li>
+                </ul>
+            </div>
+            <div class="btn-menu col-2">
+                    <button class="btn">
+                        <i class="fas fa-bars"></i>
+                        <span>Menu</span>
+                    </button>
+            </div>
         </div>
+    </div>
 </header>
+<div class="container-fluid heading-menu">
+    <div class="category-menu">
+        <span>Danh mục</span>
+    </div>
+    <nav class="container navbar navbar-expand-lg">
+        <ul class="navbar-nav" id="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link" href="/search?manufacturer=iphone">IPHONE</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/search?manufacturer=samsung">SAM SUNG</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/search?manufacturer=nokia">NOKIA</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/search?manufacturer=xiaomi">XAOMI</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/search?manufacturer=oppo">OPPO</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/search?manufacturer=realme">REALME</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/search?manufacturer=sony">SONY</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="close-open-user-infor"></div>
+<div class="close-heading-menu"></div>
 
 <body>
     <div class="container">

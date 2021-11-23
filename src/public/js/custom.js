@@ -1,6 +1,20 @@
 $(document).ready(function() {
+    // search web
     var w = $(window).innerWidth();
-    console.log(w)
+    if (w > 992) {
+        var h = ($(".car-web").innerHeight()-$(".car-web .btn-car").outerHeight())/2;
+        $(".search-web form").css("padding-top", h)
+    }
+    $(window).resize(function() {
+        var w = $(window).innerWidth();
+        if (w > 992) {
+            var h = ($(".car-web").innerHeight()-$(".car-web .btn-car").outerHeight())/2;
+            console.log(h)
+            $(".search-web form").css("padding-top", h)
+        }
+    });
+    // close-search-web
+    var w = $(window).innerWidth();
     if (w <= 992) {
         $('.btn-car span').empty();
     } else {
@@ -8,15 +22,15 @@ $(document).ready(function() {
     }
     $(window).resize(function() {
         var w = $(window).innerWidth();
-        console.log(w)
         if (w <= 992) {
             $('.btn-car span').empty();
         } else {
             $('.btn-car span').text("Giỏ hàng");
         }
     });
+    // 
     var check = 0
-    $(".btn-menu").click(function() {
+    $(".btn-menu .btn").click(function() {
         $(".heading-menu").css("display", "block")
         $(".heading-menu").animate({
             left: "0px"
@@ -52,6 +66,17 @@ $(document).ready(function() {
             check = 0
         }
     });
+    // open-user-infor
+    $(".close-open-user-infor, .btn, form, button, a, .btn-menu, .logo-web").click(function() {
+        $(".user-sub-list").css("display","none")
+        $(".close-open-user-infor").css("display","none")
+    });
+    $(".user-infor-sub").click(function(){
+        $(".user-sub-list").css("display","block")
+        $(".close-open-user-infor").css("display","block")
+    })
+    // close-open-user-infor
+
     // filter
     var t = $(".box-filter").innerWidth() + 20
     var h = $(".close-box-filter").innerWidth() / 2 + t / 2
@@ -78,4 +103,5 @@ $(document).ready(function() {
             right: "-" + t / 2 + "px"
         }, "slow")
     });
+    
 });
