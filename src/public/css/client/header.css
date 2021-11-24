@@ -147,3 +147,30 @@ header {
 .btn-menu .btn span {
     font-size: 14px;
 }
+
+.user-infor-sub {
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    margin: auto;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    z-index: 9;
+}
+.user-infor-sub::after {
+    content: '';
+    position: absolute;
+    display: block;
+    background-color: white;
+    width: 36px;
+    height: 36px;
+    top: -2px;
+    left: -2px;
+    z-index: -1;
+    border-radius: 50%;
+}
+.user-infor-sub img {
+    border-radius: 50%;
+}

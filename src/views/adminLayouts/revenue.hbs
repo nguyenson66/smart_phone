@@ -1,0 +1,113 @@
+<header class="header_bg">
+    <div class="dropdown">
+        <button class="dropbtn" style="text-shadow: 0px 0px 0px red;">Admin Controller</button>
+        <div class="dropdown-content">
+            <a href="/admin">Trang chủ</a>
+            <a href="/admin/items">Quản lí tất cả các sản phẩm</a>
+            <a href="/admin/create">Thêm sản phẩm vào kho</a>
+            {{#if data_order.admin}}
+            <hr>
+            <a href="/admin/revenue">Quản lí doanh thu</a>
+            <a href="/admin">Quản lí user</a>
+            {{/if}}
+            <hr>
+            <a href="/home" style="margin-bottom: 0px;">Thoát trang admin</a>
+        </div>
+    </div>
+</header>
+
+<div class="admin_body container" style="padding: 30px;">
+    <div class="row">
+        <div class="testimonial-container col-8" style="border: 2px solid red; padding: 20px;">
+            <div class="progress-bar"></div>
+            <div class="fas fa-quote-right fa-quote"></div>
+            <div class="fas fa-quote-left fa-quote"></div>
+            <p class="testimonial">
+                Nếu bạn cứ tiếp tục ca thán về cùng một nỗi buồn, cùng một việc nhỏ nhặt, bạn sẽ mãi mãi chìm đắm trong
+                thất
+                bại và sống một cuộc đời nhỏ bé. Hãy luôn nhớ rằng, ngay cả một ngày tồi tệ nhất cũng chỉ có 24 tiếng
+                đồng
+                hồ.
+            </p>
+        </div>
+
+        <div class="col-4">
+            <h5 style="text-align: left; margin-left: 30px; margin-top: 20px">Xin chào, {{username}}</h5>
+            <h5 style="text-align: left; margin-left: 30px;">Chức vụ : {{role}}</h5>
+            <h6 style="text-align: left; margin-left: 30px;">Số lượng đơn hàng : {{countOrder}}</h6>
+            <h6 style="text-align: left; margin-left: 30px;">Số sản phẩm gần hết hàng : {{sp}}</h6>
+        </div>
+    </div>
+
+
+    <div class="product-compartment row">
+        <span>Quản lí doanh thu</span>
+        <hr class="col ">
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <div class="counter orderday">
+                <p>Số đơn hàng hôm nay</p>
+                <h2>0</h2>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="counter revenueday">
+                <p>Doanh thu hôm nay</p>
+                <h2>0</h2>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="counter ordermonth">
+                <p>Số đơn hàng tháng này</p>
+                <h2>0</h2>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="counter revenuemonth">
+                <p>Doanh thu tháng này</p>
+                <h2>0</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    const orderday = document.querySelector('.counter.orderday h2')
+    const ordermonth = document.querySelector('.counter.ordermonth h2')
+    const revenueday = document.querySelector('.counter.revenueday h2')
+    const revenuemonth = document.querySelector('.counter.revenuemonth h2')
+
+    function counterUp(el, to) {
+        let speed = 300
+        let from = 0
+        let step = to / speed
+        const counter = setInterval(function () {
+            from += step
+            if (from > to) {
+                clearInterval(counter)
+                from = to
+            }
+
+            a = Math.ceil(from) + ''
+            let mn = a.split('').reverse(), count = 0
+            res = ''
+            for (let i = 0; i < mn.length; i++) {
+                count++
+                res += mn[i]
+                if (count % 3 == 0 && i != mn.length - 1)
+                    res += '.'
+            }
+            el.innerText = res.split('').reverse().join('')
+        }, 1)
+    }
+
+
+    counterUp(orderday, 5)
+    counterUp(ordermonth, 1230)
+    counterUp(revenueday, 23000000)
+    counterUp(revenuemonth, 294456000)
+</script>

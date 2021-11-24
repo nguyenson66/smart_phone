@@ -158,11 +158,11 @@ class AdminController{
         //check if user is client or staff => redirect :/
         const role = await checkAdmin(req.cookies.user_token)
         if(role < 2)
-            res.redirect('/')
+            res.redirect('/home')
         ////////////////////////////////////////
 
 
-        /// loading... ///
+        res.render('adminLayouts/revenue')
     }
 
     ///////////////////////

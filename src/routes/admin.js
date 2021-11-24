@@ -9,6 +9,7 @@ router.get('/create', AdminController.addItem)
 router.get('/items', AdminController.showItem)
 router.get('/users', AdminController.showUser)
 router.get('/order', AdminController.showOrder)
+router.get('/revenue', AdminController.revenue)
 router.get('',AdminController.home)
 
 
