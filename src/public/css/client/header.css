@@ -3,7 +3,7 @@ header {
 }
 
 .heading-sub {
-    padding: 5px 0px;
+    padding: 0.5rem 0px;
 }
 
 #nav-menu {
@@ -71,7 +71,6 @@ header {
 }
 .search-web form {
     width: 100%;
-    padding-top: 9.5px;
 }
 
 .form-control {
@@ -149,7 +148,7 @@ header {
 
 /* open-user-infor */
 .open-user-infor {
-    display: none;
+    display: block;
     position: relative;
 }
 .user-infor-sub {
@@ -158,10 +157,10 @@ header {
     width: 32px;
     border-radius: 50%;
     margin: auto;
-    margin-top: 10px;
     cursor: pointer;
     position: relative;
     z-index: 9;
+    
 }
 .user-infor-sub::after {
     content: "";
@@ -181,16 +180,17 @@ header {
 .user-sub-list {
     display: none;
     background-color: white;
-    width: 135px;
+    width: 140px;
     position: absolute;
     top: 55px;
-    left: -10px;
+    left: -25px;
     z-index: 22;
     box-shadow: 5px 5px 10px rgb(61, 61, 61);
-    padding: 0px 0.5rem;
+    padding: 0px 0.2rem;
     border-radius: 0.5rem;
     padding-bottom: 0.5rem;
 }
+
 .user-sub-list::after {
     content: "";
     background-color: #c69a39;
@@ -202,12 +202,24 @@ header {
     border-radius:  0px 0px 0.5rem 0.5rem;
 }
 .user-sub-list li {
-    border-bottom: 1px solid rgb(97, 97, 97);
     color: black;
-    padding: 5px 0px;
+    padding: 3px 0.5rem;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
-.user-sub-list li:nth-last-child(1) {
-    border-bottom: none;
+.user-sub-list li:not(.user-sub-list li:nth-child(1)):hover {
+    background-color: rgb(199, 199, 199);
+}
+.user-sub-list li:nth-child(1) {
+    border-bottom: 2px solid #c69a39;
+    padding-bottom: 10px;
+    padding-top: 8px;
+}
+.user-sub-list li:nth-child(1) span{
+    border-radius: 0.5rem;
+    padding: 5px;
+    border: 1px solid rgb(199, 199, 199);
+    font-size: 14px;
 }
 .user-sub-list li a{
     font-size: 13px;

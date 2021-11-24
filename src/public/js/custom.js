@@ -1,19 +1,4 @@
 $(document).ready(function() {
-    // search web
-    var w = $(window).innerWidth();
-    if (w > 992) {
-        var h = ($(".car-web").innerHeight()-$(".car-web .btn-car").outerHeight())/2;
-        $(".search-web form").css("padding-top", h)
-    }
-    $(window).resize(function() {
-        var w = $(window).innerWidth();
-        if (w > 992) {
-            var h = ($(".car-web").innerHeight()-$(".car-web .btn-car").outerHeight())/2;
-            console.log(h)
-            $(".search-web form").css("padding-top", h)
-        }
-    });
-    // close-search-web
     var w = $(window).innerWidth();
     if (w <= 992) {
         $('.btn-car span').empty();

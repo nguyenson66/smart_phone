@@ -8,7 +8,7 @@
             </div>
             <div class="search-web col-lg-5 col-6">
                 <form class="input-group" action="/search">
-                    <div class="input-group search-web">
+                    <div class="input-group">
                         <input type="search" id="form-search" class="form-control" name="q" placeholder="Search" />
                         <button type="submit" class="btn btn-search">
                             <i class="fas fa-search"></i>
@@ -24,11 +24,12 @@
                     </button>
                 </a>
             </div>
-            <div class="user-infor col-lg-4 row">
-                <div class="col-6">
-                    <a href="/historyOrder" style="font-size: 15px; color: aqua;">Lịch sử mua hàng</a>
+            <div class="user-infor col-lg-3 row">
+                <div class="col-12" style="text-align: center;">
+                    <a href="/historyOrder" style="font-size: 15px; color: white">Lịch sử mua hàng</a>
                 </div>
-                <div class="col-6" id="form-login-user">
+                {{!--  --}}
+                {{!-- <div class="col-6" id="form-login-user">
                     {{#if user}}
                     <div class="form-inline">
                         <small style="font-size: 15px; color: aqua;">Hi, {{user}}</small>
@@ -44,7 +45,8 @@
                         <a href="/register" style="font-size: 15px; color: aqua;"> Đăng ký</a>
                     </div>
                     {{/if}}
-                </div>
+                </div> --}}
+                {{!--  --}}
                 <div class="btn-menu col-2">
                     <button class="btn">
                         <i class="fas fa-bars"></i>
@@ -57,6 +59,8 @@
                     <img src="/img-user/img-user.png" alt="">
                 </div>
                 <ul class="user-sub-list">
+                    <li><span>Phan Điện</span></li>
+                    <li><a href="#">Hồ sơ cá nhân</a></li>
                     <li><a href="#">Lịch sử mua hàng</a></li>
                     <li><a href="#">Đăng ký</a>/<a href="#">Đăng nhập</a></li>
                 </ul>
@@ -102,93 +106,3 @@
 </div>
 <div class="close-open-user-infor"></div>
 <div class="close-heading-menu"></div>
-
-
-{{!-- body --}}
-<body>
-    <div class="container">
-        <div class="product-compartment row">
-            <span>Sản phẩm bạn đặt mua</span>
-            <hr class="col ">
-        </div>
-
-        <div style="background-color: white; padding: 5px;">
-
-            <div class="container">
-                <div class="related-products">
-                    {{#each order}}
-                    <div class="product-price-infor row"
-                        style="background-color: white; margin-left: 15px; margin-top: 10px;">
-                        <a href="/item/{{this.product_id}}"><img style="width: 80px;" src="/images/{{this.image}}"
-                                alt=""></a>
-                        <div class="col">
-                            <a href="/item/{{this.product_id}}">
-                                <h5 style="color: black;">{{this.product_name}}</h5>
-                            </a>
-                            <h6 style="color: black;">Giá : <span>{{vnd this.price}}</span><span>đ</span></h6>
-                            <p style="color: black; text-align: left;">Số lượng : {{this.quantity}} chiếc </p>
-                        </div>
-                        <div class="col">
-                            <h6 style="color: black;">Tổng tiền : <span>{{mul this.quantity
-                                    this.price}}</span><span>đ</span></h6>
-                            <h6 style="color: black;">Tình trạng : Đang giao hàng</h6>
-                        </div>
-                        <div class="col" style="text-align: right;">
-                            <button type="button" class="btn btn-danger" data-whatever="{{this.id}}" data-toggle="modal"
-                                data-target="#cancelOrder">
-                                Huỷ đơn
-                            </button>
-                        </div>
-                    </div>
-                    <hr>
-                    {{/each}}
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Modal cancel order -->
-    <div class="modal fade" id="cancelOrder" tabindex="-1" aria-labelledby="cancelOrderLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cancelOrderLabel">Chú ý</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc muốn huỷ đơn hàng này ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" id="btnCancelOrder">Yes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</body>
-
-
-
-
-<form method="POST" name="form-cancel-order"></form>
-
-<script>
-    var order_id
-    var btnCancelOrder = document.getElementById('btnCancelOrder')
-    var form = document.forms['form-cancel-order']
-
-
-    $('#cancelOrder').on('show.bs.modal', function (event) {
-        const button = $(event.relatedTarget)
-        order_id = button.data('whatever')
-    })
-
-    btnCancelOrder.onclick = () => {
-        form.action = '/admin/deleteOrder/' + order_id
-        form.submit()
-    }
-</script>

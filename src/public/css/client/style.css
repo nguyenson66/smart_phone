@@ -8,7 +8,7 @@ li {
 .clear-float {
     clear: both;
 }
-.btn, form, button, a, .btn-menu, .logo-web {
+.btn, form, button, a, .btn-menu, .logo-web,.nav-item {
     z-index: 5;
 }
 .btn:focus {

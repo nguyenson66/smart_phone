@@ -44,8 +44,11 @@
         font-size: 24px;
     }
     /* open-user-infor */
-    .open-user-infor {
-        display: block;
+    /* .user-infor-sub {
+        margin-top: 10px;
+    } */
+    .user-infor-sub{
+        transform: translateY(25%);
     }
 }
 
