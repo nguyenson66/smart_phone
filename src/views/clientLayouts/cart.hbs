@@ -69,7 +69,6 @@
         </div>
 </header>
 
-
 <div class="container-fluid heading-menu">
     <div class="category-menu">
         <span>Danh mục</span>
@@ -100,38 +99,101 @@
         </ul>
     </nav>
 </div>
-<div class="close-heading-menu"></div>
-<!-- main-body -->
-<div class="main-body container">
-    <div class="product-compartment row ">
-        <span>Sản phẩm cho từ khoá '{{key_search}}' </span>
-        <hr class="col ">
-    </div>
 
+<body>
+    <div class="container">
+        <h4 style="margin:10px 0px 10px 10px">Giỏ Hàng</h4>
 
-    <div id="product-category" class="row">
-        {{#each items}}
-        <a href="/item/{{this.id}}">
-            <div class="product-item card col-md-3 col-sm-4 col-6 btn ">
-                <img class="card-img-top " src="/images/{{this.image}}" alt="Card image " style="width:100% ">
-                <div class="card-body ">
-                    <h5 class="card-title" style="color: black;">{{this.name}}</h5>
-                    <span class="product-price">{{vnd this.price}}</span><span> đ</span> <br>
-                    <a href="/item/{{this.id}}" id="statusItem" class="btn btn-block stretched-link ">Số lượng
-                        còn lại :
-                        {{this.quantity}}</a>
-                    <h6 class="card-text" style="text-align: center;">{{this.description}}</h6>
+        <div style="background-color: white; padding: 5px;">
+
+            {{#if cart}}
+            <div class="container">
+                <div class="related-products">
+                    {{#each order}}
+                    <div class="product-price-infor row"
+                        style="background-color: white; margin-left: 15px; margin-top: 10px;">
+                        <a href="/item/{{this.product_id}}"><img style="width: 80px;" src="/images/{{this.image}}"
+                                alt=""></a>
+                        <div class="col">
+                            <a href="/item/{{this.product_id}}">
+                                <h5 style="color: black;">{{this.product_name}}</h5>
+                            </a>
+                            <h6 style="color: black;">Giá : <span>{{vnd this.price}}</span><span>đ</span></h6>
+                            <p style="color: black; text-align: left;">Số lượng : {{this.quantity}} chiếc </p>
+                        </div>
+                        <div class="col">
+                            <h6 style="color: black;">Tổng tiền : <span>{{mul this.quantity
+                                    this.price}}</span><span>đ</span></h6>
+                            <h6 style="color: black;">Tình trạng : Đang giao hàng</h6>
+                        </div>
+                        <div class="col" style="text-align: right;">
+                            <button type="button" class="btn btn-danger" data-whatever="{{this.id}}" data-toggle="modal"
+                                data-target="#cancelOrder">
+                                Huỷ đơn
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    {{/each}}
                 </div>
             </div>
-        </a>
-        {{/each}}
+
+            {{else}}
+            <img src="https://salt.tikicdn.com/desktop/img/mascot@2x.png"
+                style="height: 25%; width: 25%; align-items: center;margin:20px 0px 0px 35%">
+            <p style="text-align: center; margin:10px">Không có sản phẩm nào trong giỏ hàng của bạn</p>
+            <form action="/home" style="text-align: center; margin:20px">
+                <button type="submit"
+                    style="background-color: yellow; border-radius: 10px; padding: 5px 30px 5px 30px;">
+                    Tiếp tục mua sắm
+                </button>
+            </form>
+            {{/if}}
+        </div>
+
     </div>
-</div>
+
+    <!-- Modal cancel order -->
+    <div class="modal fade" id="cancelOrder" tabindex="-1" aria-labelledby="cancelOrderLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelOrderLabel">Chú ý</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc muốn huỷ đơn hàng này ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="btnCancelOrder">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
 
 
-<footer class="container-fluid "></footer>
-<script src="/js/custom.js "></script>
+
+
+<form method="POST" name="form-cancel-order"></form>
 
 <script>
+    var order_id
+    var btnCancelOrder = document.getElementById('btnCancelOrder')
+    var form = document.forms['form-cancel-order']
 
+
+    $('#cancelOrder').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget)
+        order_id = button.data('whatever')
+    })
+
+    btnCancelOrder.onclick = () => {
+        form.action = '/admin/deleteOrder/' + order_id
+        form.submit()
+    }
 </script>

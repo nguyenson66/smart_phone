@@ -136,6 +136,18 @@ class ClientController{
         }
     }
 
+    //[GET] /cart
+    async cart(req,res){
+
+        res.render('clientLayouts/cart')
+    }
+
+    //[GET] /profile
+    userProfile(req,res){
+        
+        res.render('clientLayouts/userProfile')
+    }
+
 
     
     ////////// POST ///////////////

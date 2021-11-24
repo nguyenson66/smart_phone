@@ -10,7 +10,8 @@ router.get('/order',ClientController.order)
 router.get('',ClientController.home)
 router.get('/historyOrder', ClientController.historyOrder)
 router.get('/search', ClientController.searchItem)
-
+router.get('/cart', ClientController.cart)
+router.get('/profile', ClientController.userProfile)
 
 router.post('/register', ClientController.registerPOST)
 router.post('/login',ClientController.loginPOST)
