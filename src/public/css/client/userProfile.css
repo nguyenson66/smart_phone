@@ -1,0 +1,109 @@
+.user-profile {
+    background-color: white;
+    width: 1000px;
+    display: block;
+    margin: auto;
+    padding: 1rem 1.5rem;
+    position: relative;
+    margin-bottom: 30px;
+    padding-bottom: 100px;
+    box-shadow: 2px black;
+}
+
+.user-profile hr {
+    margin: 20px 0px;
+    display: block;
+    height: 10px;
+    color: rgb(221, 221, 221);
+}
+
+.container p {
+    text-align: left;
+}
+
+.title-user-profile {
+    width: 400px;
+}
+
+.title-user-profile h6 {
+    font-size: 24px;
+}
+
+.title-user-profile span {
+    font-size: 16px;
+}
+
+.replace-img-user {
+    position: absolute;
+    top: 170px;
+    right: 100px;
+    /* background-color: aqua; */
+}
+
+.img-user {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    position: relative;
+    z-index: 100;
+    border: 3px solid rgb(221, 221, 221);
+    margin: auto;
+    padding: 6px;
+}
+
+.img-user img {
+    display: block;
+    border-radius: 50%;
+}
+
+.btn-choose-photo {
+    margin-top: 1rem;
+}
+
+.user-profile table {
+    border-right: 1px solid rgb(221, 221, 221);
+}
+
+.user-profile table tr td {
+    padding: 20px;
+}
+
+.user-profile table tr td:nth-child(1) {
+    text-align: right;
+}
+
+.user-profile table tr td:nth-child(2) {
+    width: 500px;
+}
+
+.profile-sex form input:not(.profile-sex form input:nth-child(1)) {
+    margin-left: 10px;
+}
+
+.profile-email td a,
+.profile-numberphone td a {
+    color: blue;
+    text-decoration: underline;
+}
+
+.profile-birdthday form input {
+    width: 100px;
+    padding: 5px;
+}
+
+.profile-birdthday form input {
+    margin-right: 10px;
+}
+
+.adress-profile form input {
+    padding: 5px;
+    width: 100%;
+}
+
+.btn-save-profile-user {
+    background-color: #c58d15;
+    margin-top: 30px;
+    margin-left: 120px;
+    width: 80px;
+    color: white;
+}

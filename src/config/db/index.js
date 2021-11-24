@@ -1,27 +1,27 @@
 const mysql = require('mysql')
 
 const con = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : 'admin',
-    database : 'cosodulieubtl'
+    host: 'localhost',
+    user: 'root',
+    password: '16042001',
+    database: 'cosodulieubtl'
 })
 
 con.connect(function(err) {
-    if(err) console.dir(err.message)
+    if (err) console.dir(err.message)
     console.log('db ' + con.state)
 })
 
-class QueryDatabase{
+class QueryDatabase {
 
     /// get item by page
-    async getItem(page){
-        const query = 'select id, name ,price,quantity,manufacturer,description,image from products,images where images.product_id = products.id group by id limit 20 offset ' + page*20
+    async getItem(page) {
+        const query = 'select id, name ,price,quantity,manufacturer,description,image from products,images where images.product_id = products.id group by id limit 20 offset ' + page * 20
         try {
             const res = await new Promise((resolve, reject) => {
-                con.query(query, function(err,result) {
-                    if(err) console.dir(err.message)
-                    else{
+                con.query(query, function(err, result) {
+                    if (err) console.dir(err.message)
+                    else {
                         resolve(result)
                     }
                 })
@@ -32,12 +32,12 @@ class QueryDatabase{
         }
     }
 
-    async getAll(query){
+    async getAll(query) {
         try {
             const res = await new Promise((resolve, reject) => {
-                con.query(query, function(err,result) {
-                    if(err) console.dir(err.message)
-                    else{
+                con.query(query, function(err, result) {
+                    if (err) console.dir(err.message)
+                    else {
                         resolve(result)
                     }
                 })
@@ -49,13 +49,13 @@ class QueryDatabase{
         }
     }
 
-    async login(username,password){
+    async login(username, password) {
         try {
             const res = await new Promise((resolve, reject) => {
                 const query = "select id,name from users where phone = '" + username + "' and password = '" + password + "';"
-                con.query(query, function(err,result) {
-                    if(err) console.dir(err.message)
-                    else{
+                con.query(query, function(err, result) {
+                    if (err) console.dir(err.message)
+                    else {
                         resolve(result)
                     }
                 })
@@ -65,13 +65,13 @@ class QueryDatabase{
         }
     }
 
-    async getRole(id){
+    async getRole(id) {
         try {
-            const res = await new Promise((resolve,reject) => {
+            const res = await new Promise((resolve, reject) => {
                 const query = "select role from users where id = '" + id + "';"
                 con.query(query, (err, result) => {
-                    if(err) console.dir(err.message)
-                    else{
+                    if (err) console.dir(err.message)
+                    else {
                         resolve(result)
                     }
                 })
@@ -82,7 +82,7 @@ class QueryDatabase{
         }
     }
 
-    async addItem(body){
+    async addItem(body) {
         const name = body.name
         const description = body.description
         const manufacturer = body.manufacturer
@@ -92,14 +92,14 @@ class QueryDatabase{
         try {
             const res = await new Promise((resolve, reject) => {
                 const query = `insert into products (name, description, price, quantity, manufacturer) values( '${name}', '${description}', '${price}', '${quantity}', '${manufacturer}')`
-                // console.log(query)
-                con.query(query, (err,result) => {
-                    if(err) console.dir(err.message)
-                    else{
-                        con.query("SELECT LAST_INSERT_ID() as id;", (err,result) => {
+                    // console.log(query)
+                con.query(query, (err, result) => {
+                    if (err) console.dir(err.message)
+                    else {
+                        con.query("SELECT LAST_INSERT_ID() as id;", (err, result) => {
                             // console.log("last id : " + result)
-                            if(err) console.dir(err.message)
-                            else{
+                            if (err) console.dir(err.message)
+                            else {
                                 resolve(result)
                             }
                         })
@@ -113,17 +113,16 @@ class QueryDatabase{
     }
 
 
-    async addImage(id, filename){
+    async addImage(id, filename) {
         try {
             const res = await new Promise((resolve, reject) => {
                 const query = `insert into images values (${id}, '${filename}')`
                 console.log(query)
                 con.query(query, (err, result) => {
-                    if(err){ 
+                    if (err) {
                         console.dir(err.message)
-                        resolve({'status' : 500})
-                    }
-                    else resolve({'status' : 200})
+                        resolve({ 'status': 500 })
+                    } else resolve({ 'status': 200 })
                 })
             })
             return res
@@ -132,13 +131,13 @@ class QueryDatabase{
         }
     }
 
-    async login(phone,password){
+    async login(phone, password) {
         try {
             const res = await new Promise((resolve, reject) => {
                 const query = `select id, name from users where phone = '${phone}' and password = '${password}'`
-                con.query(query, (err,result) => {
-                    if(err) console.dir(err.message)
-                    else{
+                con.query(query, (err, result) => {
+                    if (err) console.dir(err.message)
+                    else {
                         resolve(result)
                     }
                 })
@@ -150,13 +149,13 @@ class QueryDatabase{
     }
 
 
-    async register(name,email,phone,password,address,role){
+    async register(name, email, phone, password, address, role) {
         try {
-            await new Promise((resolve,reject) => {
+            await new Promise((resolve, reject) => {
                 const query = `insert into users (name,email, password,phone, address,role) values ('${name}', '${email}','${password}', '${phone}','${address}','${role}')`
                 console.log(query)
-                con.query(query, (err,result) => {
-                    if(err)
+                con.query(query, (err, result) => {
+                    if (err)
                         console.log(err.message)
                 })
             })
@@ -165,40 +164,40 @@ class QueryDatabase{
         }
     }
 
-    orderItem(user_id, product_id, quantity, timeOrder){
+    orderItem(user_id, product_id, quantity, timeOrder) {
         let query = `insert into orders (user_id, product_id,quantity, status, created_at) values (${user_id},${product_id},${quantity},0,'${timeOrder}')`
-        // console.log(query)
+            // console.log(query)
 
-        con.query(query, (err,result) => {
-            if(err)
+        con.query(query, (err, result) => {
+            if (err)
                 console.log(err.message)
         })
 
         query = `update products set quantity = quantity - ${quantity} where id = ${product_id}`
-        con.query(query,(err,result) => {
-            if(err)
+        con.query(query, (err, result) => {
+            if (err)
                 console.log(err.message)
         })
     }
 
-    addHistoryOrderItem(order_id, timeOrder){
+    addHistoryOrderItem(order_id, timeOrder) {
         const query = `update orders set status = 1, created_at = "${timeOrder}" where id = ${order_id}`
-        // console.log(query)
+            // console.log(query)
 
-        con.query(query, (err,result) => {
-            if(err)
+        con.query(query, (err, result) => {
+            if (err)
                 console.log(err)
         })
     }
 
-    async deleteOrder(id){
+    async deleteOrder(id) {
 
         try {
             let query = `select product_id,quantity from orders where id = ${id}`
             const res = await new Promise((resolve, reject) => {
-                con.query(query, (err,result) => {
-                    if(err) console.log(err.message)
-                    else{
+                con.query(query, (err, result) => {
+                    if (err) console.log(err.message)
+                    else {
                         resolve(result)
                     }
                 })
@@ -209,20 +208,20 @@ class QueryDatabase{
 
             query = `update products set quantity = quantity + ${quantity} where id = ${product_id}`
             con.query(query, (err, result) => {
-                if(err) console.log(err.message)
+                if (err) console.log(err.message)
             })
 
             query = `delete from orders where id = ${id}`
             con.query(query, (err, result) => {
-                if(err) console.log(err.message)
+                if (err) console.log(err.message)
             })
 
         } catch (error) {
-            console.dir(error.message)   
+            console.dir(error.message)
         }
     }
 
-    async getAllOrder(){
+    async getAllOrder() {
         const query = `select orders.id as id, user_id, product_id, 
         ( select name from products where products.id = product_id) as name , orders.quantity, created_at
         from orders
@@ -233,8 +232,8 @@ class QueryDatabase{
             const res = await new Promise((resolve, reject) => {
 
                 con.query(query, (err, result) => {
-                    if(err) console.log(err.message)
-                    else{
+                    if (err) console.log(err.message)
+                    else {
                         resolve(result)
                     }
                 })
@@ -245,60 +244,60 @@ class QueryDatabase{
         }
     }
 
-    deleteItem(product_id){
+    deleteItem(product_id) {
         let query = `delete from images where product_id = ${product_id}`
-        // console.log(query)
-        con.query(query, (err,result) => {
-            if(err) console.log(err.message)
+            // console.log(query)
+        con.query(query, (err, result) => {
+            if (err) console.log(err.message)
         })
 
         query = `delete from products where id = ${product_id}`
-        // console.log(query)
-        con.query(query, (err,result) => {
-            if(err) console.log(err.message)
+            // console.log(query)
+        con.query(query, (err, result) => {
+            if (err) console.log(err.message)
         })
     }
 
-    async searchItem(text){
+    async searchItem(text) {
         const query = `select id, name ,price,quantity,manufacturer,description,image from products,images 
         where match(name) against('${text}') and images.product_id = products.id group by id`
 
-        try{
+        try {
             const res = new Promise((resolve, reject) => {
-                con.query(query, (err, result) =>{
-                    if(err) console.dir(err.message)
-                    else{
+                con.query(query, (err, result) => {
+                    if (err) console.dir(err.message)
+                    else {
                         resolve(result)
                     }
                 })
             })
             return res
-        }catch(error){
+        } catch (error) {
             console.dir(error.message)
         }
     }
 
-    pushComment(user_id,product_id, content, time){
+    pushComment(user_id, product_id, content, time) {
         const query = `insert into comments(user_id,product_id, content, created_at) value(${user_id},${product_id},"${content}","${time}")`
-        // console.log(query)
-        con.query(query, (err,result) => {
-            if(err) console.log(err.message)
+            // console.log(query)
+        con.query(query, (err, result) => {
+            if (err) console.log(err.message)
         })
     }
 
-    getComment(product_id){
+    getComment(product_id) {
         const query = `select name,content,created_at from users,comments where product_id = ${product_id} and user_id = users.id`
-        try{
+        try {
             const res = new Promise((resolve, reject) => {
                 con.query(query, (err, result) => {
-                    if(err) console.dir(err.message)
-                    else{
+                    if (err) console.dir(err.message)
+                    else {
                         resolve(result)
                     }
                 })
             })
             return res
-        }catch(err){
+        } catch (err) {
             console.dir(err.message)
         }
     }
