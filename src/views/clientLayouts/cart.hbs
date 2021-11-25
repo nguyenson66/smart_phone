@@ -101,44 +101,62 @@
 </div>
 
 <body>
-    <div class="container">
-        <h4 style="margin:10px 0px 10px 10px">Giỏ Hàng</h4>
+    <div style="margin: 0px 6% 0px 6%;">
+        <h4 style="margin:20px 0px 20px 10px">Giỏ Hàng</h4>
 
-        <div style="background-color: white; padding: 5px;">
 
-            {{#if cart}}
-            <div class="container">
-                <div class="related-products">
-                    {{#each order}}
-                    <div class="product-price-infor row"
-                        style="background-color: white; margin-left: 15px; margin-top: 10px;">
-                        <a href="/item/{{this.product_id}}"><img style="width: 80px;" src="/images/{{this.image}}"
-                                alt=""></a>
-                        <div class="col">
-                            <a href="/item/{{this.product_id}}">
-                                <h5 style="color: black;">{{this.product_name}}</h5>
-                            </a>
-                            <h6 style="color: black;">Giá : <span>{{vnd this.price}}</span><span>đ</span></h6>
-                            <p style="color: black; text-align: left;">Số lượng : {{this.quantity}} chiếc </p>
-                        </div>
-                        <div class="col">
-                            <h6 style="color: black;">Tổng tiền : <span>{{mul this.quantity
-                                    this.price}}</span><span>đ</span></h6>
-                            <h6 style="color: black;">Tình trạng : Đang giao hàng</h6>
-                        </div>
-                        <div class="col" style="text-align: right;">
-                            <button type="button" class="btn btn-danger" data-whatever="{{this.id}}" data-toggle="modal"
-                                data-target="#cancelOrder">
-                                Huỷ đơn
-                            </button>
+        {{#if cart}}
+        <div class="related-products row">
+            <div class="col-9" style="background-color: white; padding: 5px; margin-bottom: 10%; border-radius: 10px;">
+                {{#each cart}}
+                <div class="product-price-infor row" style="background-color: white; margin:0px 10px 0px 10px">
+                    <a href="/item/{{this.id}}"><img style="width: 80px;" src="/images/{{this.image}}" alt=""></a>
+                    <div class="col">
+                        <a href="/item/{{this.id}}">
+                            <h5 style="color: black;">{{this.name}}</h5>
+                        </a>
+                        <h6 style="color: black;">Giá : <span>{{vnd this.price}}</span><span>đ</span></h6>
+                    </div>
+                    <div class="col">
+                        <div class="quantity buttons_added">
+                            <h6 style="color: black;">Số lượng</h6>
+                            <input type="button" value="-" class="minus" style="width: 40px;"><input type="number"
+                                step="1" min="1" max="{{this.quantity}}" name="quantity" value="{{this.quantityCart}}"
+                                title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input
+                                type="button" value="+" class="plus" style="width: 40px;">
                         </div>
                     </div>
-                    <hr>
-                    {{/each}}
+                    <div class="col" style="text-align: right;">
+                        <button type="button" class="btn btn-danger" data-whatever="{{this.id}}" data-toggle="modal"
+                            data-target="#cancelOrder">
+                            Xoá
+                        </button>
+                    </div>
                 </div>
+                <hr>
+                {{/each}}
             </div>
 
-            {{else}}
+            <div class="col-3" style="background-color: #eeeeee;">
+                <div style="background-color: white; border-radius: 10px; padding: 10px;">
+                    <h5>Giao tới :</h5>
+                    <h6>{{user}} - 0989706008</h6>
+                    <p>Xã Hùng Xuyên, Đoan Hùng, Phú Thọ</p>
+                </div>
+                <div style="background-color: white; border-radius: 10px; padding: 10px; margin-top:10px">
+                    <h6>Tổng cộng : 100.000.000</h6>
+                </div>
+                <form action=" /order/{{order_id}}" method="POST">
+                    <button class="btn btn-block" style="background-color: #ff3333; margin-top: 20px;">
+                        <i class="fas fa-shopping-cart"></i>
+                        Mua hàng
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {{else}}
+        <div style="background-color: white; padding: 5px; margin-bottom: 10%; border-radius: 20px;">
             <img src="https://salt.tikicdn.com/desktop/img/mascot@2x.png"
                 style="height: 25%; width: 25%; align-items: center;margin:20px 0px 0px 35%">
             <p style="text-align: center; margin:10px">Không có sản phẩm nào trong giỏ hàng của bạn</p>
@@ -148,9 +166,8 @@
                     Tiếp tục mua sắm
                 </button>
             </form>
-            {{/if}}
         </div>
-
+        {{/if}}
     </div>
 
     <!-- Modal cancel order -->

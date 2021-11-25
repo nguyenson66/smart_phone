@@ -36,7 +36,7 @@ class QueryDatabase{
         try {
             const res = await new Promise((resolve, reject) => {
                 con.query(query, function(err,result) {
-                    if(err) console.dir(err.message)
+                    if(err) console.dir('err get all: ' +  err.message)
                     else{
                         resolve(result)
                     }
@@ -165,20 +165,31 @@ class QueryDatabase{
         }
     }
 
-    orderItem(user_id, product_id, quantity, timeOrder){
-        let query = `insert into orders (user_id, product_id,quantity, status, created_at) values (${user_id},${product_id},${quantity},0,'${timeOrder}')`
-        // console.log(query)
+    addNewOrder(user_id){
+        query = `insert into orders(user_id, status, cost, payment_info, created_at) value(${user_id},0,0,0,'LLL')`
+        console.log(query)
+        try {
+            con.query(query,(err,result) => {
+                if(err)
+                    console.log(err.message)
+            })
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
-        con.query(query, (err,result) => {
-            if(err)
-                console.log(err.message)
-        })
+    orderItem(order_id,timeOrder,cost){
+        let query = `update orders set cost = ${cost}, created_at = '${timeOrder}', status = 1 where id = ${order_id}`
+        console.log(query)
 
-        query = `update products set quantity = quantity - ${quantity} where id = ${product_id}`
-        con.query(query,(err,result) => {
-            if(err)
-                console.log(err.message)
-        })
+        try {
+            con.query(query, (err,result) => {
+                if(err)
+                    console.log(err.message)
+            })
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     addHistoryOrderItem(order_id, timeOrder){
@@ -300,6 +311,55 @@ class QueryDatabase{
             return res
         }catch(err){
             console.dir(err.message)
+        }
+    }
+
+    addProductToCart(user_id, product_id, quantity){
+        const query = `insert into order_detail select id, ${product_id}, ${quantity} from orders where user_id = ${user_id} and status = 0`
+        // console.log(query)
+        try {
+            con.query(query, (err,result) => {
+                if(err) console.log(err.message)
+            })
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    getProductInCart(user_id){
+        const query = `select products.id, name, image , order_detail.quantity as quantityCart, price, products.quantity as quantity from orders, order_detail, products, images
+        where orders.status = 0 and order_detail.order_id = orders.id and orders.user_id = ${user_id} and order_detail.product_id = products.id and products.id = images.product_id
+        group by products.id`
+        // console.log(query)
+
+        try {
+            const res = new Promise((resolve, reject) => {
+                con.query(query, (err, result) => {
+                    if(err) console.log(err.message)
+                    else
+                        resolve(result)
+                })
+            })
+            return res
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    getCostOrder(order_id){
+        const query = `select sum(order_detail.quantity*products.price) as cost from order_detail, products
+        where order_detail.order_id = ${order_id} and order_detail.product_id = products.id`
+
+        try {
+            const res = new Promise((resolve, reject) => {
+                con.query(query,(err,result) => {
+                    if(err) console.log('error get cost : ' + err.message)
+                    else resolve(result)
+                })
+            })
+            return res
+        } catch (error) {
+            console.log(error.message)
         }
     }
 }

@@ -77,15 +77,10 @@ class ClientController{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
 
-            const data_order = await QueryDatabase.getAll(`select orders.id ,products.id as product_id, products.name as product_name,products.price ,image, orders.quantity as quantity from orders,products,images 
-            where orders.user_id = ${user_id} and images.product_id = orders.product_id and products.id = orders.product_id and status = 0
-            group by products.name`)
-
             // console.log(data_order)
 
             res.render('clientLayouts/order',{
-                user : data_user.name,
-                order : data_order
+                user : data_user.name
             })
         }
         
@@ -138,8 +133,29 @@ class ClientController{
 
     //[GET] /cart
     async cart(req,res){
+        const user_token = req.cookies.user_token
+        if(user_token == undefined)
+            res.redirect('/login')
+        else{
+            const data_user = jwt.verify(user_token,'sositech')
+            const user_id = data_user.id
 
-        res.render('clientLayouts/cart')
+            const data = await QueryDatabase.getProductInCart(user_id)
+            const order_id = await QueryDatabase.getAll(`select id from orders where user_id = ${user_id} and status = 0`)
+            // console.log(order_id[0].id)
+
+            if(data.length == 0){
+                res.render('clientLayouts/cart',{
+                    user : data_user.name
+                })
+            }
+
+            res.render('clientLayouts/cart',{
+                user : data_user.name,
+                cart : data,
+                order_id : order_id[0].id
+            })
+        }
     }
 
     //[GET] /profile
@@ -204,7 +220,7 @@ class ClientController{
     }
 
     //[POST] /order/:id
-    orderItemPOST(req,res){
+    async orderItemPOST(req,res){
         const user_token = req.cookies.user_token
         // console.log(req.body)
         if(user_token == undefined)
@@ -212,10 +228,12 @@ class ClientController{
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
-            const item_id = req.params.id
-            const quantity = req.body.quantity
+            const order_id = req.params.id
+            const time = moment().format("LLL")
+            const cost = await QueryDatabase.getCostOrder(order_id)
 
-            QueryDatabase.orderItem(user_id,item_id,quantity,moment().format("LLL"))
+            QueryDatabase.orderItem(order_id,time,cost[0].cost)
+            QueryDatabase.addNewOrder(user_id)
         
             res.redirect('/order')
         }
@@ -235,6 +253,24 @@ class ClientController{
         QueryDatabase.pushComment(user_id,product_id,content,time)
 
         res.redirect('back')
+    }
+    
+    //[POST] /cart/:id
+    async addProductToCart(req,res){
+        const user_token = req.cookies.user_token
+        // console.log(req.body)
+        if(user_token == undefined)
+            res.redirect('/login')
+        else{
+            const data_user = jwt.verify(user_token,'sositech')
+            const user_id = data_user.id
+            const product_id = req.params.id
+            const quantity = req.body.quantity
+
+            QueryDatabase.addProductToCart(user_id, product_id, quantity)
+        
+            res.redirect('/cart')
+        }
     }
 
 }
