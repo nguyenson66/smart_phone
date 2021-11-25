@@ -1,0 +1,77 @@
+{{> headerAdmin}}
+
+<body>
+    <div class="container">
+        <div class="product-compartment row">
+            <span>Thông tin chi tiết đơn hàng</span>
+            <hr class="col ">
+        </div>
+
+        <div class="row">
+            <div class="col-9" style="background-color: white; border-radius: 10px; margin-bottom: 100px;">
+
+                {{#each infor_order.order_detail}}
+                <div class="product-price-infor row" style="margin:0px 10px 10px 10px; padding: 20px;">
+                    {{!-- <a href="/item/{{this.id}}"> --}}
+                        <img style="width: 80px;" src="/images/{{this.image}}" alt="">
+                        {{!-- </a> --}}
+                    <div class="col">
+                        {{!-- <a href="/item/{{this.id}}"> --}}
+                            <h5 style="color: black;">{{this.name}}</h5>
+                            {{!--
+                        </a> --}}
+                        <h6 style="color: black;">Giá : <span>{{vnd this.price}} đ</span></h6>
+                    </div>
+                    <div class="col">
+                        <div class="quantity buttons_added">
+                            <h6 style="color: black;">Số lượng : {{this.quantity}} chiếc</h6>
+                            <h6 style="color: black;">Thành tiền : <span>{{mul this.price
+                                    this.quantity}} đ</span></h6>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {{/each}}
+
+                <div style="margin-bottom: 50px;">
+                    <h5>Thông tin khách hàng :</h5>
+                    <h6 style="text-align: left; margin-left: 20px;">Tên khách hàng : {{infor_user.name}}</h6>
+                    <h6 style="text-align: left; margin-left: 20px;">Số điện thoại : {{infor_user.phone}}</h6>
+                    <h6 style="text-align: left; margin-left: 20px;">Địa chỉ Email: {{infor_user.email}}</h6>
+                    <h6 style="text-align: left; margin-left: 20px;">Địa chỉ : {{infor_user.address}}</h6>
+                </div>
+            </div>
+
+            <div class="col" style="padding-left: 10px;">
+                <div
+                    style="background-color: white; border-radius: 10px; width: 100%; padding: 10px; margin-bottom: 20px;">
+                    <h6>ID đơn hàng : <span style="color: red;">{{infor_order.id}}</span></h6>
+                    <h6>Tình trạng đơn hàng :</h6>
+                    <h6 style="color: red;">{{status infor_order.status}}</h6>
+                    <h6>Phương thức thanh toán : </h6>
+                    <h6 style="color: red;">{{payment infor_order.payment_info}}</h6>
+                    <h6>Thời gian đặt đơn hàng :</h6>
+                    <h6 style="color: red;">{{infor_order.created_at}}</h6>
+                    <h6 style="margin-top: 20px;">Tổng tiền đơn hàng :</h6>
+                    <h6 style="color: red;">{{vnd infor_order.cost}} đ</h6>
+                </div>
+
+                {{#if infor_order.confirm}}
+                <form action=" /admin/confirm-order/{{infor_order.id}}" method="POST">
+                    <button class="btn btn-block" style="background-color: #0bfc83; margin-top: 20px;">
+                        <i class="fas fa-shopping-cart"></i>
+                        Xác nhận đơn hàng
+                    </button>
+                </form>
+                {{else}}
+                <form action=" /admin/delivered/{{infor_order.id}}" method="POST">
+                    <button class="btn btn-block" style="background-color: #ddff01; margin-top: 20px;">
+                        <i class="fas fa-shopping-cart"></i>
+                        Xác nhận đã giao hàng
+                    </button>
+                </form>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</body>

@@ -107,7 +107,7 @@ class ClientController{
         
     }
 
-    //[GET] /historyOrder
+    //[GET] /history-order
     async historyOrder(req,res){
         const user_token = req.cookies.user_token
         if(user_token == undefined)
@@ -115,16 +115,31 @@ class ClientController{
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
+            const infor_order = await QueryDatabase.getAll(`select id, payment_info,status, cost, created_at from orders where user_id = ${user_id} and status = 3`)
+            
+            for(let i=0;i<infor_order.length;i++){
+                const order_id = infor_order[i].id
 
-            const data_order = await QueryDatabase.getAll(`select orders.id ,products.id as product_id, products.name as product_name,products.price ,image, orders.quantity as quantity from orders,products,images 
-            where orders.user_id = ${user_id} and images.product_id = orders.product_id and products.id = orders.product_id and status = 1
-            group by products.name`)
+                const order_detail = await QueryDatabase.getAll(`select name, price, order_detail.quantity, image from order_detail, products, images
+                where order_detail.order_id = ${order_id} and products.id = order_detail.product_id and images.product_id = products.id
+                group by products.id`)
 
-            // console.log(data_order)
+                infor_order[i].order_detail = order_detail
+                // console.log(infor_order[i])
+            }
+
+            // console.log(infor_order[0].order_detail)
+
+
+            if(infor_order.length == 0){
+                res.render('clientLayouts/historyOrder',{
+                    user : data_user.name
+                })
+            }
 
             res.render('clientLayouts/historyOrder',{
                 user : data_user.name,
-                order : data_order
+                infor_order : infor_order
             })
         }      
     }

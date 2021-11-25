@@ -1,7 +1,7 @@
 {{> headerAdmin}}
 
 <div class="product-compartment row" style="margin : 20px 5% 20px 5%">
-    <span>Xác nhận các đơn hàng</span>
+    <span>Quản lí các đơn hàng</span>
     <hr class="col ">
 </div>
 
@@ -32,7 +32,7 @@
                 tiết</a>
             <button type="button" class="btn btn-success" data-toggle="modal" data-whatever="{{this.id}}"
                 data-target="#confirmOrder">
-                Xác nhận
+                Đã giao
             </button>
         </div>
     </div>
@@ -52,7 +52,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Xác nhận đơn hàng, đơn hàng sẽ được giao tới khách hàng
+                Xác nhận đơn hàng đã được giao tới khách hàng ?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -75,7 +75,7 @@
     })
 
     btnSubmitOrder.onclick = () => {
-        form.action = '/admin/confirm-order/' + order_id
+        form.action = '/admin/delivered/' + order_id
         form.submit()
     }
 

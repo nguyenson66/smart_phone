@@ -192,8 +192,8 @@ class QueryDatabase{
         }
     }
 
-    addHistoryOrderItem(order_id, timeOrder){
-        const query = `update orders set status = 1, created_at = "${timeOrder}" where id = ${order_id}`
+    addHistoryOrderItem(order_id){
+        const query = `update orders set status = 3 where id = ${order_id}`
         // console.log(query)
 
         con.query(query, (err,result) => {
@@ -362,6 +362,16 @@ class QueryDatabase{
         } catch (error) {
             console.log(error.message)
         }
+    }
+
+    addToOrder(order_id, time){
+        const query = `update orders set status = 2 where id = ${order_id}`
+        // console.log(query)
+
+        con.query(query, (err,result) => {
+            if(err)
+                console.log('Error add to order : ' + err)
+        })
     }
 }
 

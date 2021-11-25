@@ -55,50 +55,93 @@ class AdminController{
             res.redirect('/home')
         ////////////////////////////////////////
         
-        
-
-        if(role == 1)
-            role = 'Nhân viên'
-        else{
-            role = 'Admin shop'
-            data_order.admin = 'yes'
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
         }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
+        ////////////////////////////////////////
 
-        for(let i=0;i<data_order.length;i++)
-            data_order[i].created_at = moment(data_order[i].created_at,"LLL").fromNow()
+
+        let order = await QueryDatabase.getAll(`select orders.id, users.name, orders.created_at from users, orders where status = 1 and users.id = orders.user_id`)
+        
+        for(let i=0;i<order.length;i++){
+            const order_detail = await QueryDatabase.getAll(`select products.name, price, order_detail.quantity as quantityOrder from order_detail, products
+            where order_detail.order_id = ${order[i].id} and order_detail.product_id = products.id`)
+
+            order[i].order_detail = order_detail
+        }
+        
+        // console.log(order[0])
+
+        if(order.length == 0){
+            res.render('adminLayouts/home',{
+                username : req.cookies.username,
+                role : role
+            })
+        }
 
         res.render('adminLayouts/home',{
             username : req.cookies.username,
-            data_order : data_order,
-            countOrder : data_order.length,
             role : role,
-            sp : sp[0].count
+            order: order
         })
     }
 
     //[GET] /admin/create
     async addItem(req,res){
         //check if user is client => redirect :/
-        const role = await checkAdmin(req.cookies.user_token)
+        let role = await checkAdmin(req.cookies.user_token)
         if(role == 0)
-            res.redirect('/')
+            res.redirect('/home')
+        ////////////////////////////////////////
+        
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
+        }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
         ////////////////////////////////////////
 
 
         res.render('adminLayouts/createItem', {
-            admin : 'yes'
+            username : req.cookies.username,
+            role : role
         })
     }
 
     //[GET] /admin/update/:id
     async updateItem(req,res){
         //check if user is client => redirect :/
-        const role = await checkAdmin(req.cookies.user_token)
+        let role = await checkAdmin(req.cookies.user_token)
         if(role == 0)
-            res.redirect('/')
+            res.redirect('/home')
+        ////////////////////////////////////////
+        
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
+        }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
         ////////////////////////////////////////
 
-        /// loading... ///
+
+        res.render('adminLayouts/createItem', {
+            username : req.cookies.username,
+            role : role
+        })
     }
 
     //[GET] /admin/items
@@ -106,67 +149,176 @@ class AdminController{
         //check if user is client => redirect :/
         let role = await checkAdmin(req.cookies.user_token)
         if(role == 0)
-            res.redirect('/')
+        res.redirect('/home')
+        ////////////////////////////////////////
+        
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
+        }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
         ////////////////////////////////////////
         const data = await QueryDatabase.getAll('select * from products')
-        const sp = await QueryDatabase.getAll(`select count(id) as count from products where quantity between 0 and 10`)
-        
-        if(role == 1)
-            role = 'Nhân viên'
-        else{
-            role = 'Admin shop'
-            data.admin = 'yes'
-        }
 
-        res.render('adminLayouts/itemManager',{
+
+        res.render('adminLayouts/itemManager', {
             username : req.cookies.username,
             role : role,
-            countItem : data.length,
-            dataItem : data,
-            sp : sp[0].count
+            dataItem : data
         })
     }
 
-    //[GET] /admin/users
+    //[GET] /admin/user
     async showUser(req,res){
         //check if user is client => redirect :/
-        const role = await checkAdmin(req.cookies.user_token)
+        let role = await checkAdmin(req.cookies.user_token)
         if(role == 0)
-            res.redirect('/')
+            res.redirect('/home')
+        ////////////////////////////////////////
+        
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
+        }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
         ////////////////////////////////////////
 
-        const data = await QueryDatabase.getAll('select name, email, phone, address from users')
-        res.json(data)
+
+        res.render('adminLayouts/revenue', {
+            username : req.cookies.username,
+            role : role
+        })
     }
 
 
     //[GET] /admin/order
     async showOrder(req,res) {
         //check if user is client => redirect :/
-        const role = await checkAdmin(req.cookies.user_token)
+        let role = await checkAdmin(req.cookies.user_token)
         if(role == 0)
-            res.redirect('/')
+            res.redirect('/home')
+        ////////////////////////////////////////
+        
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
+        }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
         ////////////////////////////////////////
 
-        const data = await QueryDatabase.getAll('select user_id, product_id, quantity from orders')
-        res.json(data)
+        let order = await QueryDatabase.getAll(`select orders.id, users.name, orders.created_at from users, orders where status = 2 and users.id = orders.user_id`)
+        
+        for(let i=0;i<order.length;i++){
+            const order_detail = await QueryDatabase.getAll(`select products.name, price, order_detail.quantity as quantityOrder from order_detail, products
+            where order_detail.order_id = ${order[i].id} and order_detail.product_id = products.id`)
+            
+            order[i].order_detail = order_detail
+        }
+
+        if(order.length == 0){
+            res.render('adminLayouts/orderManager', {
+                username : req.cookies.username,
+                role : role
+            })
+        }
+
+
+        res.render('adminLayouts/orderManager', {
+            username : req.cookies.username,
+            role : role,
+            order : order
+        })
     }
 
-    ///// JUST ADMIN /////
-
-    //[GET] /admin/revenue
-    async revenue(req,res){
-        //check if user is client or staff => redirect :/
-        const role = await checkAdmin(req.cookies.user_token)
-        if(role < 2)
+    //[GET] /admin/order/:id
+    async orderDetail(req,res){
+        //check if user is client => redirect :/
+        let role = await checkAdmin(req.cookies.user_token)
+        if(role == 0)
             res.redirect('/home')
         ////////////////////////////////////////
 
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
+        }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
+        ////////////////////////////////////////
 
-        res.render('adminLayouts/revenue')
+        const order_id = req.params.id
+
+        //get all information of order as order_id
+        let infor_order = await QueryDatabase.getAll(`select id, payment_info,status, cost, created_at from orders where id = ${order_id}`)
+            
+        //get all product in order
+        const order_detail = await QueryDatabase.getAll(`select name, price, order_detail.quantity, image from order_detail, products, images
+        where order_detail.order_id = ${order_id} and products.id = order_detail.product_id and images.product_id = products.id
+        group by products.id`)
+
+        infor_order[0].order_detail = order_detail
+
+        //get information user order
+        const infor_user = await QueryDatabase.getAll(`select name, email, phone, address from users, orders
+        where orders.id = ${order_id} and orders.user_id = users.id`)
+
+        if(infor_order[0].status == 1)
+        infor_order[0].confirm = true
+        
+        // console.log(infor_order[0])
+
+        res.render('adminLayouts/orderDetail', {
+            username : req.cookies.username,
+            role : role,
+            infor_order : infor_order[0],
+            infor_user : infor_user[0]
+        })    
     }
 
-    ///////////////////////
+     /////////////////////// ///// JUST ADMIN ///// ///////////////////////
+
+    //[GET] /admin/revenue
+    async revenue(req,res){
+        //check if user is client => redirect :/
+        let role = await checkAdmin(req.cookies.user_token)
+        if(role == 0)
+            res.redirect('/home')
+        ////////////////////////////////////////
+        
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
+        }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
+        ////////////////////////////////////////
+
+
+        res.render('adminLayouts/revenue', {
+            username : req.cookies.username,
+            role : role
+        })
+    }
+
+    /////////////////////// /////////////////////// ///////////////////////
 
     /////////// POST /////////////
     
@@ -210,9 +362,16 @@ class AdminController{
     }
 
     //[POST] /admin/delivered/:id
-    async delivered(req,res) {
+    delivered(req,res) {
         const order_id = req.params.id
-        QueryDatabase.addHistoryOrderItem(order_id, moment().format("LLL"))
+        QueryDatabase.addHistoryOrderItem(order_id)
+        res.redirect('/admin/order')
+    }
+
+    //[POST] /admin/confirm-order/:id
+    confirmOrder(req,res){
+        const order_id = req.params.id
+        QueryDatabase.addToOrder(order_id)
         res.redirect('/admin')
     }
 }

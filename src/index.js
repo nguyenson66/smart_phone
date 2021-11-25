@@ -53,9 +53,11 @@ app.engine(
             },
             status : (a) => {
                 if(a == 1)
-                    return 'Đang xác nhận đơn hàng'
-                else
+                    return 'Chờ xác nhận đơn hàng'
+                else if(a == 2)
                     return 'Đang giao hàng/ Đã xác nhận đơn hàng'
+                else 
+                    return 'Đã giao hàng'
             }
         },
     })

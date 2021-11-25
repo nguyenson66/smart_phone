@@ -1,0 +1,41 @@
+<header class="header_bg">
+    <div class="dropdown">
+        <button class="dropbtn" style="text-shadow: 2px 2px 5px red;">Admin Controller</button>
+        <div class="dropdown-content" style="border-radius: 10px; margin-left: 5px">
+            <a href="/admin">Xác nhận đơn hàng</a>
+            <a href="/admin/order">Quản lí đơn hàng</a>
+            <a href="/admin/items">Quản lí tất cả các sản phẩm</a>
+            <a href="/admin/create">Thêm sản phẩm vào kho</a>
+            {{#if role.isAdmin}}
+            <hr>
+            <a href="/admin/revenue">Quản lí doanh thu</a>
+            <a href="/admin/user">Quản lí user</a>
+            {{/if}}
+            <hr>
+            <a href="/home" style="margin-bottom: 10px;">Thoát trang admin</a>
+        </div>
+    </div>
+
+</header>
+
+<div class="admin_body container" style="padding: 30px; border-radius: 8px;">
+    <div class="row">
+        <div class="testimonial-container col-8" style="border: 2px solid red; padding: 20px;">
+            <div class="progress-bar"></div>
+            <div class="fas fa-quote-right fa-quote"></div>
+            <div class="fas fa-quote-left fa-quote"></div>
+            <p class="testimonial">
+                Nếu bạn cứ tiếp tục ca thán về cùng một nỗi buồn, cùng một việc nhỏ nhặt, bạn sẽ mãi mãi chìm đắm trong
+                thất
+                bại và sống một cuộc đời nhỏ bé. Hãy luôn nhớ rằng, ngay cả một ngày tồi tệ nhất cũng chỉ có 24 tiếng
+                đồng
+                hồ.
+            </p>
+        </div>
+
+        <div class="col-4">
+            <h5 style="text-align: left; margin-left: 30px; margin-top: 20px">Xin chào, {{username}}</h5>
+            <h5 style="text-align: left; margin-left: 30px;">Chức vụ : {{role.role}}</h5>
+        </div>
+    </div>
+</div>
