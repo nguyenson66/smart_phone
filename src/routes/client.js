@@ -15,7 +15,7 @@ router.get('/profile', ClientController.userProfile)
 
 router.post('/register', ClientController.registerPOST)
 router.post('/login',ClientController.loginPOST)
-router.post('/logout',ClientController.logouPOST)
+router.post('/logout',ClientController.logoutPOST)
 router.post('/order/:id',ClientController.orderItemPOST)
 router.post('/comment/:id',ClientController.comment)
 router.post('/cart/:id', ClientController.addProductToCart)

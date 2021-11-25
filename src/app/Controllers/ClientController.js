@@ -239,7 +239,7 @@ class ClientController{
 
 
     //[POST] /logout
-    logouPOST(req,res){
+    logoutPOST(req,res){
         res.cookie('user_token','', {maxAge : 0})
         res.cookie('username','', {maxAge : 0})
         res.redirect('/home')

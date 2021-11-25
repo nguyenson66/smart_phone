@@ -1,68 +1,71 @@
-<div class="heading-sub container">
-    <div class="row">
-        <div class="logo-web col-lg-1 col-2">
-            <a href="/home">
-                <img src="/image_home/logo_shop_1.png" alt="logo">
-            </a>
-        </div>
-        <div class="search-web col-lg-5 col-6">
-            <form class="input-group" action="/search">
-                <div class="input-group">
-                    <input type="search" id="form-search" class="form-control" name="q" placeholder="Search" />
-                    <button type="submit" class="btn btn-search">
-                        <i class="fas fa-search"></i>
+<div class="container-fluid">
+    <div class="heading-sub container">
+        <div class="row">
+            <div class="logo-web col-lg-1 col-2">
+                <a href="/home">
+                    <img src="/image_home/logo_shop_1.png" alt="logo">
+                </a>
+            </div>
+            <div class="search-web col-lg-5 col-6">
+                <form class="input-group" action="/search">
+                    <div class="input-group">
+                        <input type="search" id="form-search" class="form-control" name="q" placeholder="Search" />
+                        <button type="submit" class="btn btn-search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="car-web col-lg-2 col-1">
+                <a href="/cart">
+                    <button class="btn btn-car">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Giỏ hàng</span>
+                    </button>
+                </a>
+            </div>
+
+
+            <div class="user-infor col-lg-4 row">
+                <div class="col-3"></div>
+                <div class="col-8" id="form-login-user">
+                    {{#if user}}
+                    <div class="dropdown">
+                        <div class="form-inline dropbtn">
+                            <div class="user-infor-sub">
+                                <img src="/images/000ccceb241fa4897a4f1d7a4db601fb.png" alt="">
+                            </div>
+                            <small style="font-size: 17px; color: aqua;">
+                                {{user}}
+                            </small>
+                        </div>
+                        <div class="dropdown-content" style="border-radius: 10px;">
+                            <a href="/order" style="font-size: 15px; color: black; text-align: center;">Đơn hàng</a>
+                            <a href="/history-order" style="font-size: 15px; color: black; text-align: center;">Lịch sử
+                                mua hàng</a>
+                            <a href="/profile" style="font-size: 15px; color: black; text-align: center;">Hồ sơ cá
+                                nhân</a>
+                            <form action="/logout" method="post" style="text-align: center;">
+                                <button type="submit" class="btn btn-link">
+                                    <small style="font-size: 15px; color: black; text-align: center;">Đăng xuất</small>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="form inline">
+                        <a href="/login" style="font-size: 15px; color: aqua;">Đăng nhập /</a>
+                        <a href="/register" style="font-size: 15px; color: aqua;"> Đăng ký</a>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="btn-menu col-2">
+                    <button class="btn">
+                        <i class="fas fa-bars"></i>
+                        <span>Menu</span>
                     </button>
                 </div>
-            </form>
-        </div>
-        <div class="car-web col-lg-2 col-1">
-            <a href="/cart">
-                <button class="btn btn-car">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Giỏ hàng</span>
-                </button>
-            </a>
-        </div>
-
-
-        <div class="user-infor col-lg-4 row">
-            <div class="col-3"></div>
-            <div class="col-8" id="form-login-user">
-                {{#if user}}
-                <div class="dropdown">
-                    <div class="form-inline dropbtn">
-                        <div class="user-infor-sub">
-                            <img src="/images/000ccceb241fa4897a4f1d7a4db601fb.png" alt="">
-                        </div>
-                        <small style="font-size: 17px; color: aqua;">
-                            {{user}}
-                        </small>
-                    </div>
-                    <div class="dropdown-content" style="border-radius: 10px;">
-                        <a href="/order" style="font-size: 15px; color: black; text-align: center;">Đơn hàng</a>
-                        <a href="/history-order" style="font-size: 15px; color: black; text-align: center;">Lịch sử
-                            mua hàng</a>
-                        <a href="/profile" style="font-size: 15px; color: black; text-align: center;">Hồ sơ cá
-                            nhân</a>
-                        <form action="/logout" method="post" style="text-align: center;">
-                            <button type="submit" class="btn btn-link">
-                                <small style="font-size: 15px; color: black; text-align: center;">Đăng xuất</small>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                {{else}}
-                <div class="form inline">
-                    <a href="/login" style="font-size: 15px; color: aqua;">Đăng nhập /</a>
-                    <a href="/register" style="font-size: 15px; color: aqua;"> Đăng ký</a>
-                </div>
-                {{/if}}
-            </div>
-            <div class="btn-menu col-2">
-                <button class="btn">
-                    <i class="fas fa-bars"></i>
-                    <span>Menu</span>
-                </button>
             </div>
         </div>
     </div>
+</div>
