@@ -160,6 +160,7 @@ header {
     position: relative;
     z-index: 9;
 }
+
 .user-infor-sub::after {
     content: '';
     position: absolute;
@@ -172,6 +173,7 @@ header {
     z-index: -1;
     border-radius: 50%;
 }
+
 .user-infor-sub img {
     border-radius: 50%;
 }

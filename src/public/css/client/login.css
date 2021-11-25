@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
-
 * {
     box-sizing: border-box;
 }
@@ -23,14 +22,16 @@
     border-radius: 5px;
 }
 
+.container-login form {
+    margin-top: 50px;
+}
+
 .container h1 {
     text-align: center;
-    margin-bottom: 10px;
 }
 
 .container p {
     text-align: center;
-    margin-bottom: 30px;
 }
 
 .container a {
@@ -41,7 +42,7 @@
 .btn-login {
     cursor: pointer;
     display: inline-block;
-    width: 95%;
+    width: 100%;
     background: lightblue;
     padding: 15px;
     font-family: inherit;
@@ -74,8 +75,8 @@
     border-bottom: 2px #fff solid;
     display: block;
     width: 100%;
-    padding: 15px 0;
-    font-size: 18px;
+    padding: 0.1rem 0.3rem;
+    font-size: 16px;
     color: #fff;
 }
 
@@ -87,7 +88,7 @@
 
 .form-control-login label {
     position: absolute;
-    top: 15px;
+    top: 0px;
     left: 0;
     pointer-events: none;
 }
@@ -99,8 +100,8 @@
     transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.form-control-login input:focus + label span,
-.form-control-login input:valid + label span {
+.form-control-login input:focus+label span,
+.form-control-login input:valid+label span {
     color: lightblue;
     transform: translateY(-30px);
 }
