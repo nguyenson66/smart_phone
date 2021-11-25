@@ -150,10 +150,10 @@ class QueryDatabase{
     }
 
 
-    async register(name,email,phone,password,address,role){
+    async register(name,email,phone,password,address,role,avatar){
         try {
             await new Promise((resolve,reject) => {
-                const query = `insert into users (name,email, password,phone, address,role) values ('${name}', '${email}','${password}', '${phone}','${address}','${role}')`
+                const query = `insert into users (name,email, password,phone, address,role,avatar) values ('${name}', '${email}','${password}', '${phone}','${address}','${role}','${avatar}')`
                 console.log(query)
                 con.query(query, (err,result) => {
                     if(err)
@@ -166,8 +166,8 @@ class QueryDatabase{
     }
 
     addNewOrder(user_id){
-        query = `insert into orders(user_id, status, cost, payment_info, created_at) value(${user_id},0,0,0,'LLL')`
-        console.log(query)
+        const query = `insert into orders(user_id, status, cost, payment_info, created_at) value(${user_id},0,0,0,'LLL')`
+        // console.log(query)
         try {
             con.query(query,(err,result) => {
                 if(err)
@@ -349,6 +349,7 @@ class QueryDatabase{
     getCostOrder(order_id){
         const query = `select sum(order_detail.quantity*products.price) as cost from order_detail, products
         where order_detail.order_id = ${order_id} and order_detail.product_id = products.id`
+        console.log(query)
 
         try {
             const res = new Promise((resolve, reject) => {

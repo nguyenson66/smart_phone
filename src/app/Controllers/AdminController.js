@@ -54,8 +54,9 @@ class AdminController{
         if(role == 0)
             res.redirect('/home')
         ////////////////////////////////////////
-        const data_order = await QueryDatabase.getAllOrder()
-        const sp = await QueryDatabase.getAll(`select count(id) as count from products where quantity between 0 and 10`)
+        
+        
+
         if(role == 1)
             role = 'Nhân viên'
         else{

@@ -76,11 +76,32 @@ class ClientController{
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
+            const infor_order = await QueryDatabase.getAll(`select id, payment_info,status, cost, created_at from orders where user_id = ${user_id} and (status = 1 or status = 2)`)
+            
+            for(let i=0;i<infor_order.length;i++){
+                const order_id = infor_order[i].id
 
-            // console.log(data_order)
+                const order_detail = await QueryDatabase.getAll(`select name, price, order_detail.quantity, image from order_detail, products, images
+                where order_detail.order_id = ${order_id} and products.id = order_detail.product_id and images.product_id = products.id
+                group by products.id`)
+
+                infor_order[i].order_detail = order_detail
+                // console.log(infor_order[i])
+            }
+
+            // console.log(infor_order[0].order_detail)
+
+
+            if(infor_order.length == 0){
+                res.render('clientLayouts/order',{
+                    user : data_user.name
+                })
+            }
+
 
             res.render('clientLayouts/order',{
-                user : data_user.name
+                user : data_user.name,
+                infor_order : infor_order
             })
         }
         
@@ -140,9 +161,14 @@ class ClientController{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
 
+            const check = await QueryDatabase.getAll(`select count(*) as count from orders where user_id = ${user_id} and status = 0`)
+            // console.log(check[0].count)
+            if(check[0].count == 0)
+                await QueryDatabase.addNewOrder(user_id)
+
             const data = await QueryDatabase.getProductInCart(user_id)
             const order_id = await QueryDatabase.getAll(`select id from orders where user_id = ${user_id} and status = 0`)
-            // console.log(order_id[0].id)
+            // console.log(order_id)
 
             if(data.length == 0){
                 res.render('clientLayouts/cart',{
@@ -202,7 +228,7 @@ class ClientController{
         const data = await QueryDatabase.getAll(`select count(*) as countuser from users where phone = '${phone}' or email = '${email}'`)
         
         if(data[0].countuser == 0){
-            QueryDatabase.register(name,email,phone,password,address,role)
+            QueryDatabase.register(name,email,phone,password,address,role,'null')
             res.redirect('/login')
         }
         else{
@@ -231,6 +257,7 @@ class ClientController{
             const order_id = req.params.id
             const time = moment().format("LLL")
             const cost = await QueryDatabase.getCostOrder(order_id)
+            // console.log(cost)
 
             QueryDatabase.orderItem(order_id,time,cost[0].cost)
             QueryDatabase.addNewOrder(user_id)
@@ -266,6 +293,11 @@ class ClientController{
             const user_id = data_user.id
             const product_id = req.params.id
             const quantity = req.body.quantity
+
+            const check = await QueryDatabase.getAll(`select count(*) as count from orders where user_id = ${user_id} and status = 0`)
+            // console.log(check[0].count)
+            if(check[0].count == 0)
+                QueryDatabase.addNewOrder(user_id)
 
             QueryDatabase.addProductToCart(user_id, product_id, quantity)
         

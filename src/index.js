@@ -43,6 +43,20 @@ app.engine(
                 }
                 return res.split("").reverse().join("");
             },
+            payment : (a) => {
+                if(a == 0)
+                    return 'Thanh toán khi nhận hàng'
+                else if(a == 1)
+                    return 'Thanh toán online'
+                else
+                    return 'Mua tại cửa hàng'
+            },
+            status : (a) => {
+                if(a == 1)
+                    return 'Đang xác nhận đơn hàng'
+                else
+                    return 'Đang giao hàng/ Đã xác nhận đơn hàng'
+            }
         },
     })
 );

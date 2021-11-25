@@ -5,43 +5,61 @@
 <body>
     <div class="container">
         <div class="product-compartment row">
-            <span>Sản phẩm bạn đặt mua</span>
+            <span>Sản phẩm đặt mua</span>
             <hr class="col ">
         </div>
 
-        <div style="background-color: white; padding: 5px;">
+        <div class="container">
+            {{#if infor_order}}
 
-            <div class="container">
-                <div class="related-products">
-                    {{#each order}}
-                    <div class="product-price-infor row"
-                        style="background-color: white; margin-left: 15px; margin-top: 10px;">
-                        <a href="/item/{{this.product_id}}"><img style="width: 80px;" src="/images/{{this.image}}"
-                                alt=""></a>
+            {{#each infor_order}}
+            <div style="background-color: white; padding: 10px; margin-bottom: 10px; border-radius: 10px;">
+                {{#each this.order_detail}}
+                <div>
+                    <div class="product-price-infor row" style="background-color: white; margin:0px 10px 10px 10px">
+                        {{!-- <a href="/item/{{this.id}}"> --}}
+                            <img style="width: 80px;" src="/images/{{this.image}}" alt="">
+                            {{!-- </a> --}}
                         <div class="col">
-                            <a href="/item/{{this.product_id}}">
-                                <h5 style="color: black;">{{this.product_name}}</h5>
-                            </a>
-                            <h6 style="color: black;">Giá : <span>{{vnd this.price}}</span><span>đ</span></h6>
-                            <p style="color: black; text-align: left;">Số lượng : {{this.quantity}} chiếc </p>
+                            {{!-- <a href="/item/{{this.id}}"> --}}
+                                <h5 style="color: black;">{{this.name}}</h5>
+                                {{!--
+                            </a> --}}
+                            <h6 style="color: black;">Giá : <span>{{vnd this.price}} đ</span></h6>
                         </div>
                         <div class="col">
-                            <h6 style="color: black;">Tổng tiền : <span>{{mul this.quantity
-                                    this.price}}</span><span>đ</span></h6>
-                            <h6 style="color: black;">Tình trạng : Đang giao hàng</h6>
-                        </div>
-                        <div class="col" style="text-align: right;">
-                            <button type="button" class="btn btn-danger" data-whatever="{{this.id}}" data-toggle="modal"
-                                data-target="#cancelOrder">
-                                Huỷ đơn
-                            </button>
+                            <div class="quantity buttons_added">
+                                <h6 style="color: black;">Số lượng : {{this.quantity}} chiếc</h6>
+                                <h6 style="color: black;">Thành tiền : <span>{{mul this.price
+                                        this.quantity}} đ</span></h6>
+                            </div>
                         </div>
                     </div>
-                    <hr>
-                    {{/each}}
                 </div>
-            </div>
+                <hr>
+                {{/each}}
 
+                <h6 style="text-align: right;">Tình trạng : {{status this.status}}</h6>
+                <h6 style="text-align: right;">Phương thức thanh toán : {{payment this.payment_info}}</h6>
+                <h6 style="text-align: right;">Tổng tiền cần thanh toán : <span style="color: red;">{{vnd this.cost}}
+                        đ</span></h6>
+
+            </div>
+            {{/each}}
+
+            {{else}}
+            <div>
+                <img src="https://salt.tikicdn.com/desktop/img/mascot@2x.png"
+                    style="height: 25%; width: 25%; align-items: center;margin:20px 0px 0px 35%">
+                <p style="text-align: center; margin:10px">Bạn chưa đặt mua sản phẩm nào</p>
+                <form action="/home" style="text-align: center; margin:20px">
+                    <button type="submit"
+                        style="background-color: yellow; border-radius: 10px; padding: 5px 30px 5px 30px;">
+                        Mua sắm ngay
+                    </button>
+                </form>
+            </div>
+            {{/if}}
         </div>
     </div>
 
