@@ -117,9 +117,8 @@
                 <div class="card-body ">
                     <h5 class="card-title" style="color: black;">{{this.name}}</h5>
                     <span class="product-price">{{vnd this.price}}</span><span> đ</span> <br>
-                    <a href="/item/{{this.id}}" id="statusItem" class="btn btn-block stretched-link ">Số lượng
-                        còn lại :
-                        {{this.quantity}}</a>
+                    <a href="/item/{{this.id}}" id="statusItem" class="btn btn-block stretched-link ">
+                        {{check this.quantity}}</a>
                     <h6 class="card-text" style="text-align: center;">{{this.description}}</h6>
                 </div>
             </div>

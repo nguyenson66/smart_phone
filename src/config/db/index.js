@@ -33,6 +33,7 @@ class QueryDatabase{
     }
 
     async getAll(query){
+        // console.log(query)
         try {
             const res = await new Promise((resolve, reject) => {
                 con.query(query, function(err,result) {
@@ -371,6 +372,22 @@ class QueryDatabase{
         con.query(query, (err,result) => {
             if(err)
                 console.log('Error add to order : ' + err)
+        })
+    }
+
+    updateProfile(user_id, name, email, address, filename){
+        const query = `update users set name = '${name}', email = '${email}', address = '${address}', avatar = '${filename}' where id = ${user_id}`
+        con.query(query, (err, result) => {
+            if(err)
+                console.log('error update user ' +  err.message)
+        })
+    }
+
+    updateProfileNoAvatar(user_id, name, email, address){
+        const query = `update users set name = '${name}', email = '${email}', address = '${address}' where id = ${user_id}`
+        con.query(query, (err, result) => {
+            if(err)
+                console.log('error update user ' +  err.message)
         })
     }
 }

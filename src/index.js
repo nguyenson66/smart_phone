@@ -58,6 +58,12 @@ app.engine(
                     return 'Đang giao hàng/ Đã xác nhận đơn hàng'
                 else 
                     return 'Đã giao hàng'
+            },
+            check : (a) => {
+                if(a > 0)
+                    return 'Còn hàng'
+                else 
+                    return 'Hết hàng'
             }
         },
     })

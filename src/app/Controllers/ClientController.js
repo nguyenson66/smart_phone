@@ -1,6 +1,8 @@
 const QueryDatabase = require('../../config/db')
 const jwt = require('jsonwebtoken')
 const moment = require('moment')
+const fs = require('fs')
+const path = require('path')
 
 class ClientController{
 
@@ -12,16 +14,21 @@ class ClientController{
         
         const data = await QueryDatabase.getItem(page)
 
-        const username = req.cookies.username
-        if(username == undefined){
+        const user_token = req.cookies.user_token
+
+        if(user_token == undefined){
             res.render('clientLayouts/home',{
                 items: data
             })
         }
         else{
+            const data_user = jwt.verify(user_token,'sositech')
+            const user_infor = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+            // console.log(user_infor)
+
             res.render('clientLayouts/home',{
                 items: data,
-                user : username
+                user : user_infor[0]
             })
         }
 
@@ -48,8 +55,9 @@ class ClientController{
 
         // console.log(image_item[0].image)
 
-        const username = req.cookies.username
-        if(username == undefined){
+        const user_token = req.cookies.user_token
+
+        if(user_token == undefined){
             res.render('clientLayouts/showItem',{
                 item : data[0],
                 image : image_item,
@@ -58,10 +66,13 @@ class ClientController{
             })
         }
         else{
+            const data_user = jwt.verify(user_token,'sositech')
+            const user_infor = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+
             res.render('clientLayouts/showItem',{
                 item : data[0],
                 image : image_item,
-                user : username,
+                user : user_infor[0],
                 comment : comment,
                 countComment : comment.length
             })
@@ -76,6 +87,8 @@ class ClientController{
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
+            const user_infor = await QueryDatabase.getAll(`select name, avatar from users where id = ${user_id}`)
+
             const infor_order = await QueryDatabase.getAll(`select id, payment_info,status, cost, created_at from orders where user_id = ${user_id} and (status = 1 or status = 2)`)
             
             for(let i=0;i<infor_order.length;i++){
@@ -94,13 +107,13 @@ class ClientController{
 
             if(infor_order.length == 0){
                 res.render('clientLayouts/order',{
-                    user : data_user.name
+                    user : user_infor[0]
                 })
             }
 
 
             res.render('clientLayouts/order',{
-                user : data_user.name,
+                user : user_infor[0],
                 infor_order : infor_order
             })
         }
@@ -115,6 +128,9 @@ class ClientController{
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
+            const user_infor = await QueryDatabase.getAll(`select name, avatar from users where id = ${user_id}`)
+
+
             const infor_order = await QueryDatabase.getAll(`select id, payment_info,status, cost, created_at from orders where user_id = ${user_id} and status = 3`)
             
             for(let i=0;i<infor_order.length;i++){
@@ -133,12 +149,12 @@ class ClientController{
 
             if(infor_order.length == 0){
                 res.render('clientLayouts/historyOrder',{
-                    user : data_user.name
+                    user : user_infor[0]
                 })
             }
 
             res.render('clientLayouts/historyOrder',{
-                user : data_user.name,
+                user : user_infor[0],
                 infor_order : infor_order
             })
         }      
@@ -151,18 +167,22 @@ class ClientController{
             key_search = req.query.manufacturer
 
         const data = await QueryDatabase.searchItem(key_search)
-        const username = req.cookies.username
-        if(username == undefined){
+        const user_token = req.cookies.user_token
+
+        if(user_token == undefined){
             res.render('clientLayouts/search',{
                 key_search : key_search,
                 items: data
             })
         }
         else{
+            const data_user = jwt.verify(user_token,'sositech')
+            const user_infor = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+
             res.render('clientLayouts/search',{
                 key_search : key_search,
                 items: data,
-                user : username
+                user : user_infor[0]
             })
         }
     }
@@ -175,6 +195,7 @@ class ClientController{
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
+            const user_infor = await QueryDatabase.getAll(`select name, avatar from users where id = ${user_id}`)
 
             const check = await QueryDatabase.getAll(`select count(*) as count from orders where user_id = ${user_id} and status = 0`)
             // console.log(check[0].count)
@@ -187,12 +208,12 @@ class ClientController{
 
             if(data.length == 0){
                 res.render('clientLayouts/cart',{
-                    user : data_user.name
+                    user : user_infor[0]
                 })
             }
 
             res.render('clientLayouts/cart',{
-                user : data_user.name,
+                user : user_infor[0],
                 cart : data,
                 order_id : order_id[0].id
             })
@@ -200,9 +221,27 @@ class ClientController{
     }
 
     //[GET] /profile
-    userProfile(req,res){
-        
-        res.render('clientLayouts/userProfile')
+    async userProfile(req,res){
+        const user_token = req.cookies.user_token
+        if(user_token == undefined)
+            res.redirect('/login')
+
+        const data_user = jwt.verify(user_token,'sositech')
+        const user_id = data_user.id
+
+        const user_data = await QueryDatabase.getAll(`select name, phone, email, address, avatar from users where id = ${user_id}`)
+        // console.log(user_data)
+
+        res.render('clientLayouts/userProfile',{
+            user : user_data[0],
+            user_data : user_data[0]
+        })
+    }
+
+    //[GET] /change-password
+    async changePassword(req,res){
+ 
+        res.render('clientLayouts/changePassword')
     }
 
 
@@ -219,12 +258,10 @@ class ClientController{
         }
         else{
             const token = jwt.sign({
-                id : result[0].id,
-                name : result[0].name
+                id : result[0].id
             }, 'sositech', { expiresIn: '2h' })
             
             res.cookie('user_token', token, { expires: new Date(Date.now() + 7200000)})
-            res.cookie('username',result[0].name, { expires: new Date(Date.now() + 7200000) })
 
             res.redirect('/home')
         }
@@ -318,6 +355,49 @@ class ClientController{
         
             res.redirect('/cart')
         }
+    }
+
+    //[POST] /change-profile
+    async changeProfile(req,res){
+        const user_token = req.cookies.user_token
+        if(user_token == undefined)
+            res.redirect('/login')
+
+        const data_user = jwt.verify(user_token,'sositech')
+        const user_id = data_user.id
+
+        const name = req.body.name
+        const email = req.body.email
+        const address = req.body.address
+
+        
+        if(req.file != undefined){
+            // console.log(req.file)
+            const tempPath = req.file.path
+            const filename = req.file.filename + '.png'
+            fs.rename(tempPath,tempPath+'.png', err => {
+                if(err)
+                    console.dir(err.message)
+            })
+
+            const old_avatar = await QueryDatabase.getAll(`select avatar from users where id = ${user_id}`)
+            // console.log(old_avatar)
+            // console.log(path.join(__dirname + '../../../public/avatar'))
+            if(old_avatar[0].avatar != '1.png'){
+                fs.unlink(path.join(__dirname + '../../../public/avatar/' + old_avatar[0].avatar), (err) =>{
+                    if(err) console.log('error delete avatar' + err.message)
+                })
+            }
+
+
+            QueryDatabase.updateProfile(user_id, name,email, address, filename)
+        }
+        else{
+            QueryDatabase.updateProfileNoAvatar(user_id,name,email,address)
+        }
+        
+
+        res.redirect('/profile')
     }
 
 }

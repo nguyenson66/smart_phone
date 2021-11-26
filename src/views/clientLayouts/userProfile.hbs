@@ -1,3 +1,72 @@
 <header class="container-fluid">
     {{> header}}
 </header>
+
+<div class="container">
+    <div class="user-profile row" style="margin-top: 20px; border-radius: 10px;">
+        <div class="title-user-profile">
+            <h6>Hồ sơ của tôi</h6>
+            <span>Quản lý thông tin hồ sơ để bảo vệ tài khoản</span>
+        </div>
+        <hr>
+        <div class="change-password"><a href="/change-password">Đổi mật khẩu</a></div>
+
+
+        <form action="/change-profile" method="POST" enctype="multipart/form-data">
+            <div class="replace-img-user">
+                <div class="img-user" style="margin-left: 50%;">
+                    <img id="blah" src="/avatar/{{user_data.avatar}}" alt="your image" />
+                </div>
+                <input accept="image/*" type='file' id="imgInp" style="margin: 30px 0px 0px 30%;" name="avatar"
+                    aria-label="Upload" />
+            </div>
+            <table>
+                <tr class="adress-profile">
+                    <td>Tên khách hàng :</td>
+                    <td>
+                        <input type="text" name="name" id="" placeholder="VD : smartphone@gmail.com"
+                            value="{{user_data.name}}">
+                    </td>
+                </tr>
+                <tr class="adress-profile">
+                    <td>Email :</td>
+                    <td>
+                        <input type="text" name="email" id="" placeholder="VD : smartphone@gmail.com"
+                            value="{{user_data.email}}">
+                    </td>
+                </tr>
+                <tr class="profile-numberphone">
+                    <td>Số điện thoại :</td>
+                    <td>{{user_data.phone}}</td>
+                </tr>
+
+                <tr class="adress-profile">
+                    <td>Địa chỉ :</td>
+                    <td>
+                        <input type="text" name="address" id=""
+                            placeholder="VD : Số nhà 86, Ngõ 68, Phường Điểm Cao, Hà Đông, Hà Nội"
+                            value="{{user_data.address}}">
+                    </td>
+                </tr>
+            </table>
+
+
+            <button class="btn btn-save-profile-user" type="submit">Lưu</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const imgInp = document.querySelector('#imgInp')
+    const blah = document.querySelector('#blah')
+
+    imgInp.onchange = evt => {
+        const [file] = imgInp.files
+        if (file) {
+            blah.src = URL.createObjectURL(file)
+        }
+    }
+</script>
+
+
+<footer class="container-fluid "></footer>
