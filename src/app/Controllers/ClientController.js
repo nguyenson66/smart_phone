@@ -274,17 +274,17 @@ class ClientController{
         const phone = req.body.phone
         const password = req.body.password
         const name = req.body.name
-        const address = req.body.address
         const role = 'client'
+        const avatar = '1.png'
 
         const data = await QueryDatabase.getAll(`select count(*) as countuser from users where phone = '${phone}' or email = '${email}'`)
         
         if(data[0].countuser == 0){
-            QueryDatabase.register(name,email,phone,password,address,role,'null')
+            QueryDatabase.register(name,email,phone,password,'',role,avatar)
             res.redirect('/login')
         }
         else{
-            res.cookie("error",'Tài khoản đã tồn tại', { expires: new Date(Date.now() + 7200000)})
+            res.cookie("errorRegister",'Tài khoản đã tồn tại', { expires: new Date(Date.now() + 7200000)})
             res.redirect('back')
         }
     }

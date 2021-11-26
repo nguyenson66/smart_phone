@@ -3,6 +3,10 @@
         <p id="error" style="text-align: center; color: red;"></p>
         <form method="POST" action="/register">
             <div class="form-control-login">
+                <input type="text" name="name" required>
+                <label>Your Name</label>
+            </div>
+            <div class="form-control-login">
                 <input type="text" name="email" required>
                 <label>Email</label>
             </div>
@@ -15,16 +19,6 @@
                 <input type="password" name="password" required>
                 <label>Password</label>
             </div>
-
-            <div class="form-control-login">
-                <input type="text" name="name" required>
-                <label>Your Name</label>
-            </div>
-            {{!--
-            <div class="form-control-login">
-                <input type="text" name="address">
-                <label>Address</label>
-            </div> --}}
 
 
             <button class="btn-login">Register</button>
@@ -42,5 +36,29 @@
             .map((letter, idx) => `<span style="transition-delay:${idx * 50}ms">${letter}</span>`)
             .join('')
     })
-        ////// set error ////////
+    ////// set error ////////
+
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    const er = document.getElementById('error')
+    const cookie_error = getCookie("errorRegister")
+
+    if (cookie_error != '') {
+        er.innerHTML = "Tài khoản đã tồn tại"
+        document.cookie = "errorRegister=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
 </script>
