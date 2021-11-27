@@ -1,3 +1,4 @@
+const { query } = require('express')
 const mysql = require('mysql')
 
 const con = mysql.createConnection({
@@ -339,6 +340,28 @@ class QueryDatabase{
                     if(err) console.log(err.message)
                     else
                         resolve(result)
+                })
+            })
+            return res
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    getHotProductOrder(textLike){
+        const query = `select product_id, name , sum(order_detail.quantity) as sum from products, order_detail, orders
+        where orders.created_at like '${textLike}' and order_detail.order_id = orders.id and products.id = order_detail.product_id
+        group by products.id
+        order by sum desc
+        limit 10`
+
+        // console.log(query)
+
+        try {
+            const res = new Promise((resolve, reject) => {
+                con.query(query,(err,result) => {
+                    if(err) console.log('error get hot product order : ' + err.message)
+                    else resolve(result)
                 })
             })
             return res

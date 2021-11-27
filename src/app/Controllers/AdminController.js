@@ -32,12 +32,6 @@ async function checkAdmin(token){
     return data
 }
 
-function getIDAdmin(token){
-
-    const decoded = jwt.verify(token,'sositech')
-    return decoded
-}
-
 
 class AdminController{
 
@@ -78,16 +72,21 @@ class AdminController{
         
         // console.log(order[0])
 
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
+
         if(order.length == 0){
             res.render('adminLayouts/home',{
-                username : req.cookies.username,
-                role : role
+                user : user_admin[0]
             })
         }
 
         res.render('adminLayouts/home',{
-            username : req.cookies.username,
-            role : role,
+            user : user_admin[0],
             order: order
         })
     }
@@ -111,10 +110,16 @@ class AdminController{
         }
         ////////////////////////////////////////
 
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
+
 
         res.render('adminLayouts/createItem', {
-            username : req.cookies.username,
-            role : role
+            user : user_admin[0]
         })
     }
 
@@ -136,11 +141,16 @@ class AdminController{
             }
         }
         ////////////////////////////////////////
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
 
 
         res.render('adminLayouts/createItem', {
-            username : req.cookies.username,
-            role : role
+            user : user_admin[0]
         })
     }
 
@@ -165,9 +175,16 @@ class AdminController{
         const data = await QueryDatabase.getAll('select * from products')
 
 
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
+
+
         res.render('adminLayouts/itemManager', {
-            username : req.cookies.username,
-            role : role,
+            user : user_admin[0],
             dataItem : data
         })
     }
@@ -191,10 +208,16 @@ class AdminController{
         }
         ////////////////////////////////////////
 
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
+
 
         res.render('adminLayouts/revenue', {
-            username : req.cookies.username,
-            role : role
+            user : user_admin[0]
         })
     }
 
@@ -227,17 +250,23 @@ class AdminController{
             order[i].order_detail = order_detail
         }
 
+        //// get information admin
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
+
         if(order.length == 0){
             res.render('adminLayouts/orderManager', {
-                username : req.cookies.username,
-                role : role
+                user : user_admin[0]
             })
         }
 
 
         res.render('adminLayouts/orderManager', {
-            username : req.cookies.username,
-            role : role,
+            user : user_admin[0],
             order : order
         })
     }
@@ -282,9 +311,15 @@ class AdminController{
         
         // console.log(infor_order[0])
 
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
+
         res.render('adminLayouts/orderDetail', {
-            username : req.cookies.username,
-            role : role,
+            user : user_admin[0],
             infor_order : infor_order[0],
             infor_user : infor_user[0]
         })    
@@ -311,10 +346,41 @@ class AdminController{
         }
         ////////////////////////////////////////
 
+        //get info user admin
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
+
+        // get data
+
+        const time_now  = moment().format("LLL").split(' ')
+        const time_day = time_now[0] + ' ' + time_now[1] + ' ' + time_now[2]
+        // const time_month = [time_now[0],time_now[2]]
+        // console.log(time_day, time_month)
+
+        const order_today = await QueryDatabase.getAll(`select count(*) as count, sum(cost) as cost from orders where created_at like '${time_day}%'`)
+        const order_month = await QueryDatabase.getAll(`select count(*) as count , sum(cost) as cost from orders where created_at like '${time_now[0]}%${time_now[2]}%'`)
+        const hot_day = await QueryDatabase.getHotProductOrder(`${time_day}%`)
+        const hot_month = await QueryDatabase.getHotProductOrder(`${time_now[0]}%${time_now[2]}%`)
+        // console.log(hot_day, hot_month)
+
+        let revenue = {
+            order_today : order_today[0].count,
+            order_month : order_month[0].count,
+            cost_today : order_today[0].cost,
+            cost_month : order_month[0].cost
+        }
+
+        // console.log(revenue)
 
         res.render('adminLayouts/revenue', {
-            username : req.cookies.username,
-            role : role
+            user : user_admin[0],
+            revenue : revenue,
+            hot_day : hot_day,
+            hot_month : hot_month
         })
     }
 

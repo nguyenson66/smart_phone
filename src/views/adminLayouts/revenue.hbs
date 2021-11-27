@@ -1,42 +1,91 @@
 {{> headerAdmin}}
 
-<div class="container"
-    style="padding: 20px; background-color: white; margin-top: 20px; margin-bottom: 50px; border-radius: 10px;">
+<body>
+    <div class="container"
+        style="padding: 20px; background-color: white; margin-top: 20px; margin-bottom: 50px; border-radius: 10px;">
 
 
-    <div class="product-compartment row">
-        <span>Quản lí doanh thu</span>
-        <hr class="col ">
-    </div>
+        <div class="product-compartment row">
+            <span>Quản lí doanh thu</span>
+            <hr class="col ">
+        </div>
 
-    <div class="row">
-        <div class="col-3">
-            <div class="counter orderday">
-                <p>Số đơn hàng hôm nay</p>
-                <h2>0</h2>
+        <div class="row">
+            <div class="col-3">
+                <div class="counter orderday">
+                    <p>Số đơn hàng hôm nay</p>
+                    <h2>0</h2>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="counter revenueday">
+                    <p>Doanh thu hôm nay</p>
+                    <h2>0</h2>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="counter ordermonth">
+                    <p>Số đơn hàng tháng này</p>
+                    <h2>0</h2>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="counter revenuemonth">
+                    <p>Doanh thu tháng này</p>
+                    <h2>0</h2>
+                </div>
             </div>
         </div>
-        <div class="col-3">
-            <div class="counter revenueday">
-                <p>Doanh thu hôm nay</p>
-                <h2>0</h2>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="counter ordermonth">
-                <p>Số đơn hàng tháng này</p>
-                <h2>0</h2>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="counter revenuemonth">
-                <p>Doanh thu tháng này</p>
-                <h2>0</h2>
-            </div>
-        </div>
-    </div>
 
-</div>
+
+        <div class="row" style="margin : 50px 0px 50px 0px">
+            <div class="col">
+                <h5 style="text-align: center; color: #ff8533;">TOP SẢN PHẨM BÁN CHẠY NHẤT HÔM NAY</h5>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col" style="text-align: center;">Tên sản phẩm</th>
+                            <th scope=" col" style="text-align: center;">Số sản phẩm đã bán</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each hot_day}}
+                        <tr>
+                            <th scope="row">{{sum @index 1}}</th>
+                            <td style="text-align: center;">{{this.name}}</td>
+                            <td style="text-align: center;">{{this.sum}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col">
+                <h5 style="text-align: center;  color: #ff8533;">TOP 10 SẢN PHẨM BÁN CHẠY NHẤT THÁNG NÀY</h5>
+
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col" style="text-align: center;">Tên sản phẩm</th>
+                            <th scope="col" style="text-align: center;">Số sản phẩm đã bán</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each hot_month}}
+                        <tr>
+                            <th scope="row">{{sum @index 1}}</th>
+                            <td style="text-align: center;">{{this.name}}</td>
+                            <td style="text-align: center;">{{this.sum}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</body>
 
 
 <script>
@@ -70,8 +119,10 @@
     }
 
 
-    counterUp(orderday, 5)
-    counterUp(ordermonth, 1230)
-    counterUp(revenueday, 23000000)
-    counterUp(revenuemonth, 294456000)
+
+
+    counterUp(orderday, {{ revenue.order_today }})
+    counterUp(ordermonth, {{ revenue.order_month }})
+    counterUp(revenueday, {{ revenue.cost_today }})
+    counterUp(revenuemonth, {{ revenue.cost_month }})
 </script>

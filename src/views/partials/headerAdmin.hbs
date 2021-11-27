@@ -6,7 +6,7 @@
             <a href="/admin/order">Quản lí đơn hàng</a>
             <a href="/admin/items">Quản lí tất cả các sản phẩm</a>
             <a href="/admin/create">Thêm sản phẩm vào kho</a>
-            {{#if role.isAdmin}}
+            {{#if user.role.isAdmin}}
             <hr>
             <a href="/admin/revenue">Quản lí doanh thu</a>
             <a href="/admin/user">Quản lí user</a>
@@ -34,8 +34,8 @@
         </div>
 
         <div class="col-4">
-            <h5 style="text-align: left; margin-left: 30px; margin-top: 20px">Xin chào, {{username}}</h5>
-            <h5 style="text-align: left; margin-left: 30px;">Chức vụ : {{role.role}}</h5>
+            <h5 style="text-align: left; margin-left: 30px; margin-top: 20px">Xin chào, {{user.name}}</h5>
+            <h5 style="text-align: left; margin-left: 30px;">Chức vụ : {{user.role.role}}</h5>
         </div>
     </div>
 </div>
