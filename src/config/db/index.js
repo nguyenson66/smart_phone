@@ -51,6 +51,18 @@ class QueryDatabase{
         }
     }
 
+    deleteAsQuery(query){
+        con.query(query, (err,result) => {
+            if(err) console.log(err.message)
+        })
+    }
+
+    updateAsQuery(query){
+        con.query(query,(err,result) => {
+            if(err) console.log(err.message)
+        })
+    }
+
     async login(username,password){
         try {
             const res = await new Promise((resolve, reject) => {
@@ -329,7 +341,7 @@ class QueryDatabase{
     }
 
     getProductInCart(user_id){
-        const query = `select products.id, name, image , order_detail.quantity as quantityCart, price, products.quantity as quantity from orders, order_detail, products, images
+        const query = `select products.id, name, image , order_detail.quantity, price from orders, order_detail, products, images
         where orders.status = 0 and order_detail.order_id = orders.id and orders.user_id = ${user_id} and order_detail.product_id = products.id and products.id = images.product_id
         group by products.id`
         // console.log(query)

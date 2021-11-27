@@ -2,37 +2,6 @@
     {{> header}}
 </header>
 
-<div class="container-fluid heading-menu">
-    <div class="category-menu">
-        <span>Danh mục</span>
-    </div>
-    <nav class="container navbar navbar-expand-lg">
-        <ul class="navbar-nav" id="nav-menu">
-            <li class="nav-item">
-                <a class="nav-link" href="/search?manufacturer=iphone">IPHONE</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/search?manufacturer=samsung">SAM SUNG</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/search?manufacturer=nokia">NOKIA</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/search?manufacturer=xiaomi">XAOMI</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/search?manufacturer=oppo">OPPO</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/search?manufacturer=realme">REALME</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/search?manufacturer=sony">SONY</a>
-            </li>
-        </ul>
-    </nav>
-</div>
-
 <body>
     <div style="margin: 0px 6% 0px 6%;">
         <h4 style="margin:20px 0px 20px 10px">Giỏ Hàng</h4>
@@ -42,7 +11,7 @@
         <div class="related-products row">
             <div class="col-9" style="background-color: white; padding: 5px; margin-bottom: 10%; border-radius: 10px;">
                 {{#each cart}}
-                <div class="product-price-infor row" style="background-color: white; margin:0px 10px 0px 10px">
+                <div class="product-price-infor row" style="background-color: white; margin:20px 10px 0px 10px">
                     <a href="/item/{{this.id}}"><img style="width: 80px;" src="/images/{{this.image}}" alt=""></a>
                     <div class="col">
                         <a href="/item/{{this.id}}">
@@ -52,11 +21,8 @@
                     </div>
                     <div class="col">
                         <div class="quantity buttons_added">
-                            <h6 style="color: black;">Số lượng</h6>
-                            <input type="button" value="-" class="minus" style="width: 40px;"><input type="number"
-                                step="1" min="1" max="{{this.quantity}}" name="quantity" value="{{this.quantityCart}}"
-                                title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input
-                                type="button" value="+" class="plus" style="width: 40px;">
+                            <h6 style="color: black;">Số lượng : <span>{{this.quantity}}</span> chiếc</h6>
+                            <h6 style="color: black;">Thành tiền : <span>{{mul this.price this.quantity}}</span> đ</h6>
                         </div>
                     </div>
                     <div class="col" style="text-align: right;">
@@ -73,23 +39,32 @@
             <div class="col-3" style="background-color: #eeeeee;">
                 <div style="background-color: white; border-radius: 10px; padding: 10px;">
                     <h5>Giao tới :</h5>
-                    <h6>{{user}} - 0989706008</h6>
-                    <p>Xã Hùng Xuyên, Đoan Hùng, Phú Thọ</p>
+                    <h6>Tên : {{user.name}}</h6>
+                    <h6>Số điện thoại : {{user.phone}}</h6>
+                    {{#if user.address}}
+                    <h6>Địa chỉ : {{user.address}}</h6>
+                    {{else}}
+                    <h6>Vui lòng thay đổi địa chỉ để mua hàng -<a href="/profile"> Thay đổi</a></h6>
+                    {{/if}}
                 </div>
                 <div style="background-color: white; border-radius: 10px; padding: 10px; margin-top:10px">
-                    <h6>Tổng cộng : 100.000.000</h6>
+                    <h6>Tổng tiền : <span style="color: red;">{{vnd order.cost}} </span>đ</h6>
                 </div>
-                <form action=" /order/{{order_id}}" method="POST">
+
+                {{#if user.address}}
+                <form action="/order/{{order.id}}" method="POST">
                     <button class="btn btn-block" style="background-color: #ff3333; margin-top: 20px;">
                         <i class="fas fa-shopping-cart"></i>
                         Mua hàng
                     </button>
                 </form>
+                {{/if}}
+
             </div>
         </div>
 
         {{else}}
-        <div style="background-color: white; padding: 5px; margin-bottom: 10%; border-radius: 20px;">
+        <div>
             <img src="https://salt.tikicdn.com/desktop/img/mascot@2x.png"
                 style="height: 25%; width: 25%; align-items: center;margin:20px 0px 0px 35%">
             <p style="text-align: center; margin:10px">Không có sản phẩm nào trong giỏ hàng của bạn</p>
@@ -114,7 +89,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Bạn có chắc muốn huỷ đơn hàng này ?
+                    Bạn có chắc muốn xoá sản phẩm này khỏi giỏ hàng ?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -132,18 +107,17 @@
 <form method="POST" name="form-cancel-order"></form>
 
 <script>
-    var order_id
+    var product_id, order_id = {{ order.id }}
     var btnCancelOrder = document.getElementById('btnCancelOrder')
     var form = document.forms['form-cancel-order']
 
-
     $('#cancelOrder').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget)
-        order_id = button.data('whatever')
+        product_id = button.data('whatever')
     })
 
     btnCancelOrder.onclick = () => {
-        form.action = '/admin/deleteOrder/' + order_id
+        form.action = '/delete-cart/' + product_id + '/' + order_id
         form.submit()
     }
 </script>

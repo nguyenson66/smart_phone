@@ -110,12 +110,12 @@ class ClientController{
                     user : user_infor[0]
                 })
             }
-
-
-            res.render('clientLayouts/order',{
-                user : user_infor[0],
-                infor_order : infor_order
-            })
+            else{
+                res.render('clientLayouts/order',{
+                    user : user_infor[0],
+                    infor_order : infor_order
+                })
+            }
         }
         
     }
@@ -153,10 +153,12 @@ class ClientController{
                 })
             }
 
-            res.render('clientLayouts/historyOrder',{
-                user : user_infor[0],
-                infor_order : infor_order
-            })
+            else{
+                res.render('clientLayouts/historyOrder',{
+                    user : user_infor[0],
+                    infor_order : infor_order
+                })
+            }
         }      
     }
 
@@ -195,7 +197,8 @@ class ClientController{
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
-            const user_infor = await QueryDatabase.getAll(`select name, avatar from users where id = ${user_id}`)
+            const user_infor = await QueryDatabase.getAll(`select name, phone, address, avatar from users where id = ${user_id}`)
+            // console.log(user_infor)
 
             const check = await QueryDatabase.getAll(`select count(*) as count from orders where user_id = ${user_id} and status = 0`)
             // console.log(check[0].count)
@@ -204,7 +207,12 @@ class ClientController{
 
             const data = await QueryDatabase.getProductInCart(user_id)
             const order_id = await QueryDatabase.getAll(`select id from orders where user_id = ${user_id} and status = 0`)
-            // console.log(order_id)
+            // console.log(data)
+
+            let cost = 0
+
+            for(let i=0;i<data.length;i++)
+                cost += data[i].quantity * data[i].price
 
             if(data.length == 0){
                 res.render('clientLayouts/cart',{
@@ -212,11 +220,16 @@ class ClientController{
                 })
             }
 
-            res.render('clientLayouts/cart',{
-                user : user_infor[0],
-                cart : data,
-                order_id : order_id[0].id
-            })
+            else{
+                res.render('clientLayouts/cart',{
+                    user : user_infor[0],
+                    cart : data,
+                    order : {
+                        id : order_id[0].id,
+                        cost : cost
+                    }
+                })
+            }
         }
     }
 
@@ -240,7 +253,6 @@ class ClientController{
 
     //[GET] /change-password
     async changePassword(req,res){
- 
         res.render('clientLayouts/changePassword')
     }
 
@@ -346,12 +358,21 @@ class ClientController{
             const product_id = req.params.id
             const quantity = req.body.quantity
 
-            const check = await QueryDatabase.getAll(`select count(*) as count from orders where user_id = ${user_id} and status = 0`)
-            // console.log(check[0].count)
-            if(check[0].count == 0)
-                QueryDatabase.addNewOrder(user_id)
+            let id = await QueryDatabase.getAll(`select id from orders where user_id = ${user_id} and status = 0`)
 
+            // console.log(check[0].count)
+            if(id.length == 0){
+                QueryDatabase.addNewOrder(user_id)
+                id = await QueryDatabase.getAll(`select id from orders where user_id = ${user_id} and status = 0`)
+            }
+            
+            const check = await QueryDatabase.getAll(`select * from order_detail where order_id = ${id[0].id} and product_id = ${product_id}`)
+            
+            if(check.length == 0)
             QueryDatabase.addProductToCart(user_id, product_id, quantity)
+            else{
+                QueryDatabase.updateAsQuery(`update order_detail set quantity = quantity + ${quantity} where order_id = ${id[0].id}`)
+            }
         
             res.redirect('/cart')
         }
@@ -398,6 +419,42 @@ class ClientController{
         
 
         res.redirect('/profile')
+    }
+
+    //[POST] /delete-cart/:product_id/:order_id
+    async DeleteProductInCart(req,res){
+        const user_token = req.cookies.user_token
+        if(user_token == undefined)
+            res.redirect('/login')
+        const product_id = req.params.product_id
+        const order_id = req.params.order_id
+        // console.log(product_id)
+        
+        QueryDatabase.deleteAsQuery(`delete from order_detail where order_id = ${order_id} and product_id = ${product_id}`)
+        res.redirect('back')
+    }
+
+    //[POST] /change-password
+    async changePasswordPOST(req,res) {
+        const user_token = req.cookies.user_token
+        if(user_token == undefined)
+            res.redirect('/login')
+        const user_id = jwt.verify(user_token,'sositech').id
+        const oldPassword = req.body.oldpassword
+        const newPassword = req.body.password
+
+        const check = await QueryDatabase.getAll(`select id from users where id = ${user_id} and password = '${oldPassword}'`)
+        // console.log(check)
+
+        if(check.length != 0){
+            QueryDatabase.updateAsQuery(`update users set password = '${newPassword}' where id = ${user_id}`)
+            res.cookie('successfully-change-password','1',{ expires: new Date(Date.now() + 7200000)})
+            res.redirect('back')
+        }
+        else{
+            res.cookie('error-change-password','1',{ expires: new Date(Date.now() + 7200000)})
+            res.redirect('back')
+        }
     }
 
 }

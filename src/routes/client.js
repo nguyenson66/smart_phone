@@ -24,5 +24,7 @@ router.post('/order/:id',ClientController.orderItemPOST)
 router.post('/comment/:id',ClientController.comment)
 router.post('/cart/:id', ClientController.addProductToCart)
 router.post('/change-profile',upload.single('avatar'), ClientController.changeProfile)
+router.post('/delete-cart/:product_id/:order_id', ClientController.DeleteProductInCart)
+router.post('/change-password', ClientController.changePasswordPOST)
 
 module.exports = router
