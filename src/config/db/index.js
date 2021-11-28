@@ -131,7 +131,7 @@ class QueryDatabase{
         try {
             const res = await new Promise((resolve, reject) => {
                 const query = `insert into images values (${id}, '${filename}')`
-                console.log(query)
+                // console.log(query)
                 con.query(query, (err, result) => {
                     if(err){ 
                         console.dir(err.message)
@@ -168,7 +168,7 @@ class QueryDatabase{
         try {
             await new Promise((resolve,reject) => {
                 const query = `insert into users (name,email, password,phone, address,role,avatar) values ('${name}', '${email}','${password}', '${phone}','${address}','${role}','${avatar}')`
-                console.log(query)
+                // console.log(query)
                 con.query(query, (err,result) => {
                     if(err)
                         console.log(err.message)
@@ -194,7 +194,7 @@ class QueryDatabase{
 
     orderItem(order_id,timeOrder,cost){
         let query = `update orders set cost = ${cost}, created_at = '${timeOrder}', status = 1 where id = ${order_id}`
-        console.log(query)
+        // console.log(query)
 
         try {
             con.query(query, (err,result) => {
@@ -385,7 +385,7 @@ class QueryDatabase{
     getCostOrder(order_id){
         const query = `select sum(order_detail.quantity*products.price) as cost from order_detail, products
         where order_detail.order_id = ${order_id} and order_detail.product_id = products.id`
-        console.log(query)
+        // console.log(query)
 
         try {
             const res = new Promise((resolve, reject) => {
@@ -425,6 +425,32 @@ class QueryDatabase{
                 console.log('error update user ' +  err.message)
         })
     }
+
+
+    getUserVip(){
+        const query = `select name, phone, sum(quantity) as count from users, orders, order_detail
+        where users.id = orders.user_id and orders.status = 3 and orders.id = order_detail.order_id
+        group by users.id
+        order by count desc
+        limit 10`
+
+        try {
+            const res = new Promise((resolve, reject) => {
+                con.query(query,(err,result) => {
+                    if(err) console.log('error get user vip : ' + err.message)
+                    else resolve(result)
+                })
+            })
+            return res
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    /////////////////////////////////// Delete //////////////////////////////////////////////////
+
+
+
 }
 
 module.exports = new QueryDatabase

@@ -19,5 +19,8 @@ router.post('/deleteOrder/:id',AdminController.deleteOrder)
 router.post('/delivered/:id', AdminController.delivered)
 router.post('/deleteItem/:id', AdminController.deleteItem)
 router.post('/confirm-order/:id', AdminController.confirmOrder)
+router.post('/delete-staff/:id' , AdminController.deleteStaff)
+router.post('/delete-user/:id', AdminController.deleteUser)
+router.post('/set-role-staff/:id', AdminController.setRoleStaff)
 
 module.exports = router

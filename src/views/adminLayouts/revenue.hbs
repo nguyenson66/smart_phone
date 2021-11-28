@@ -128,6 +128,9 @@
 
     counterUp(orderday, {{ revenue.order_today }})
     counterUp(ordermonth, {{ revenue.order_month }})
-    counterUp(revenueday, {{ revenue.cost_today }})
-    counterUp(revenuemonth, {{ revenue.cost_month }})
+
+    const cost_today = {{ sum revenue.cost_today 0}}
+    const cost_month = {{ sum revenue.cost_month 0}}
+    counterUp(revenueday, cost_today)
+    counterUp(revenuemonth, cost_month)
 </script>

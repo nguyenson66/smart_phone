@@ -1,0 +1,224 @@
+{{> headerAdmin}}
+
+<body>
+    <div class="container"
+        style="padding: 20px; background-color: white; margin-top: 20px; margin-bottom: 50px; border-radius: 10px;">
+
+        <div class="product-compartment row">
+            <span>Quản lí người dùng và nhân viên</span>
+            <hr class="col ">
+        </div>
+
+
+        <div class="row">
+            <div class="col" style="text-align: center;">
+                <h6>Tổng số user khách hàng : {{count.client}}</h6>
+
+                <h5 style="color: orange;  margin: 30px 0px 30px 0px;">TOP KHÁCH HÀNG QUEN THUỘC CỦA SHOP</h5>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Họ Tên</th>
+                            <th scope="col">SĐT</th>
+                            <th scope="col">Số sản phẩm đã mua</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each user_vip}}
+                        <tr>
+                            <th scope="row">{{sum @index 1}}</th>
+                            <td>{{this.name}}</td>
+                            <td>{{this.phone}}</td>
+                            <td>{{this.count}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="col" style="text-align: center;">
+                <h6>Tổng số nhân viên : {{count.staff}}</h6>
+                <h5 style="color: orange; margin: 30px 0px 30px 0px;">DANH SÁCH NHÂN VIÊN</h5>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Họ Tên</th>
+                            <th scope="col">SĐT</th>
+                            <th scope="col">Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each staff}}
+                        <tr>
+                            <th scope="row">{{sum @index 1}}</th>
+                            <td>{{this.name}}</td>
+                            <td>{{this.phone}}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-whatever="{{this.id}}" data-target="#deleteStaff">Xoá</button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <form action="/admin/user" style="text-align: center; margin: 50px 0px 50px 0px;">
+            <h5>Tìm kiếm User</h5>
+            <input type="text" name="q" placeholder="Nhập tên, số điện thoại, email để tìm user. VD : admin@admin.com"
+                style="width: 80%; height: 40px; padding-left: 10px;">
+            <button class="btn btn-success" type="submit" style="display:block; margin:20px 0px 0px 45%;">Tìm
+                kiếm</button>
+        </form>
+
+        {{#if search}}
+        <div style=" margin: 50px 0px 50px 0px;">
+            <h5>Danh sách tài khoản với từ khoá : '<span style="color: red;">{{query}}</span>'</h5>
+
+            <table class="table table-striped" style="text-align: center;">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each search}}
+                    <tr>
+                        <th scope="row">{{sum @index 1}}</th>
+                        <td>{{this.name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.role}}</td>
+                        <td>
+                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                data-whatever="{{this.id}}" data-target="#setRole">Set Role Staff</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-whatever="{{this.id}}"
+                                data-target="#deleteUser">Delete User</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteStaff" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chú ý</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc xoá chức năng nhân viên tài khoản này?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnDeleteStaff" class="btn btn-danger">Xoá</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal set role staff -->
+    <div class="modal fade" id="setRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chú ý</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc thay đổi role tài khoản này thành nhân viên ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSetRole" class="btn btn-danger">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal delete user -->
+    <div class="modal fade" id="deleteUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chú ý</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc xoá tài khoản này ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnDeleteUser" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <form method="POST" name="form-delete-item"></form>
+
+    <script>
+        var user_id
+        var btnDeleteStaff = document.getElementById('btnDeleteStaff')
+        var btnDeleteUser = document.getElementById('btnDeleteUser')
+        var btnSetRole = document.getElementById('btnSetRole')
+        var form = document.forms['form-delete-item']
+
+        $('#deleteStaff').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            user_id = button.data('whatever')
+        })
+
+        $('#deleteUser').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            user_id = button.data('whatever')
+        })
+
+        $('#setRole').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            user_id = button.data('whatever')
+        })
+
+        btnDeleteStaff.onclick = () => {
+            form.action = '/admin/delete-staff/' + user_id
+            form.submit()
+        }
+
+        btnDeleteUser.onclick = () => {
+            form.action = '/admin/delete-user/' + user_id
+            form.submit()
+        }
+
+        btnSetRole.onclick = () => {
+            form.action = '/admin/set-role-staff/' + user_id
+            form.submit()
+        }
+    </script>
+</body>
