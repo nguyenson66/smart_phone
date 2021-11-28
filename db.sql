@@ -40,7 +40,7 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (20,'ok','November 22, 2021 11:39 AM',7),(20,'iphone 13 đẹp thực sự','November 22, 2021 11:39 AM',7),(20,'good','November 22, 2021 11:46 AM',7),(20,'mlem mlem','November 22, 2021 11:47 AM',7),(20,'done','November 22, 2021 11:47 AM',5),(21,'ok','November 22, 2021 11:47 AM',5),(23,'zzzz','November 22, 2021 11:47 AM',5),(25,'mlem','November 22, 2021 11:48 AM',5),(37,'ok','November 22, 2021 11:51 AM',7),(37,'a51','November 22, 2021 11:51 AM',7);
+INSERT INTO `comments` VALUES (20,'ok','November 22, 2021 11:39 AM',7),(20,'iphone 13 đẹp thực sự','November 22, 2021 11:39 AM',7),(20,'good','November 22, 2021 11:46 AM',7),(20,'mlem mlem','November 22, 2021 11:47 AM',7),(37,'ok','November 22, 2021 11:51 AM',7),(37,'a51','November 22, 2021 11:51 AM',7),(27,'test','November 22, 2021 3:28 PM',7),(23,'ok','November 22, 2021 3:29 PM',7),(22,'Xiaomi Redmi note 10 5G','November 22, 2021 3:41 PM',7),(24,'Xiaomi Redmi 9C','November 22, 2021 3:41 PM',7),(26,'Xiaomi Redmi 9T','November 22, 2021 3:41 PM',7),(28,'Xiaomi Redmi note 10S','November 22, 2021 3:42 PM',7),(28,'hihi','November 22, 2021 3:42 PM',7),(29,'hiu hiu','November 22, 2021 3:42 PM',7),(39,'Samsung Galaxy A52s 5G','November 22, 2021 4:02 PM',7),(45,'sony\r\n\r\nok done','November 22, 2021 4:07 PM',7),(66,'iphone 12','November 22, 2021 7:59 PM',7),(30,'aaaaaaaaa','November 22, 2021 10:07 PM',7),(67,'iPhone 11','November 23, 2021 6:56 PM',7),(23,'hiuhiu','November 28, 2021 9:38 AM',7);
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,6 +70,34 @@ INSERT INTO `images` VALUES (20,'4e8ee712265c99ab684b641a9862d458.png'),(20,'238
 UNLOCK TABLES;
 
 --
+-- Table structure for table `order_detail`
+--
+
+DROP TABLE IF EXISTS `order_detail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_detail` (
+  `order_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  KEY `order_id` (`order_id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `order_detail_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  CONSTRAINT `order_detail_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_detail`
+--
+
+LOCK TABLES `order_detail` WRITE;
+/*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
+INSERT INTO `order_detail` VALUES (39,20,1),(39,27,3),(40,37,1),(41,27,1),(41,37,2),(42,21,1),(43,20,1),(42,28,2),(47,20,2),(46,23,2),(49,44,1),(49,37,1),(50,64,3),(50,25,1),(50,39,1),(51,29,2),(48,27,4),(57,23,1),(57,31,1),(61,20,2),(62,20,1),(63,20,2),(64,20,3);
+/*!40000 ALTER TABLE `order_detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `orders`
 --
 
@@ -78,18 +106,16 @@ DROP TABLE IF EXISTS `orders`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
   `user_id` int NOT NULL,
-  `product_id` int NOT NULL,
-  `quantity` int NOT NULL,
+  `cost` int NOT NULL,
   `created_at` varchar(255) NOT NULL,
   `status` int NOT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
+  `payment_info` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  KEY `product_id` (`product_id`),
   FULLTEXT KEY `created_at` (`created_at`),
-  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +124,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (7,22,1,'November 21, 2021 3:56 PM',1,3),(7,23,1,'November 21, 2021 4:11 PM',1,4),(7,34,1,'November 21, 2021 3:58 PM',0,6),(7,37,1,'November 21, 2021 10:13 PM',1,8),(7,30,1,'November 21, 2021 4:16 PM',0,9),(7,72,1,'November 21, 2021 10:08 PM',0,13),(7,25,1,'November 22, 2021 9:05 AM',0,14),(5,28,1,'November 22, 2021 9:28 AM',0,15),(5,30,1,'November 22, 2021 9:28 AM',0,16),(5,37,1,'November 22, 2021 9:28 AM',0,17),(6,37,1,'November 22, 2021 9:46 AM',1,18),(6,55,1,'November 22, 2021 9:28 AM',0,19),(6,78,1,'November 22, 2021 9:46 AM',1,20),(8,80,1,'November 22, 2021 9:29 AM',0,21),(8,65,1,'November 22, 2021 9:29 AM',0,22);
+INSERT INTO `orders` VALUES (7,72690000,'November 25, 2021 8:44 PM',3,39,0),(7,6500000,'June 6, 2021 0:00 AM',3,40,0),(7,25900000,'November 25, 2021 8:48 PM',3,41,0),(7,26970000,'November 25, 2021 10:19 PM',3,42,0),(10,33990000,'November 25, 2021 12:42 PM',3,43,0),(10,0,'LLL',0,44,0),(11,0,'LLL',0,45,0),(7,61800000,'November 27, 2021 1:12 PM',3,46,0),(12,0,'LLL',0,47,0),(7,51600000,'November 27, 2021 10:11 PM',3,48,0),(13,16890000,'November 27, 2021 8:30 PM',3,49,0),(13,51170000,'November 27, 2021 8:53 PM',3,50,0),(13,7300000,'November 27, 2021 10:09 PM',3,51,0),(13,0,'LLL',0,56,0),(7,37490000,'November 28, 2021 7:01 PM',1,57,0),(7,0,'LLL',0,60,0),(17,67980000,'November 28, 2021 7:03 PM',3,61,0),(17,33990000,'November 28, 2021 7:04 PM',3,62,0),(17,67980000,'November 28, 2021 7:04 PM',1,63,0),(17,101970000,'November 28, 2021 7:05 PM',1,64,0),(17,0,'LLL',0,65,0);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +148,7 @@ CREATE TABLE `products` (
   FULLTEXT KEY `name_3` (`name`),
   FULLTEXT KEY `name_4` (`name`),
   FULLTEXT KEY `name_5` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +157,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (20,'iPhone 13 Pro Max','- Apple A15\r\n- 6.7\"\r\n- 6GB\r\n- 128GB',100,33990000,'iphone'),(21,'Xiaomi 11T Pro\r\n','- Snapdragon 888\r\n- 6.67\'\r\n- 12GB rom\r\n- 256GB ram',50,14990000,'xiaomi'),(22,'Xiaomi Redmi note 10 5G\r\n',' - Dimensity 700\r\n - 6.67\'\r\n- 4GB ram\r\n- 128GB rom',33,4850000,'xiaomi'),(23,'iPhone 12 Pro Max','- Apple A14 Bionic (5 nm)\r\n- 6.7\"\r\n- 6GB\r\n- 128GB',100,30900000,'iphone'),(24,'Xiaomi Redmi 9C','- MediaTek Helio G35\r\n- 6.53\'\r\n- 3GB ram\r\n- 64GB rom',30,2750000,'xiaomi'),(25,'iPhone 11 Pro Max','- A13 Bionic\r\n- 6.5\"\r\n- 4GB\r\n- 64GB',100,26000000,'iphone'),(26,'Xiaomi Redmi 9T',' - Snapdragon 750 \r\n- 6.55\'\r\n- 6GB ram\r\n- 128 rom',100,4490000,'xiaomi'),(27,'iPhone XR','- Apple A12 Bionic\r\n- 6.1\"\r\n- 3GB\r\n- 64GB\r\n',100,12900000,'iphone'),(28,'Xiaomi Redmi note 10S\r\n','- MediaTek Helio G95\r\n- 6.66\'\r\n- 8GB ram\r\n- 128GB rom',20,5990000,'xiaomi'),(29,'Realme C21y','- Spreadtrum T610\r\n- 6.66\'\r\n- 3GB ram\r\n- 32GB rom',100,3650000,'realme'),(30,'Samsung Galaxy Z Fold2 5G','- Qualcomm SM8250 Snapdragon 865+\r\n- Chính 7.6\", Phụ 6.23\"\r\n- 12GB\r\n- 256GB',100,39000000,'samsung'),(31,'Realme 7 Pro','- Snapdragon 720G\r\n- 6.4\'\r\n- 8GB ram\r\n- 128Gb rom',30,6590000,'realme'),(32,'Samsung Galaxy S21 Ultra 5G','- Exynos 2100 8 nhân\r\n- 6.8\"\r\n- 12GB\r\n- 256GB',100,25000000,'samsung'),(33,'Realme C17','- Snapdragon 460\r\n- 6.5\'\r\n- 6GB ram\r\n- 128GB rom',40,4650000,'realme'),(34,'Samsung Galaxy Note 20 Ultra','- Exynos 990 (7 nm+)\r\n- 6.9\"\r\n- 8GB\r\n- 256GB',100,19200000,'samsung'),(35,'Realme 8 Pro','- Snapdragon 720G\r\n - 6.6\'\r\n- 8GB ram\r\n- 128GB rom',10,7490000,'realme'),(36,'Realme 8','- MediaTek Helio G95\r\n- 6.6\'\r\n- 8GB ram\r\n- 128GB rom',30,6490000,'realme'),(37,'Samsung Galaxy A51','- Exynos 9611\r\n- 6.5\"\r\n- 6GB\r\n- 128GB',100,6500000,'samsung'),(38,'Nokia C30','- Spreadtrum SC9863A\r\n- 5.9\'\r\n- 3GB ram\r\n- 32GB rom',50,2790000,'nokia'),(39,'Samsung Galaxy A52s 5G','- Snapdragon 778G 5G 8 nhân\r\n- 6.5\"\r\n- 8GB\r\n- 128GB',100,10500000,'samsung'),(40,'Nokia X10 5G','- Snapdragon 480 \r\n- 6.67\'\r\n- 6GB ram\r\n- 128GB rom',10,5990000,'nokia'),(41,'Nokia 2.4','- Snapdragon 480\r\n- 6.5\'\r\n- 2GB ram\r\n- 32Gb rom',50,2190000,'nokia'),(42,'Nokia C20','- Snapdragon 450\r\n- 5.5\'\r\n- 2GB ram\r\n- 32Gb rom',60,1990000,'nokia'),(43,'OPPO Find X3 Pro 5G','- Snapdragon 888 (5 nm)\r\n- 6.7\"\r\n- 12GB\r\n- 256GB',100,23990000,'oppo'),(44,'Oppo Reno5 5G','- Qualcomm SM7250 Snapdragon 765G (7 nm)\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,10390000,'oppo'),(45,'Sony Xperia 1 ','- Snapdragon 888\r\n- 6.5\'\r\n- 8GB ram\r\n- 256GB rom\r\n',10,34990000,'sony'),(46,'Oppo A54','- Mediatek MT6765 Helio P35 (12nm)\r\n- 6.5\"\r\n- 4GB\r\n- 128GB',100,4350000,'oppo'),(47,'Oppo A15s','- Mediatek MT6765 Helio P35, 12nm, 8 nhân\r\n- 6.52\"\r\n- 4GB\r\n- 64GB\r\n',100,3790000,'oppo'),(48,'Sony Xperia 10','- Snapdragon 750G\r\n- 6.6\'\r\n- 6GB ram\r\n- 128GB rom',20,11990000,'sony'),(49,'Oppo A74','- Qualcomm Snapdragon 662\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,6150000,'oppo'),(50,'Sony Xperia 5','- Snapdragon 750G\r\n- 6.6\'\r\n- 6GB ram\r\n- 128GB rom',30,7300000,'sony'),(51,'Oppo Reno4 Pro','- Qualcomm SM7125 Snapdragon 720G (8 nm)\r\n- 6.5\"\r\n- 8GB\r\n- 256GB',100,8990000,'oppo'),(52,'Xiaomi Redmi K40 5G','- Snapdragon 870\r\n- 6.67\'\r\n- 6GB ram\r\n- 128GB rom\r\n',50,7550000,'xiaomi'),(53,'OPPO Reno6 Z 5G','- MediaTek Dimensity 800U 5G 8 nhân\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,9490000,'oppo'),(54,'Oppo A94','- Helio P95, tối đa 2.2GHz\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,7050000,'oppo'),(55,'Xiaomi Redmi note 8',' - Snapdragon 665\r\n- 6.3\'\r\n- 6GB ram\r\n- 64GB rom',50,3690000,'xiaomi'),(56,'Oppo A73','- Qualcomm SM6115 Snapdragon 662 (11 nm)\r\n- 6.44\"\r\n- 6GB\r\n- 128GB',100,5190000,'oppo'),(57,'Xiaomi Redmi note 8 Pro','- Mediatek Helio G90T\r\n- 6.53\'\r\n- 8GB ram\r\n- 128GB rom\r\n',100,4590000,'xiaomi'),(58,'OPPO Reno6 5G','- MT6877 Dimensity 900 5G (6 nm)\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,12990000,'oppo'),(59,'Xiaomi Mi Pad 5','- Qualcomm Snapdragon 860\r\n- 11\'\r\n- 6GB ram\r\n- 128GB rom\r\n',30,8290000,'xiaomi'),(60,'Xiaomi Redmi K30 5G','- Qualcomm SDM765\r\n- 6.67\'\r\n- 8GB ram\r\n- 128GB rom\r\n',50,6290000,'xiaomi'),(61,'iPhone 11 Pro','- A13 Bionic\r\n- 5.8\"\r\n- 4GB\r\n- 512GB',100,27000000,'iphone'),(62,'Xiaomi Redmi note 9 Pro','- Snapdragon 750G\r\n- 6.67\'\r\n- 8GB ram\r\n- 128GB rom',30,7690000,'xiaomi'),(63,'iPhone 12 Pro','- Apple A14 Bionic (5 nm)\r\n- 6.1\"\r\n- 6GB\r\n- 256GB',100,28500000,'iphone'),(64,'Realme Q3 ','- Snapdragon 750G\r\n- 6.5\'\r\n- 6GB ram\r\n - 128GB rom',50,4890000,'realme'),(65,'Realme Q3 Pro','- Dimensity 1100\r\n- 6.43\'\r\n- 6GB ram\r\n- 128GB rom',55,5550000,'realme'),(66,'iPhone 12','- Apple A14 Bionic (5 nm)\r\n- 6.1\"\r\n- 4GB\r\n- 128GB',100,23000000,'iphone'),(67,'iPhone 11','- A13 Bionic\r\n- 6.1\"\r\n- 4GB\r\n- 64GB',100,16500000,'iphone'),(68,'Realme GT Neo','- Dimensity 1200 \r\n- 6.43\'\r\n- 6GB ram\r\n- 128GB rom',50,6190000,'realme'),(69,'Realme GT Neo Flash','- MediaTek MT6893 \r\n- 6.43\'\r\n- 8GB ram\r\n- 128GB rom',20,7050000,'realme'),(70,'Realme Q2','- Dimensity 800U\r\n- 6.5\'\r\n- 4GB ram\r\n- 128GB rom',50,4290000,'realme'),(71,'iPhone X','- Apple A11 Bionic\r\n- 5.8\"\r\n- 3GB\r\n- 64GB',100,10890000,'iphone'),(72,'Apple iPhone XS Max','- Apple A12 Bionic\r\n- 6.5\"\r\n- 4GB\r\n- 512GB',100,15290000,'iphone'),(73,'Realme V15','- Dimensity 800U\r\n- 6.67\'\r\n- 6GB ram\r\n- 128GB rom',50,4690000,'realme'),(74,'Realme X2 Pro','- Snapdragon 855 Plus\r\n- 6.5\'\r\n- 8GB ram\r\n- 128GB rom',30,7600000,'realme'),(75,'Samsung Galaxy Z Fold3 5G','- Snapdragon 888 5G (5 nm)\r\n- 7.6\"\r\n- 12GB\r\n- 512GB',100,44990000,'samsung'),(76,'Realme X2','- Snapdragon 730G\r\n- 6.4\'\r\n- 6GB ram\r\n- 128GB rom',50,4750000,'realme'),(77,'Samsung Galaxy A12','- Helio G35\r\n- 6.5\"\r\n- 4GB\r\n- 128GB',100,4150000,'samsung'),(78,'Realme 6','- Helio G90T\r\n- 6.5\'\r\n- 6GB ram\r\n - 64GB rom',40,4750000,'realme'),(79,'Samsung Galaxy Note 20 Ultra 5G','- Exynos 990 (7 nm+)\r\n- 6.9\"\r\n- 12GB\r\n- 256GB',100,20500000,'samsung'),(80,'Samsung Galaxy S21 Plus 5G','- Exynos 2100 8 nhân\r\n- 6.7\"\r\n- 8GB\r\n- 256GB',100,22800000,'samsung'),(81,'Nokia 5.4','- Snapdragon 662\r\n- 6.39\'\r\n- 4GB ram\r\n- 128GB rom',50,3990000,'nokia'),(82,'Samsung Galaxy A52','- Snapdragon 720G (8 nm)\r\n- 6.5\"\r\n- 8GB\r\n- 128GB',100,8750000,'samsung'),(83,'Nokia 2.4','- Helio P22 \r\n- 6.5\'\r\n- 3GB ram\r\n- 64 rom',50,2690000,'nokia');
+INSERT INTO `products` VALUES (20,'iPhone 13 Pro Max','- Apple A15\r\n- 6.7\"\r\n- 6GB\r\n- 128GB',87,33990000,'iphone'),(21,'Xiaomi 11T Pro\r\n','- Snapdragon 888\r\n- 6.67\'\r\n- 12GB rom\r\n- 256GB ram',50,14990000,'xiaomi'),(22,'Xiaomi Redmi note 10 5G\r\n',' - Dimensity 700\r\n - 6.67\'\r\n- 4GB ram\r\n- 128GB rom',33,4850000,'xiaomi'),(23,'iPhone 12 Pro Max','- Apple A14 Bionic (5 nm)\r\n- 6.7\"\r\n- 6GB\r\n- 128GB',100,30900000,'iphone'),(24,'Xiaomi Redmi 9C','- MediaTek Helio G35\r\n- 6.53\'\r\n- 3GB ram\r\n- 64GB rom',30,2750000,'xiaomi'),(25,'iPhone 11 Pro Max','- A13 Bionic\r\n- 6.5\"\r\n- 4GB\r\n- 64GB',100,26000000,'iphone'),(26,'Xiaomi Redmi 9T',' - Snapdragon 750 \r\n- 6.55\'\r\n- 6GB ram\r\n- 128 rom',100,4490000,'xiaomi'),(27,'iPhone XR','- Apple A12 Bionic\r\n- 6.1\"\r\n- 3GB\r\n- 64GB\r\n',97,12900000,'iphone'),(28,'Xiaomi Redmi note 10S\r\n','- MediaTek Helio G95\r\n- 6.66\'\r\n- 8GB ram\r\n- 128GB rom',21,5990000,'xiaomi'),(29,'Realme C21y','- Spreadtrum T610\r\n- 6.66\'\r\n- 3GB ram\r\n- 32GB rom',100,3650000,'realme'),(30,'Samsung Galaxy Z Fold2 5G','- Qualcomm SM8250 Snapdragon 865+\r\n- Chính 7.6\", Phụ 6.23\"\r\n- 12GB\r\n- 256GB',100,39000000,'samsung'),(31,'Realme 7 Pro','- Snapdragon 720G\r\n- 6.4\'\r\n- 8GB ram\r\n- 128Gb rom',30,6590000,'realme'),(32,'Samsung Galaxy S21 Ultra 5G','- Exynos 2100 8 nhân\r\n- 6.8\"\r\n- 12GB\r\n- 256GB',100,25000000,'samsung'),(33,'Realme C17','- Snapdragon 460\r\n- 6.5\'\r\n- 6GB ram\r\n- 128GB rom',40,4650000,'realme'),(34,'Samsung Galaxy Note 20 Ultra','- Exynos 990 (7 nm+)\r\n- 6.9\"\r\n- 8GB\r\n- 256GB',100,19200000,'samsung'),(35,'Realme 8 Pro','- Snapdragon 720G\r\n - 6.6\'\r\n- 8GB ram\r\n- 128GB rom',10,7490000,'realme'),(36,'Realme 8','- MediaTek Helio G95\r\n- 6.6\'\r\n- 8GB ram\r\n- 128GB rom',30,6490000,'realme'),(37,'Samsung Galaxy A51','- Exynos 9611\r\n- 6.5\"\r\n- 6GB\r\n- 128GB',100,6500000,'samsung'),(38,'Nokia C30','- Spreadtrum SC9863A\r\n- 5.9\'\r\n- 3GB ram\r\n- 32GB rom',50,2790000,'nokia'),(39,'Samsung Galaxy A52s 5G','- Snapdragon 778G 5G 8 nhân\r\n- 6.5\"\r\n- 8GB\r\n- 128GB',96,10500000,'samsung'),(40,'Nokia X10 5G','- Snapdragon 480 \r\n- 6.67\'\r\n- 6GB ram\r\n- 128GB rom',10,5990000,'nokia'),(41,'Nokia 2.4','- Snapdragon 480\r\n- 6.5\'\r\n- 2GB ram\r\n- 32Gb rom',50,2190000,'nokia'),(42,'Nokia C20','- Snapdragon 450\r\n- 5.5\'\r\n- 2GB ram\r\n- 32Gb rom',60,1990000,'nokia'),(43,'OPPO Find X3 Pro 5G','- Snapdragon 888 (5 nm)\r\n- 6.7\"\r\n- 12GB\r\n- 256GB',100,23990000,'oppo'),(44,'Oppo Reno5 5G','- Qualcomm SM7250 Snapdragon 765G (7 nm)\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,10390000,'oppo'),(45,'Sony Xperia 1 ','- Snapdragon 888\r\n- 6.5\'\r\n- 8GB ram\r\n- 256GB rom\r\n',10,34990000,'sony'),(46,'Oppo A54','- Mediatek MT6765 Helio P35 (12nm)\r\n- 6.5\"\r\n- 4GB\r\n- 128GB',100,4350000,'oppo'),(47,'Oppo A15s','- Mediatek MT6765 Helio P35, 12nm, 8 nhân\r\n- 6.52\"\r\n- 4GB\r\n- 64GB\r\n',100,3790000,'oppo'),(48,'Sony Xperia 10','- Snapdragon 750G\r\n- 6.6\'\r\n- 6GB ram\r\n- 128GB rom',20,11990000,'sony'),(49,'Oppo A74','- Qualcomm Snapdragon 662\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,6150000,'oppo'),(50,'Sony Xperia 5','- Snapdragon 750G\r\n- 6.6\'\r\n- 6GB ram\r\n- 128GB rom',30,7300000,'sony'),(51,'Oppo Reno4 Pro','- Qualcomm SM7125 Snapdragon 720G (8 nm)\r\n- 6.5\"\r\n- 8GB\r\n- 256GB',100,8990000,'oppo'),(52,'Xiaomi Redmi K40 5G','- Snapdragon 870\r\n- 6.67\'\r\n- 6GB ram\r\n- 128GB rom\r\n',50,7550000,'xiaomi'),(53,'OPPO Reno6 Z 5G','- MediaTek Dimensity 800U 5G 8 nhân\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,9490000,'oppo'),(54,'Oppo A94','- Helio P95, tối đa 2.2GHz\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,7050000,'oppo'),(55,'Xiaomi Redmi note 8',' - Snapdragon 665\r\n- 6.3\'\r\n- 6GB ram\r\n- 64GB rom',50,3690000,'xiaomi'),(56,'Oppo A73','- Qualcomm SM6115 Snapdragon 662 (11 nm)\r\n- 6.44\"\r\n- 6GB\r\n- 128GB',100,5190000,'oppo'),(57,'Xiaomi Redmi note 8 Pro','- Mediatek Helio G90T\r\n- 6.53\'\r\n- 8GB ram\r\n- 128GB rom\r\n',100,4590000,'xiaomi'),(58,'OPPO Reno6 5G','- MT6877 Dimensity 900 5G (6 nm)\r\n- 6.43\"\r\n- 8GB\r\n- 128GB',100,12990000,'oppo'),(59,'Xiaomi Mi Pad 5','- Qualcomm Snapdragon 860\r\n- 11\'\r\n- 6GB ram\r\n- 128GB rom\r\n',30,8290000,'xiaomi'),(60,'Xiaomi Redmi K30 5G','- Qualcomm SDM765\r\n- 6.67\'\r\n- 8GB ram\r\n- 128GB rom\r\n',50,6290000,'xiaomi'),(61,'iPhone 11 Pro','- A13 Bionic\r\n- 5.8\"\r\n- 4GB\r\n- 512GB',100,27000000,'iphone'),(62,'Xiaomi Redmi note 9 Pro','- Snapdragon 750G\r\n- 6.67\'\r\n- 8GB ram\r\n- 128GB rom',30,7690000,'xiaomi'),(63,'iPhone 12 Pro','- Apple A14 Bionic (5 nm)\r\n- 6.1\"\r\n- 6GB\r\n- 256GB',100,28500000,'iphone'),(64,'Realme Q3 ','- Snapdragon 750G\r\n- 6.5\'\r\n- 6GB ram\r\n - 128GB rom',50,4890000,'realme'),(65,'Realme Q3 Pro','- Dimensity 1100\r\n- 6.43\'\r\n- 6GB ram\r\n- 128GB rom',55,5550000,'realme'),(66,'iPhone 12','- Apple A14 Bionic (5 nm)\r\n- 6.1\"\r\n- 4GB\r\n- 128GB',94,23000000,'iphone'),(67,'iPhone 11','- A13 Bionic\r\n- 6.1\"\r\n- 4GB\r\n- 64GB',90,16500000,'iphone'),(68,'Realme GT Neo','- Dimensity 1200 \r\n- 6.43\'\r\n- 6GB ram\r\n- 128GB rom',50,6190000,'realme'),(69,'Realme GT Neo Flash','- MediaTek MT6893 \r\n- 6.43\'\r\n- 8GB ram\r\n- 128GB rom',20,7050000,'realme'),(70,'Realme Q2','- Dimensity 800U\r\n- 6.5\'\r\n- 4GB ram\r\n- 128GB rom',50,4290000,'realme'),(71,'iPhone X','- Apple A11 Bionic\r\n- 5.8\"\r\n- 3GB\r\n- 64GB',100,10890000,'iphone'),(72,'Apple iPhone XS Max','- Apple A12 Bionic\r\n- 6.5\"\r\n- 4GB\r\n- 512GB',100,15290000,'iphone'),(73,'Realme V15','- Dimensity 800U\r\n- 6.67\'\r\n- 6GB ram\r\n- 128GB rom',50,4690000,'realme'),(74,'Realme X2 Pro','- Snapdragon 855 Plus\r\n- 6.5\'\r\n- 8GB ram\r\n- 128GB rom',30,7600000,'realme'),(75,'Samsung Galaxy Z Fold3 5G','- Snapdragon 888 5G (5 nm)\r\n- 7.6\"\r\n- 12GB\r\n- 512GB',100,44990000,'samsung'),(76,'Realme X2','- Snapdragon 730G\r\n- 6.4\'\r\n- 6GB ram\r\n- 128GB rom',50,4750000,'realme'),(77,'Samsung Galaxy A12','- Helio G35\r\n- 6.5\"\r\n- 4GB\r\n- 128GB',100,4150000,'samsung'),(78,'Realme 6','- Helio G90T\r\n- 6.5\'\r\n- 6GB ram\r\n - 64GB rom',40,4750000,'realme'),(79,'Samsung Galaxy Note 20 Ultra 5G','- Exynos 990 (7 nm+)\r\n- 6.9\"\r\n- 12GB\r\n- 256GB',100,20500000,'samsung'),(80,'Samsung Galaxy S21 Plus 5G','- Exynos 2100 8 nhân\r\n- 6.7\"\r\n- 8GB\r\n- 256GB',100,22800000,'samsung'),(81,'Nokia 5.4','- Snapdragon 662\r\n- 6.39\'\r\n- 4GB ram\r\n- 128GB rom',50,3990000,'nokia'),(82,'Samsung Galaxy A52','- Snapdragon 720G (8 nm)\r\n- 6.5\"\r\n- 8GB\r\n- 128GB',100,8750000,'samsung'),(83,'Nokia 2.4','- Helio P22 \r\n- 6.5\'\r\n- 3GB ram\r\n- 64 rom',50,2690000,'nokia');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,8 +176,9 @@ CREATE TABLE `users` (
   `phone` text,
   `address` text,
   `role` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +187,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'Son','client@vip.com','soicon','113','Phu Tho','client'),(5,'Vũ Nguyên','staff1@shop.com','staff1','1','Thái Bình','staff'),(6,'Hồng Phúc','staff2@shop.com','staff2','2','Nam Định','staff'),(7,'Nguyễn Sơn','admin@admin.com','admin','0989706008','Phú Thọ','admin'),(8,'nguyen son','nguyenson.66pt@gmail.com','admin','0989706009','phu tho','client'),(9,'','','','','','client');
+INSERT INTO `users` VALUES (7,'Nguyễn Sơn','admin@admin.com','admin','0989706008','xã Hùng Xuyên, Đoan Hùng, Phú Thọ','admin','bee34bed7d22d1f035dd39ace536a0b0.png'),(10,'Nguyen Son','nguyenson.66sc@gmail.com','1','0989706009','xa hung xuyen, doan hung, phu tho','staff','null'),(11,'Soi Con','hihi@gmail.com','1','1','Hung Xuyen, Doan Hung, Phu Tho, Viet Nam','client','null'),(12,'Sói Con','nguyenson.66pt@gmail.com','admin','123','','client','059a315cc860d6144cf43200f0c4b302.png'),(13,'Nguyễn Văn A','2@gmail.com','2','2','Hung xuyen, doan hung, phu tho','client','1.png'),(14,'Nhan vien 1','staff1@admin.com','staff','012345678','','staff','1.png'),(17,'test','1@gmai.com','test','1234','doan hung phu tho','client','1.png');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -173,4 +200,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-22 11:59:14
+-- Dump completed on 2021-11-28 19:08:05

@@ -60,6 +60,8 @@
                 </form>
                 {{/if}}
 
+                <p id="error" style="color: red; text-align: center; margin-top:20px"></p>
+
             </div>
         </div>
 
@@ -120,4 +122,30 @@
         form.action = '/delete-cart/' + product_id + '/' + order_id
         form.submit()
     }
+
+    /// set error ///
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    const er = document.getElementById('error')
+    const cookie_error = getCookie("error-order")
+
+    if (cookie_error != '') {
+        er.innerHTML = "Một số sản phẩm bạn đặt đã hết hàng vui lòng kiểm tra lại"
+        document.cookie = "error-order=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
 </script>

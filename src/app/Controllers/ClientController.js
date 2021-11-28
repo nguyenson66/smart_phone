@@ -319,12 +319,35 @@ class ClientController{
             const data_user = jwt.verify(user_token,'sositech')
             const user_id = data_user.id
             const order_id = req.params.id
-            const time = moment().format("LLL")
-            const cost = await QueryDatabase.getCostOrder(order_id)
-            // console.log(cost)
 
-            QueryDatabase.orderItem(order_id,time,cost[0].cost)
-            QueryDatabase.addNewOrder(user_id)
+            const data_check = await QueryDatabase.getAll(`select id,products.quantity as quantity, order_detail.quantity as quantityCart from order_detail, products
+            where order_detail.order_id = ${order_id} and order_detail.product_id = products.id`)
+            // console.log(data_check)
+
+            let check = true
+            for(let i=0;i<data_check.length;i++){
+                if(data_check[i].quantity < data_check[i].quantityCart){
+                    check = false
+                    break
+                }
+            }
+
+            if(check){
+                const time = moment().format("LLL")
+                const cost = await QueryDatabase.getCostOrder(order_id)
+                // console.log(cost)
+
+                for(let i=0;i<data_check.length;i++){
+                    QueryDatabase.updateAsQuery(`update products set quantity = quantity - ${data_check[i].quantityCart} where id = ${data_check[i].id}`)
+        
+                }
+
+                QueryDatabase.orderItem(order_id,time,cost[0].cost)
+                QueryDatabase.addNewOrder(user_id)
+            }
+            else{
+                res.cookie('error-order','1',{ expires: new Date(Date.now() + 7200000)})
+            }
         
             res.redirect('/order')
         }
