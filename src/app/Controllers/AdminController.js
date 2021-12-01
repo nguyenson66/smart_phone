@@ -280,7 +280,9 @@ class AdminController{
         where orders.id = ${order_id} and orders.user_id = users.id`)
 
         if(infor_order[0].status == 1)
-        infor_order[0].confirm = true
+            infor_order[0].confirm = true
+        else if(infor_order[0].status == 2)
+            infor_order[0].delivery = true
         
         // console.log(infor_order[0])
         
@@ -374,18 +376,13 @@ class AdminController{
     async revenue(req,res){
         //check if user is client => redirect :/
         let role = await checkAdmin(req.cookies.user_token)
-        if(role == 0)
+        if(role < 2)
             res.redirect('/home')
         ////////////////////////////////////////
-        
-        if(role == 1){
-            role = {role : 'Nhân Viên'}
-        }
-        else{
-            role = {
-                role : 'Quản lí',
-                isAdmin : true
-            }
+    
+        role = {
+            role : 'Quản lí',
+            isAdmin : true
         }
         ////////////////////////////////////////
 
@@ -399,7 +396,17 @@ class AdminController{
 
         // get data
 
-        const time_now  = moment().format("LLL").split(' ')
+        let time_now
+        const time = req.query.time
+        
+
+        if(time == '' || time == undefined){
+            time_now = moment().format('LLL').split(' ')
+        }
+        else{
+            time_now = moment(`${time}`,'YYYY-MM-DD').format('LLL').split(' ')
+        }
+
         const time_day = time_now[0] + ' ' + time_now[1] + ' ' + time_now[2]
         // const time_month = [time_now[0],time_now[2]]
         // console.log(time_day, time_month)
@@ -409,7 +416,7 @@ class AdminController{
         const hot_day = await QueryDatabase.getHotProductOrder(`${time_day}%`)
         const hot_month = await QueryDatabase.getHotProductOrder(`${time_now[0]}%${time_now[2]}%`)
 
-        // console.log(order_today[0])
+
         
         // console.log(`select count(*) as count, sum(cost) as cost from orders where created_at like '${time_day}%'`,order_today)
         // console.log(`select count(*) as count , sum(cost) as cost from orders where created_at like '${time_now[0]}%${time_now[2]}%'`,order_month)
@@ -421,13 +428,29 @@ class AdminController{
             cost_month : order_month[0].cost
         }
 
-        // console.log(revenue)
+        /// get order successful delivery as time
+        let order = await QueryDatabase.getAll(`select orders.id, users.name, orders.created_at from users, orders where status = 3 and users.id = orders.user_id and created_at like '${time_day}%'`)
+        
+        for(let i=0;i<order.length;i++){
+            const order_detail = await QueryDatabase.getAll(`select products.name, price, order_detail.quantity as quantityOrder from order_detail, products
+            where order_detail.order_id = ${order[i].id} and order_detail.product_id = products.id`)
+            
+            order[i].order_detail = order_detail
+        }
+
+        // console.log(order)
+        ////////////////////////////////////////
+
+        let get_time = time_now.join(' ')
+        get_time = moment(`${get_time}`,'LLL').format('DD/MM/YYYY')
 
         res.render('adminLayouts/revenue', {
             user : user_admin[0],
             revenue : revenue,
             hot_day : hot_day,
-            hot_month : hot_month
+            hot_month : hot_month,
+            get_time,
+            order : order
         })
     }
 

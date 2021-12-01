@@ -8,6 +8,7 @@ class ClientController{
 
     /// [GET] :/home
     async home(req,res){
+
         let page = 0
         if(req.query.page != undefined)
             page = req.query.page-1
@@ -68,6 +69,7 @@ class ClientController{
         else{
             const data_user = jwt.verify(user_token,'sositech')
             const user_infor = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+
 
             res.render('clientLayouts/showItem',{
                 item : data[0],

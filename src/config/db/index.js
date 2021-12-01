@@ -312,7 +312,7 @@ class QueryDatabase{
     }
 
     getComment(product_id){
-        const query = `select name,content,created_at from users,comments where product_id = ${product_id} and user_id = users.id`
+        const query = `select name,avatar,content,created_at from users,comments where product_id = ${product_id} and user_id = users.id`
         try{
             const res = new Promise((resolve, reject) => {
                 con.query(query, (err, result) => {

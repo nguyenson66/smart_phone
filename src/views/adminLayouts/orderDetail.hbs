@@ -63,7 +63,7 @@
                         Xác nhận đơn hàng
                     </button>
                 </form>
-                {{else}}
+                {{else if infor_order.delivery}}
                 <form action=" /admin/delivered/{{infor_order.id}}" method="POST">
                     <button class="btn btn-block" style="background-color: #ddff01; margin-top: 20px;">
                         <i class="fas fa-shopping-cart"></i>

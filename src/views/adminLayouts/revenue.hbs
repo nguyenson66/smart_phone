@@ -10,28 +10,36 @@
             <hr class="col ">
         </div>
 
+        <form action="/admin/revenue">
+            <label for="birthday">Chọn ngày cần kiểm tra doanh thu : </label>
+            <input type="date" id="birthday" name="time">
+            <button type="submit" class="btn btn-success" style="margin-left: 10px; display: inline;">Kiểm tra</button>
+
+        </form>
+
+        <h4 style="margin : 30px 0px 10px 0px; text-align: center; color: #ff8533;">Doanh thu ngày : {{get_time}}</h4>
         <div class="row">
             <div class="col-3">
                 <div class="counter orderday">
-                    <p>Số đơn hàng hôm nay</p>
+                    <p>Số đơn hàng ngày</p>
                     <h2>0</h2>
                 </div>
             </div>
             <div class="col-3">
                 <div class="counter revenueday">
-                    <p>Doanh thu hôm nay</p>
+                    <p>Doanh thu của ngày</p>
                     <h2>0</h2>
                 </div>
             </div>
             <div class="col-3">
                 <div class="counter ordermonth">
-                    <p>Số đơn hàng tháng này</p>
+                    <p>Số đơn hàng tháng</p>
                     <h2>0</h2>
                 </div>
             </div>
             <div class="col-3">
                 <div class="counter revenuemonth">
-                    <p>Doanh thu tháng này</p>
+                    <p>Doanh thu của tháng</p>
                     <h2>0</h2>
                 </div>
             </div>
@@ -40,7 +48,7 @@
 
         <div class="row" style="margin : 50px 0px 50px 0px">
             <div class="col">
-                <h5 style="text-align: center; color: #ff8533;">TOP SẢN PHẨM BÁN CHẠY NHẤT HÔM NAY</h5>
+                <h5 style="text-align: center; color: #ff8533;">TOP SẢN PHẨM BÁN CHẠY NHẤT CỦA NGÀY</h5>
 
                 <table class="table table-striped">
                     <thead>
@@ -62,7 +70,7 @@
                 </table>
             </div>
             <div class="col">
-                <h5 style="text-align: center;  color: #ff8533;">TOP 10 SẢN PHẨM BÁN CHẠY NHẤT THÁNG NÀY</h5>
+                <h5 style="text-align: center;  color: #ff8533;">TOP 10 SẢN PHẨM BÁN CHẠY NHẤT THÁNG</h5>
 
 
                 <table class="table table-striped">
@@ -86,9 +94,41 @@
             </div>
         </div>
 
-        {{!-- <div>
-            <h5>TOP KHÁCH HÀNG QUEN THUỘC SHOP</h5>
-        </div> --}}
+        <div style="margin: 80px 0 80px 0;">
+            <h5 style="text-align: center;  color: #ff8533;">CÁC ĐƠN HÀNG ĐÃ GIAO CỦA NGÀY {{get_time}}</h5>
+
+            <div class="admin_body container" style="padding: 30px; border-radius: 8px; margin-bottom: 40px;">
+
+                <div class="row" style="margin-bottom: 20px;">
+                    <h6 class="col-2" style="text-align: center;">Tên khách hàng</h6>
+                    <h6 class="col-5" style="text-align: center;">Tên sản phẩm - giá - số lượng mua</h6>
+                    <h6 class="col-3" style="text-align: center;">Thời gian đặt hàng</h6>
+                    <h6 class="col" style="text-align: center;">Chức năng</h6>
+
+                </div>
+
+                <hr>
+
+                {{#each order}}
+
+                <div class="row">
+                    <p class="col-2">{{this.name}}</p>
+                    <div class="col-5">
+                        {{#each this.order_detail}}
+                        <p>{{this.name}} - {{vnd this.price}} - {{this.quantityOrder}}</p>
+                        {{/each}}
+                    </div>
+                    <p class="col-3">{{this.created_at}}</p>
+                    <div class="col">
+                        <a href="/admin/order/{{this.id}}" type="button" class="btn btn-success"
+                            style="color: white;">Xem chi
+                            tiết</a>
+                    </div>
+                </div>
+                <hr>
+                {{/each}}
+            </div>
+        </div>
     </div>
 </body>
 

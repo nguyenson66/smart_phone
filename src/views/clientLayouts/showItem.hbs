@@ -86,7 +86,7 @@
                 <button class="btn btn-block"
                     style="background-color: #ff3333; margin-top: 20px; width: 300px; margin:50px 0px 0px 150px;">
                     <i class="fas fa-shopping-cart"></i>
-                    Mua hàng
+                    Thêm vào giỏ hàng
                 </button>
             </form>
         </div>
@@ -116,10 +116,13 @@
 
         {{#each comment}}
         <div class="user_comment" style="background-color: #ffffb3; padding: 5px; margin-bottom: 2px;">
-            <h6 style="text-shadow: 2px 2px 5px #99ccff; margin-left:10px">{{this.name}} -
+            <img src="/avatar/{{this.avatar}}" alt=""
+                style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid white">
+
+            <h6 style="text-shadow: 2px 2px 5px #99ccff; margin-left:10px; display: inline;">{{this.name}} -
                 <small>{{this.created_at}}</small>
             </h6>
-            <p class="content_comment" style="text-align: left; margin-left: 10px;">{{this.content}}</p>
+            <p class="content_comment" style="text-align: left; margin-left: 55px;">{{this.content}}</p>
         </div>
         {{/each}}
 
