@@ -43,7 +43,11 @@
                 <h6 style="text-align: right;">Phương thức thanh toán : {{payment this.payment_info}}</h6>
                 <h6 style="text-align: right;">Tổng tiền cần thanh toán : <span style="color: red;">{{vnd this.cost}}
                         đ</span></h6>
-
+                {{#if this.delete_order}}
+                <button class="btn btn-danger" style="margin-left: 85%; width: 15%;" data-toggle="modal"
+                    data-whatever="{{this.id}}" data-target="#cancelOrder">Huỷ đơn
+                    hàng</button>
+                {{/if}}
             </div>
             {{/each}}
 
@@ -103,7 +107,7 @@
     })
 
     btnCancelOrder.onclick = () => {
-        form.action = '/admin/deleteOrder/' + order_id
+        form.action = '/delele-order/' + order_id
         form.submit()
     }
 </script>

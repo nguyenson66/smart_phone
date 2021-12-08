@@ -9,7 +9,7 @@
             <span>Quản lý thông tin hồ sơ để bảo vệ tài khoản</span>
         </div>
         <hr>
-        <div class="change-password"><a href="/change-password">Đổi mật khẩu</a></div>
+        <div class="change-password"><a href="/change-password" style="color: blueviolet;">Đổi mật khẩu</a></div>
 
 
         <form action="/change-profile" method="POST" enctype="multipart/form-data">
@@ -20,6 +20,7 @@
                 <input accept="image/*" type='file' id="imgInp" style="margin: 30px 0px 0px 30%;" name="avatar"
                     aria-label="Upload" />
             </div>
+            <p style="margin-right: 10%; color: red;" id="status"></p>
             <table>
                 <tr class="adress-profile">
                     <td>Tên khách hàng :</td>
@@ -65,6 +66,30 @@
         if (file) {
             blah.src = URL.createObjectURL(file)
         }
+    }
+
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    const status = document.getElementById('status')
+    let cookie = getCookie("successfully-change-profile")
+
+    if (cookie != '') {
+        status.innerHTML = "Thay đổi thông tin thành công"
+        document.cookie = "successfully-change-profile=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
 </script>
 

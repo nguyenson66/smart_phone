@@ -93,6 +93,43 @@ class AdminController{
         }
     }
 
+    //[GET] /admin/edit/:id
+    async editProduct(req,res){
+        //check if user is client => redirect :/
+        let role = await checkAdmin(req.cookies.user_token)
+        if(role == 0)
+            res.redirect('/home')
+        ////////////////////////////////////////
+
+        if(role == 1){
+            role = {role : 'Nhân Viên'}
+        }
+        else{
+            role = {
+                role : 'Quản lí',
+                isAdmin : true
+            }
+        }
+        ////////////////////////////////////////
+        const user_token = req.cookies.user_token
+        const data_user = jwt.verify(user_token, 'sositech')
+        // console.log(data_user)
+
+        let user_admin = await QueryDatabase.getAll(`select name, avatar from users where id = ${data_user.id}`)
+        user_admin[0].role = role
+
+
+        const id = req.params.id
+
+        const infor_product = await QueryDatabase.getAll(`select * from products where id = ${id}`)
+
+
+        res.render('adminLayouts/editProduct',{
+            product : infor_product[0],
+            user : user_admin[0]
+        })
+    }
+
     //[GET] /admin/create
     async addItem(req,res){
         //check if user is client => redirect :/
@@ -429,8 +466,9 @@ class AdminController{
         }
 
         /// get order successful delivery as time
-        let order = await QueryDatabase.getAll(`select orders.id, users.name, orders.created_at from users, orders where status = 3 and users.id = orders.user_id and created_at like '${time_day}%'`)
-        
+        let order = await QueryDatabase.getAll(`select orders.id, users.name, orders.created_at from users, orders where status >= 2 and users.id = orders.user_id and created_at like '${time_day}%'`)
+        // console.log(order)
+
         for(let i=0;i<order.length;i++){
             const order_detail = await QueryDatabase.getAll(`select products.name, price, order_detail.quantity as quantityOrder from order_detail, products
             where order_detail.order_id = ${order[i].id} and order_detail.product_id = products.id`)
@@ -462,8 +500,28 @@ class AdminController{
     deleteItem(req,res){
         const item_id = req.params.id
 
+        QueryDatabase.deleteAsQuery(`delete from order_detail where product_id = ${item_id}`)
         QueryDatabase.deleteItem(item_id)
+        
         res.redirect('/admin/items')
+    }
+
+    //[POST] /admin/edit/:id
+    editProductPost(req,res){
+        const id = req.params.id
+
+        const name = req.body.name
+        const description = req.body.description
+        const manufacturer = req.body.manufacturer
+        const price = req.body.price
+        const quantity = req.body.quantity
+        console.log(req.body)
+        
+        QueryDatabase.updateAsQuery(`update products set name = '${name}', description = '${description}', manufacturer = '${manufacturer}', price = ${price}, quantity = ${quantity} where id = ${id}`)
+
+        // console.log(`update products set name = '${name}', description = '${description}', manufacturer = '${manufacturer}', price = ${price}, quantity = ${quantity} where id = ${id}`)
+
+        res.redirect('back')
     }
 
 

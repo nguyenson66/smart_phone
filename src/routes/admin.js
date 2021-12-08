@@ -11,6 +11,7 @@ router.get('/user', AdminController.showUser)
 router.get('/order', AdminController.showOrder)
 router.get('/revenue', AdminController.revenue)
 router.get('/order/:id', AdminController.orderDetail)
+router.get('/edit/:id',AdminController.editProduct)
 router.get('',AdminController.home)
 
 
@@ -22,5 +23,6 @@ router.post('/confirm-order/:id', AdminController.confirmOrder)
 router.post('/delete-staff/:id' , AdminController.deleteStaff)
 router.post('/delete-user/:id', AdminController.deleteUser)
 router.post('/set-role-staff/:id', AdminController.setRoleStaff)
+router.post('/edit/:id', AdminController.editProductPost)
 
 module.exports = router

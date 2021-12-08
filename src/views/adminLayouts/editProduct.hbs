@@ -1,0 +1,53 @@
+{{> headerAdmin}}
+
+<div class="container">
+    {{!-- enctype="multipart/form-data" --}}
+    <form method="POST" action="/admin/edit/{{product.id}}">
+        <div class="form-floating">
+            <label for="floatingTextarea2"
+                style="margin-top: 10px; box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.2); z-index: 1;">Name
+                Product</label>
+            <textarea class="form-control" placeholder="Name Item" id="name" name="name"
+                style="height: 100px">{{product.name}}</textarea>
+        </div>
+
+        <div class="form-floating">
+            <label for="floatingTextarea2"
+                style="margin-top: 10px; box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.2); z-index: 1;">Description</label>
+            <textarea class="form-control" placeholder="Description product" id="description" name="description"
+                style="height: 100px;">{{product.description}}</textarea>
+        </div>
+
+        <div class="form-floating">
+            <label for="floatingTextarea2"
+                style="margin-top: 10px; box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.2); z-index: 1;">Manufacturer</label>
+            <select class="form-select" id="manufacturer" name="manufacturer"
+                style="height: 50px; width: 100%; margin-top: 10px; " aria-selected="{{product.manufacturer}}">
+
+                <option value="iphone">Iphone</option>
+                <option value="samsung">Samsung</option>
+                <option value="oppo">OPPO</option>
+                <option value="sony">Sony</option>
+                <option value="nokia">Nokia</option>
+                <option value="xiaomi">Xiaomi</option>
+                <option value="realme">Realme</option>
+            </select>
+        </div>
+
+        <div class="form-floating mb-3">
+            <label for="floatingInput"
+                style="margin-top: 10px; box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.2); z-index: 1;">Price</label>
+            <input class="form-control" id="price" name="price" value="{{product.price}}">
+        </div>
+
+        <div class="form-floating mb-3">
+            <label for="floatingInput"
+                style="margin-top: 10px; box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.2); z-index: 1;">Quantity</label>
+            <input class="form-control" id="quantity" name="quantity" value="{{product.quantity}}">
+        </div>
+
+        <input class="btn btn-success" style="margin-left: 48%; margin-bottom: 50px;" type="submit"
+            value="Update product">
+
+    </form>
+</div>

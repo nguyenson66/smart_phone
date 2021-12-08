@@ -102,6 +102,10 @@ class ClientController{
 
                 infor_order[i].order_detail = order_detail
                 // console.log(infor_order[i])
+
+                /// set delete orderr
+                if(infor_order[i].status == 1)
+                    infor_order[i].delete_order = true;
             }
 
             // console.log(infor_order[0].order_detail)
@@ -281,6 +285,15 @@ class ClientController{
         }
     }
 
+    //[POST] /delete-order/:id
+    deleteOrder(req,res){
+        const id = req.params.id
+        // console.log(id)
+        QueryDatabase.deleteAsQuery(`delete from order_detail where order_id = ${id}`)
+        QueryDatabase.deleteAsQuery(`delete from orders where id = ${id}`)
+        res.redirect('back')
+    }
+
 
     //[POST] /register
     async registerPOST(req,res){
@@ -442,6 +455,7 @@ class ClientController{
             QueryDatabase.updateProfileNoAvatar(user_id,name,email,address)
         }
         
+        res.cookie('successfully-change-profile','1',{ expires: new Date(Date.now() + 7200000)})
 
         res.redirect('/profile')
     }
